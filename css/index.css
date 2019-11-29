@@ -2085,6 +2085,11 @@ blockquote footer cite:before {
     margin-left: 15px;
   }
 }
+@media screen and (max-width: 768px) {
+  #aside_content {
+    display: none;
+  }
+}
 .category-content ol,
 .category-content ul {
   margin-top: 0.4rem;
