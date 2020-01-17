@@ -1,197 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>吉隆坡国际机场+机场免税店～大攻略 | 新马SM</title><meta name="description" content="吉隆坡国际机场+机场免税店～大攻略"><meta name="keywords" content="吉隆坡,免税店,国际机场"><meta name="author" content="FeiFei | PG | 阿超 ｜ 林子"><meta name="copyright" content="FeiFei | PG | 阿超 ｜ 林子"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sin.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="吉隆坡国际机场+机场免税店～大攻略"><meta name="twitter:description" content="吉隆坡国际机场+机场免税店～大攻略"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="吉隆坡国际机场+机场免税店～大攻略"><meta property="og:url" content="http://sin-ma.com/2019/08/24/%E5%90%89%E9%9A%86%E5%9D%A1%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA-%E6%9C%BA%E5%9C%BA%E5%85%8D%E7%A8%8E%E5%BA%97%EF%BD%9E%E5%A4%A7%E6%94%BB%E7%95%A5/"><meta property="og:site_name" content="新马SM"><meta property="og:description" content="吉隆坡国际机场+机场免税店～大攻略"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
 
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/08/24/%E5%90%89%E9%9A%86%E5%9D%A1%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA-%E6%9C%BA%E5%9C%BA%E5%85%8D%E7%A8%8E%E5%BA%97%EF%BD%9E%E5%A4%A7%E6%94%BB%E7%95%A5/"><link rel="prev" title="在马来西亚怎样用现金？银联卡在国外能取现？" href="/http:/sin-ma.com/2019/08/28/%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%80%8E%E6%A0%B7%E7%94%A8%E7%8E%B0%E9%87%91%EF%BC%9F%E9%93%B6%E8%81%94%E5%8D%A1%E5%9C%A8%E5%9B%BD%E5%A4%96%E8%83%BD%E5%8F%96%E7%8E%B0%EF%BC%9F/"><link rel="next" title="21款马来西亚超实用的手机APP推荐" href="/http:/sin-ma.com/2019/08/20/21%E6%AC%BE%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E8%B6%85%E5%AE%9E%E7%94%A8%E7%9A%84%E6%89%8B%E6%9C%BAAPP%E6%8E%A8%E8%8D%90/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: FeiFei | PG | 阿超 ｜ 林子","link":"链接: http://sin-ma.com/2019/08/24/%E5%90%89%E9%9A%86%E5%9D%A1%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA-%E6%9C%BA%E5%9C%BA%E5%85%8D%E7%A8%8E%E5%BA%97%EF%BD%9E%E5%A4%A7%E6%94%BB%E7%95%A5/","source":"来源: 新马SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
-
-}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">新马SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 马来西亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/taiwan/"><i class="fa-fw fa fa-taiwan"></i><span> 台湾</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多精彩</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">95</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">122</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">15</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 马来西亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/taiwan/"><i class="fa-fw fa fa-taiwan"></i><span> 台湾</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多精彩</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序言"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序言</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#吉隆坡国际机场-KLIA"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">吉隆坡国际机场 KLIA</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.1.</span> <span class="toc_mobile_items-text">1）机场简介</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.2.</span> <span class="toc_mobile_items-text">2）马币兑换/ATM机取款</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.3.</span> <span class="toc_mobile_items-text">3）免费地图</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.4.</span> <span class="toc_mobile_items-text">4）机场到市区交通</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#吉隆坡国际机场第二航站楼-KLIA2"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">吉隆坡国际机场第二航站楼 KLIA2</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.1.</span> <span class="toc_mobile_items-text">1）机场简介</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.2.</span> <span class="toc_mobile_items-text">2）机场到市区交通</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.3.</span> <span class="toc_mobile_items-text">3）吉隆坡机场快铁常见问题</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#梳邦国际机场-STA"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">梳邦国际机场 STA</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.1.</span> <span class="toc_mobile_items-text">1）机场简介</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.2.</span> <span class="toc_mobile_items-text">2）机场到市区交通</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#吉隆坡机场免税店-KLIA-Duty-Free"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">吉隆坡机场免税店 KLIA Duty Free</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.1.</span> <span class="toc_mobile_items-text">1）免税店位置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.2.</span> <span class="toc_mobile_items-text">2）Eraman Malaysia (KLIA &amp; KLIA2)</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.3.</span> <span class="toc_mobile_items-text">3）Chocolates &amp; Confectionery Duty Free Shop (KLIA &amp; KLIA2)</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.4.</span> <span class="toc_mobile_items-text">4）Be Duty Free (KLIA2)</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.5.</span> <span class="toc_mobile_items-text">5）Flying Emporium (KLIA &amp; KLIA2)</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#尾声"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">尾声</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序言"><span class="toc-number">1.</span> <span class="toc-text">序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#吉隆坡国际机场-KLIA"><span class="toc-number">2.</span> <span class="toc-text">吉隆坡国际机场 KLIA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.1.</span> <span class="toc-text">1）机场简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.2.</span> <span class="toc-text">2）马币兑换/ATM机取款</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.3.</span> <span class="toc-text">3）免费地图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.4.</span> <span class="toc-text">4）机场到市区交通</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#吉隆坡国际机场第二航站楼-KLIA2"><span class="toc-number">3.</span> <span class="toc-text">吉隆坡国际机场第二航站楼 KLIA2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.1.</span> <span class="toc-text">1）机场简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.2.</span> <span class="toc-text">2）机场到市区交通</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.3.</span> <span class="toc-text">3）吉隆坡机场快铁常见问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#梳邦国际机场-STA"><span class="toc-number">4.</span> <span class="toc-text">梳邦国际机场 STA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.1.</span> <span class="toc-text">1）机场简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.2.</span> <span class="toc-text">2）机场到市区交通</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#吉隆坡机场免税店-KLIA-Duty-Free"><span class="toc-number">5.</span> <span class="toc-text">吉隆坡机场免税店 KLIA Duty Free</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.1.</span> <span class="toc-text">1）免税店位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.2.</span> <span class="toc-text">2）Eraman Malaysia (KLIA &amp; KLIA2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.3.</span> <span class="toc-text">3）Chocolates &amp; Confectionery Duty Free Shop (KLIA &amp; KLIA2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.4.</span> <span class="toc-text">4）Be Duty Free (KLIA2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.5.</span> <span class="toc-text">5）Flying Emporium (KLIA &amp; KLIA2)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尾声"><span class="toc-number">6.</span> <span class="toc-text">尾声</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">吉隆坡国际机场+机场免税店～大攻略</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-08-24<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-11-28</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/%E6%94%BB%E7%95%A5%E6%8C%87%E5%8D%97/">攻略指南</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>FeiFei</center>
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-<h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a><center>序言</center></h2><p>吉隆有两个机场：吉隆坡国际机场（Kuala Lumpur International Airport）和梳邦机场（Subang Terminal Airport），吉隆坡国际机场是马来西亚最主要及规模最大的国际机场，有两个航站楼，分别是KLIA和KLIA2（主要服务于全球最大的廉价航空-AirAsia亚洲航空）；而梳邦机场主要是在马来西亚境内飞行，因此国际航线很少，游客也基本不会去！</p>
-<p>吉隆坡国际机场，是马来西亚旅游的第一站，这里也称为吉隆坡的购物天堂，因为机场有很多免税店，可以放手买个痛快！下面，FeiFei先带你去了解一下吉隆坡的国际机场，然后去逛逛机场的免税店。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/0.jpg" class="lazyload"></p>
-<h2 id="吉隆坡国际机场-KLIA"><a href="#吉隆坡国际机场-KLIA" class="headerlink" title="吉隆坡国际机场 KLIA"></a><center>吉隆坡国际机场 KLIA</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/10.jpg" class="lazyload"></p>
-<h4><center>1）机场简介</center></h4>
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
 
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/11.png" class="lazyload"></p>
-<p>吉隆坡国际机场（Kuala Lumpur International Airport，简称KLIA）是马来西亚最主要的国际机场之一，位于雪兰莪州南部的雪邦，离吉隆坡约50公里。</p>
-<p>KLIA有3个大楼：卫星大楼、终端站大楼和主航站大楼。 登机（Check - in）手续及移民事务位于主航站大楼，登机、下机主要在终端站大楼及卫星大楼，卫星大楼主要用于国际航线。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/12.png" class="lazyload"></p>
-<p>主候机楼、联系中心和卫星楼中均设有机场咨询服务台。游客服务中心位于主候机楼四楼行李提取区中，这里一天 24 小时都有人值守，主要为游客提供有关马来西亚观光景点、住宿和交通的第一手资料！</p>
-<h4><center>2）马币兑换/ATM机取款</center></h4>
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
 
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/13.jpg" class="lazyload"></p>
-<p>如果不去吉隆坡市区，但又急需换钱，推荐在有“银联”标示的ATM机上直接取马币（机场内有好几台，一般Maybank比较好用），汇率是你所用银行卡所属银行的当天参考汇率牌价。Arrival Hall (Level 3)、取行李的前面有两个换汇处Maybank和CIMB，Maybank要好一些。不过在拿了行李出去的地方也能换，外面的便宜些，不过差不了多少！</p>
-<h4><center>3）免费地图</center></h4>
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
 
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/14.png" class="lazyload"></p>
-<p>在KLIA机场，一定要记得拿免费地图！到information柜台问柜台人员要，就说需要city map of KL，最后一页是地图，里面还有详细的轨道交通图。</p>
-<h4><center>4）机场到市区交通</center></h4>
-
-<p><b><center>A.机场快线（KLIA Ekspres）</center></b></p>
-<p>机场快线是从吉隆坡国际机场前往市区最快最便捷的交通方式，KLIA Ekspres时速160公里，全线没有停靠站，运行时间为28分钟，起点是吉隆坡国际机场 KLIA (Kuala Lumpur International Airport) ，终点是 Kuala Lumpur City Air Terminal (KL CAT)，位于中环广场KL Sentral。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/15-1.jpg" class="lazyload"></p>
-<p>运营时间：<br>从机场出发及中环广场的班次最早一班为早5点，最晚一班中环广场为午夜12点半；机场为凌晨一点。高峰期每15分钟一班(高峰时间为周一到周五6:00am–9:00am 以及 4:00pm–10:00pm)；非高峰期每20分钟一班（非高峰时间为每天午夜后及周六周日）。</p>
-<p>乘坐地点：<br>KLIA Ekspres位于吉隆坡国际机场最底层1楼，由于马来西亚使用英式方式，因此1楼实际相当于中国的地下一层，下机后根据指示牌就可以找到啦！</p>
-<p>票价：<br>成人单程RM55，2-12岁儿童享受儿童票（RM25)；往返成人RM100，儿童RM 45。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/15.png" class="lazyload"></p>
-<p><b><center>B.机场快铁（KLIA Transit）</center></b></p>
-<p>KLIA Transit同样连接吉隆坡国际机场KLIA与吉隆坡的交通枢纽中环广场(KL Sentral)，与另外一条轨道交通KLIA Ekspres，KLIA Transit中间停靠Salak Tinggi、Putrajaya &amp; Cyberjaya、BandarTasik Selatan， 最后抵达吉隆坡中央车站（KLSentral）。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/16.png" class="lazyload"></p>
-<p>运营时间：<br>从机场早上05:00am首班，凌晨 01:30am最后一班；每30分钟一班；从中环广场早上04:00am首班，凌晨 12:30am最后一班；每30分钟一班。</p>
-<p>票价 (粉色为儿童票）：</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/17.png" class="lazyload"></p>
-<p><b><center>C.机场大巴（Star Shutter）</center></b></p>
-<p>开往市区的主要车站是，富都车站（Pudu Raya）和Batu 3 站。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/18.jpg" class="lazyload"></p>
-<p><b><center>D.机场出租车</center></b></p>
-<p>可开往市区任一角落，时间在30分钟至1个小时之间，有不同车型可供选择，需在机场大厅的柜台预先购票。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/19.jpg" class="lazyload"></p>
-<h2 id="吉隆坡国际机场第二航站楼-KLIA2"><a href="#吉隆坡国际机场第二航站楼-KLIA2" class="headerlink" title="吉隆坡国际机场第二航站楼 KLIA2"></a><center>吉隆坡国际机场第二航站楼 KLIA2</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/20.jpg" class="lazyload"></p>
-<h4><center>1）机场简介</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/21.png" class="lazyload"></p>
-<p>吉隆坡国际机场第二航站楼（KLIA2）是吉隆坡国际机场与2014年5月2日投入使用的新航站楼。取代了原先的吉隆坡廉价航空机场（也是吉隆坡机场的航站楼）KLIA2，成为新的廉价航空的航站楼！</p>
-<p>机场分布图：</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/22.png" class="lazyload"></p>
-<h4><center>2）机场到市区交通</center></h4>
-
-<p><b><center>A.机场巴士（skybus）</center></b></p>
-<p>从KL Sentral开往LCCT/KLIA2，最早一班车早上03:00am开始，最晚班车是晚上10:00pm，每30分钟一班车，整个行程约75分钟。而从LCCT/KLIA2返回KL Sentral市区，最早一班车是早上05:00am，最晚一班车是凌晨02:45am，也是每30分钟一班车，整个行程约75分钟。</p>
-<p>如果是从Utama开往LCCT/KLIA2，最早一班车早上03:00am开始，最晚班车是晚上11:00pm，每一个小时一班车，整个行程约75分钟。而从LCCT/KLIA2返回Utama市区，最早一班车是早上04:30am，最晚一班车是凌晨12:30am，也是每一个小时一班车，整个行程约75分钟。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/23.jpg" class="lazyload"></p>
-<p><b><center>B.机场快线（KLIA Ekspres）</center></b></p>
-<p>机场为起点提供KLIA2去往KL SENTRAL的机场快线，全程约40分钟，每隔30分钟一班（高峰时段20分钟一班）。途中经停KLIA、Salak Tinggi、Putrajaya &amp; Cyberjaya、Bandar Tasik Selatan共4站，首班分别为04:00am从KL Sentral出发和05:30am从KLIA2出发，末班车分别为00:30am从KL Sentral和00:30从KLIA2出发。</p>
-<p>而机场快线从KLIA2到KL Seatral，只需要33分钟 （1站），而机场地铁要39分钟（4站）。KLIA Ekspres 运行时间30分钟；高峰期间每15分钟一班，非高峰20分钟一班。KLIA2机场始发04:00am，末班05:00pm；KL SENTRAL始发05:00am；末班00:30am。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/24.jpg" class="lazyload"></p>
-<p><b><center>C.机场快铁（KLIA Transit）</center></b></p>
-<p>KLIA Transit 运行时间35-42分钟左右；高峰时间每20分钟一班，非高峰30分钟一班，可以根据你在吉隆坡的酒店位置来选择上车！KLIA2机场始发05:00am，末班01:00am；KL SENTRAL始发04:30am；末班00:30am。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/25.png" class="lazyload"></p>
-<p><b><center>D.出租车</center></b></p>
-<p>这是不太推荐的到达机场的方式，从KL SENTRAL打车前往KLIA2，车程约40-60分钟。两个人以上的，或者行李很多的，FeiFei觉得可以考虑打车前往，但要记得多给自己预留20-30分钟时间。如果是从KLIA2前往市区，需要在1层或2层找到相应出租车公司的柜台购买出租车票。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/26.jpg" class="lazyload"></p>
-<h4><center>3）吉隆坡机场快铁常见问题</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/27.png" class="lazyload"></p>
-<p><b><center>A.KLIA Ekspres售票柜台的营业时间是:</center></b></p>
-<p>KL Sentral–出发大厅从凌晨到12:45am次日；<br>KL Sentral–到达大厅从5:15am到1:45am次日；<br>KLIA–平台A和B（1级）从凌晨到1:15am次日；<br>机场国际到达（行李提取厅3级）从5:45点次日；<br>KLIA国际到达（出口走廊3级）从即日到10:30pm；<br>KLIA–卫星（中心广场）下午6:45到次日凌晨；<br>KLIA2运行小时数为1:15am每天凌晨。</p>
-<p><b><center>B.在哪里买到KLIA Ekspres车票？</center></b></p>
-<p>在KLIA Ekspres售票柜台或自助服务亭在吉隆坡中环站或机场购买KLIA Ekspres车票，也可以在<a href="http://www.kliaekspres.com" target="_blank" rel="noopener">网上购买</a>或通过KLIA Ekspres移动APP。</p>
-<p><b><center>C.关于支付</center></b></p>
-<p>支付现金的柜台，只接受马来西亚币现金支付（不支持其他外币）</p>
-<h2 id="梳邦国际机场-STA"><a href="#梳邦国际机场-STA" class="headerlink" title="梳邦国际机场 STA"></a><center>梳邦国际机场 STA</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/30.jpg" class="lazyload"></p>
-<h4><center>1）机场简介</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/31.png" class="lazyload"></p>
-<p>梳邦国际机场（Subang Terminal Airport）又叫Sultan Abdul Aziz Shah Airport或者Subang Skypark，位于吉隆坡以西20多公里处。目前，只有成功航空（Berjaya Air）和飞萤航空（Firefly）在此起降。FeiFei每次从吉隆坡回家都是在这里乘飞机！</p>
-<h4><center>2）机场到市区交通</center></h4>
-
-<p><b><center>A.KTM（马来西亚国家铁路交通枢纽）</center></b></p>
-<p>从KL Sentral搭乘KTM的Pelabuha Klang线，前往Subang Jaya Station（梳邦再也站），然后搭乘出租车到达梳邦机场，全程大概30分钟。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/32.jpg" class="lazyload"></p>
-<p><b><center>B.机场巴士</center></b></p>
-<p>没有直接到达机场的巴士，只有到达机场外大路的巴士。可以乘坐U81路(在Pasar Seni LRT站处搭乘)到达Subang Mah Sing Industrial Park，或者乘坐9路巴士（在吉隆坡Kotaraya搭乘） 前往Subang Mahsing。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/33.jpg" class="lazyload"></p>
-<p><b><center>C.出租车</center></b></p>
-<p>机场内有出租车柜台，可以买票直接搭乘出租车去到任何地方！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/34.jpg" class="lazyload"></p>
-<h2 id="吉隆坡机场免税店-KLIA-Duty-Free"><a href="#吉隆坡机场免税店-KLIA-Duty-Free" class="headerlink" title="吉隆坡机场免税店 KLIA Duty Free"></a><center>吉隆坡机场免税店 KLIA Duty Free</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/40.jpg" class="lazyload"></p>
-<h4><center>1）免税店位置</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/41.jpg" class="lazyload"></p>
-<p>接下来的内容都是重点！做好比较哦！吉隆坡机场的免税店就集中在KLIA和KLIA2两大机场区域！以KLIA为例，两层的店铺，包括快餐店、咖啡店及书店，应有尽有，让机场变成了大型购物中心！很多品牌还常常举办不定期的优惠促销活动！无论你是在KLIA还是KLIA2，经过都要记得逛一逛！不要错过以下吉隆坡机场最重点的免税店哦！</p>
-<h4><center>2）Eraman Malaysia (KLIA & KLIA2)</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/42.png" class="lazyload"></p>
-<p>这是马来西亚机场的全资子公司，也是商品最齐全的一间店！无论是免税品还是非免税品，可说是什么都能找得到！当地的酒水、烟和大牌香水的销量一直很好，价格也很优秀，是选择伴手礼的好地方。</p>
-<p>此处必买🌟🌟🌟：香烟，雪茄，酒，时尚产品配件，香水及化妆品！</p>
-<h4><center>3）Chocolates & Confectionery Duty Free Shop (KLIA & KLIA2)</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/43.png" class="lazyload"></p>
-<p>这家免税店是专门出售巧克力及糖果的，爱吃甜食的你一定不能错过！这里卖的巧克力和糖果比市面上便宜很多，包装精美的同时不会占用太多行李空间，太适合带回去给家人和朋友尝一尝了！</p>
-<p>此处必买🌟🌟🌟：巧克力和糖果！</p>
-<h4><center>4）Be Duty Free (KLIA2)</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/44.png" class="lazyload"></p>
-<p>Be Duty Free的店面只有在KLIA2找得到，这家免税店比较倾向年轻市场，时尚的配件和服装在当地非常受欢迎！一下飞机就可以换身新衣服，旅行也会爽的飞起！</p>
-<p>此处必买🌟🌟🌟：时尚产品配件、香水及化妆品！</p>
-<h4><center>5）Flying Emporium (KLIA & KLIA2)</center></h4>
-
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/45.png" class="lazyload"></p>
-<p>走进这家免税店就相当于走进了一座宝库！马来西亚旅游想要的香水、化妆品、旅行用品和玩具全都在这里，保证你买得心满意足！</p>
-<p>此处必买🌟🌟🌟：香水和化妆品！</p>
-<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a><center>尾声</center></h2><p>看了吉隆坡国际机场的攻略指南，然后又逛了一下机场的免税店，是不是心动了？赶紧啊，全年无冬的吉隆坡一直在等着你！</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG | 阿超 ｜ 林子</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/08/24/%E5%90%89%E9%9A%86%E5%9D%A1%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA-%E6%9C%BA%E5%9C%BA%E5%85%8D%E7%A8%8E%E5%BA%97%EF%BD%9E%E5%A4%A7%E6%94%BB%E7%95%A5/">http://sin-ma.com/2019/08/24/%E5%90%89%E9%9A%86%E5%9D%A1%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA-%E6%9C%BA%E5%9C%BA%E5%85%8D%E7%A8%8E%E5%BA%97%EF%BD%9E%E5%A4%A7%E6%94%BB%E7%95%A5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">新马SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%90%89%E9%9A%86%E5%9D%A1/">吉隆坡</a><a class="post-meta__tags" href="/tags/%E5%85%8D%E7%A8%8E%E5%BA%97/">免税店</a><a class="post-meta__tags" href="/tags/%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA/">国际机场</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190824/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/08/28/%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%80%8E%E6%A0%B7%E7%94%A8%E7%8E%B0%E9%87%91%EF%BC%9F%E9%93%B6%E8%81%94%E5%8D%A1%E5%9C%A8%E5%9B%BD%E5%A4%96%E8%83%BD%E5%8F%96%E7%8E%B0%EF%BC%9F/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190828/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>在马来西亚怎样用现金？银联卡在国外能取现？</span></div></a></div><div class="next-post pull_right"><a href="/2019/08/20/21%E6%AC%BE%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E8%B6%85%E5%AE%9E%E7%94%A8%E7%9A%84%E6%89%8B%E6%9C%BAAPP%E6%8E%A8%E8%8D%90/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>21款马来西亚超实用的手机APP推荐</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/08/30/10号胡同有哪些值得一试的马来西亚美食/" title="10号胡同有哪些值得一试的马来西亚美食"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190830/0.jpg"><div class="relatedPosts_title">10号胡同有哪些值得一试的马来西亚美食</div></a></div><div class="relatedPosts_item"><a href="/2019/10/24/别人的马来亚大学一周之旅/" title="别人的马来亚大学一周之旅和曾经的学校经历"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191024/0.jpg"><div class="relatedPosts_title">别人的马来亚大学一周之旅和曾经的学校经历</div></a></div><div class="relatedPosts_item"><a href="/2019/07/04/合适家庭旅行的全球10大理想胜地-马来西亚居然也占有一席/" title="合适家庭旅行的全球10大理想胜地~马来西亚居然也占有一席"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190704/11.png"><div class="relatedPosts_title">合适家庭旅行的全球10大理想胜地~马来西亚居然也占有一席</div></a></div><div class="relatedPosts_item"><a href="/2019/10/08/吉隆坡值得一去的空中餐厅和酒吧/" title="吉隆坡值得一去的空中餐厅和酒吧"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191008/0.png"><div class="relatedPosts_title">吉隆坡值得一去的空中餐厅和酒吧</div></a></div><div class="relatedPosts_item"><a href="/2019/03/26/吉隆坡必吃的中餐厅/" title="吉隆坡必吃的中餐厅"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201903/20190326/1.png"><div class="relatedPosts_title">吉隆坡必吃的中餐厅</div></a></div><div class="relatedPosts_item"><a href="/2019/01/08/吉隆坡的高级特色餐厅/" title="吉隆坡的高级特色餐厅"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190108/0.jpg"><div class="relatedPosts_title">吉隆坡的高级特色餐厅</div></a></div><div class="relatedPosts_item"><a href="/2019/09/07/吉隆坡景点-终极指南/" title="吉隆坡景点-终极指南"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201909/20190907/1.png"><div class="relatedPosts_title">吉隆坡景点-终极指南</div></a></div><div class="relatedPosts_item"><a href="/2019/12/05/吉隆坡租房-Pantai-Panorama公寓/" title="吉隆坡租房-Pantai Panorama公寓"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191205/0.jpg"><div class="relatedPosts_title">吉隆坡租房-Pantai Panorama公寓</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG | 阿超 ｜ 林子</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug
