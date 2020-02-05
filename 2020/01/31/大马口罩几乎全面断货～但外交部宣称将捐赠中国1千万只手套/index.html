@@ -1,79 +1,91 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套 | 新马SM</title><meta name="description" content="大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套"><meta name="keywords" content="医疗,口罩"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sin.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套"><meta name="twitter:description" content="大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/0.png"><meta property="og:type" content="article"><meta property="og:title" content="大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套"><meta property="og:url" content="http://sin-ma.com/2020/01/31/%E5%A4%A7%E9%A9%AC%E5%8F%A3%E7%BD%A9%E5%87%A0%E4%B9%8E%E5%85%A8%E9%9D%A2%E6%96%AD%E8%B4%A7%EF%BD%9E%E4%BD%86%E5%A4%96%E4%BA%A4%E9%83%A8%E5%AE%A3%E7%A7%B0%E5%B0%86%E6%8D%90%E8%B5%A0%E4%B8%AD%E5%9B%BD1%E5%8D%83%E4%B8%87%E5%8F%AA%E6%89%8B%E5%A5%97/"><meta property="og:site_name" content="新马SM"><meta property="og:description" content="大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/0.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2020/01/31/%E5%A4%A7%E9%A9%AC%E5%8F%A3%E7%BD%A9%E5%87%A0%E4%B9%8E%E5%85%A8%E9%9D%A2%E6%96%AD%E8%B4%A7%EF%BD%9E%E4%BD%86%E5%A4%96%E4%BA%A4%E9%83%A8%E5%AE%A3%E7%A7%B0%E5%B0%86%E6%8D%90%E8%B5%A0%E4%B8%AD%E5%9B%BD1%E5%8D%83%E4%B8%87%E5%8F%AA%E6%89%8B%E5%A5%97/"><link rel="prev" title="全球旅游业受重创～因病毒疫情中国游客骤减" href="/http:/sin-ma.com/2020/02/01/%E5%85%A8%E7%90%83%E6%97%85%E6%B8%B8%E4%B8%9A%E5%8F%97%E9%87%8D%E5%88%9B%EF%BD%9E%E5%9B%A0%E7%97%85%E6%AF%92%E7%96%AB%E6%83%85%E4%B8%AD%E5%9B%BD%E6%B8%B8%E5%AE%A2%E9%AA%A4%E5%87%8F/"><link rel="next" title="新加坡等国暂禁止湖北人入境～部分国家航空暂停中国航班" href="/http:/sin-ma.com/2020/01/30/%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%AD%89%E5%9B%BD%E6%9A%82%E7%A6%81%E6%AD%A2%E6%B9%96%E5%8C%97%E4%BA%BA%E5%85%A5%E5%A2%83%EF%BD%9E%E9%83%A8%E5%88%86%E5%9B%BD%E5%AE%B6%E8%88%AA%E7%A9%BA%E6%9A%82%E5%81%9C%E4%B8%AD%E5%9B%BD%E8%88%AA%E7%8F%AD/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超","link":"链接: http://sin-ma.com/2020/01/31/%E5%A4%A7%E9%A9%AC%E5%8F%A3%E7%BD%A9%E5%87%A0%E4%B9%8E%E5%85%A8%E9%9D%A2%E6%96%AD%E8%B4%A7%EF%BD%9E%E4%BD%86%E5%A4%96%E4%BA%A4%E9%83%A8%E5%AE%A3%E7%A7%B0%E5%B0%86%E6%8D%90%E8%B5%A0%E4%B8%AD%E5%9B%BD1%E5%8D%83%E4%B8%87%E5%8F%AA%E6%89%8B%E5%A5%97/","source":"来源: 新马SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">新马SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 大马</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">109</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">140</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">20</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 大马</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#口罩不够"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">口罩不够</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#手套来凑"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">手套来凑</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#口罩不够"><span class="toc-number">1.</span> <span class="toc-text">口罩不够</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#手套来凑"><span class="toc-number">2.</span> <span class="toc-text">手套来凑</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/0.png)"><div id="post-info"><div id="post-title"><div class="posttitle">大马口罩几乎全面断货～但外交部宣称将捐赠中国1千万只手套</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-01-31<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-01</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="口罩不够"><a href="#口罩不够" class="headerlink" title="口罩不够"></a><center>口罩不够</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/0.png" class="lazyload"></p>
+<p>新型冠状病毒袭卷全球至今，大马已确诊病例8宗，大马民众也纷纷抢购洗涤、消毒用品和口罩，以至于现在的马来西亚市场口罩短缺，有钱也不一定得到！</p>
+<p>根据《星洲日报》《中国报》《东方日报》等记者反映，大马多间药妆店的口罩几乎全面断货。甚至从大马柔佛州到首都吉隆坡，一路上都买不到口罩😷。很多药妆店的门口摆出“抱歉，所有医疗口罩和N95口罩已全部售空”的牌子。</p>
+<p>另外，在吉隆坡附近的八打灵再也和万达镇一带，同样也买不到口罩；但药店的消毒液和洗手液，并未售罄，只是口罩资源比较紧张！</p>
+<p>目前市场上的口罩种类繁多，包括餐饮业和美容业工作人员使用的一次性口罩、街头时尚海绵口罩、活性碳口罩、医用三层口罩、欧洲规格的FFP1口罩、全罩式N95口罩等。但医生建议，医用3层口罩、FFP1口罩和N95口罩，最能阻止新型冠状病毒和细菌的侵害；同时，FFP1口罩和N95口罩不能久带，会影响呼吸。</p>
+<h2 id="手套来凑"><a href="#手套来凑" class="headerlink" title="手套来凑"></a><center>手套来凑</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/1.png" class="lazyload"></p>
+<p>大马外交部于1月30日发言称，大马政府在未来2-3天内将派民用飞机去武汉接回80多名马来西亚公民的同时，也会捐赠1000万只手套给中国。因为目前武汉等地的医疗资源短缺，很需要医护手套；但因大马国内目前口罩资源供不应求，只能捐助手套。</p>
+<p>这些被载回的大马公民，将会在武汉接受大马随行医护人员的体验，之后回马来西亚再接受一次体验，根据情况采取隔离措施。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2020/01/31/%E5%A4%A7%E9%A9%AC%E5%8F%A3%E7%BD%A9%E5%87%A0%E4%B9%8E%E5%85%A8%E9%9D%A2%E6%96%AD%E8%B4%A7%EF%BD%9E%E4%BD%86%E5%A4%96%E4%BA%A4%E9%83%A8%E5%AE%A3%E7%A7%B0%E5%B0%86%E6%8D%90%E8%B5%A0%E4%B8%AD%E5%9B%BD1%E5%8D%83%E4%B8%87%E5%8F%AA%E6%89%8B%E5%A5%97/">http://sin-ma.com/2020/01/31/%E5%A4%A7%E9%A9%AC%E5%8F%A3%E7%BD%A9%E5%87%A0%E4%B9%8E%E5%85%A8%E9%9D%A2%E6%96%AD%E8%B4%A7%EF%BD%9E%E4%BD%86%E5%A4%96%E4%BA%A4%E9%83%A8%E5%AE%A3%E7%A7%B0%E5%B0%86%E6%8D%90%E8%B5%A0%E4%B8%AD%E5%9B%BD1%E5%8D%83%E4%B8%87%E5%8F%AA%E6%89%8B%E5%A5%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">新马SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8C%BB%E7%96%97/">医疗</a><a class="post-meta__tags" href="/tags/%E5%8F%A3%E7%BD%A9/">口罩</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200131/0.png" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/02/01/%E5%85%A8%E7%90%83%E6%97%85%E6%B8%B8%E4%B8%9A%E5%8F%97%E9%87%8D%E5%88%9B%EF%BD%9E%E5%9B%A0%E7%97%85%E6%AF%92%E7%96%AB%E6%83%85%E4%B8%AD%E5%9B%BD%E6%B8%B8%E5%AE%A2%E9%AA%A4%E5%87%8F/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202002/20200201/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>全球旅游业受重创～因病毒疫情中国游客骤减</span></div></a></div><div class="next-post pull_right"><a href="/2020/01/30/%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%AD%89%E5%9B%BD%E6%9A%82%E7%A6%81%E6%AD%A2%E6%B9%96%E5%8C%97%E4%BA%BA%E5%85%A5%E5%A2%83%EF%BD%9E%E9%83%A8%E5%88%86%E5%9B%BD%E5%AE%B6%E8%88%AA%E7%A9%BA%E6%9A%82%E5%81%9C%E4%B8%AD%E5%9B%BD%E8%88%AA%E7%8F%AD/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200130/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>新加坡等国暂禁止湖北人入境～部分国家航空暂停中国航班</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/10/20/为什么马来西亚是最佳的医疗旅游国家/" title="为什么马来西亚是最佳的医疗旅游国家"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191020/0.png"><div class="relatedPosts_title">为什么马来西亚是最佳的医疗旅游国家</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
