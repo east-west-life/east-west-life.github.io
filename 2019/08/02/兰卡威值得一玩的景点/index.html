@@ -1,111 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>兰卡威值得一玩的景点 | 新马SM</title><meta name="description" content="兰卡威值得一玩的景点"><meta name="keywords" content="海岛,兰卡威,沙滩"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sin.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="兰卡威值得一玩的景点"><meta name="twitter:description" content="兰卡威值得一玩的景点"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/10.jpg"><meta property="og:type" content="article"><meta property="og:title" content="兰卡威值得一玩的景点"><meta property="og:url" content="http://sin-ma.com/2019/08/02/%E5%85%B0%E5%8D%A1%E5%A8%81%E5%80%BC%E5%BE%97%E4%B8%80%E7%8E%A9%E7%9A%84%E6%99%AF%E7%82%B9/"><meta property="og:site_name" content="新马SM"><meta property="og:description" content="兰卡威值得一玩的景点"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/10.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
+
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
 
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/08/02/%E5%85%B0%E5%8D%A1%E5%A8%81%E5%80%BC%E5%BE%97%E4%B8%80%E7%8E%A9%E7%9A%84%E6%99%AF%E7%82%B9/"><link rel="prev" title="槟城最值得去的12大热门购物商场" href="/http:/sin-ma.com/2019/08/03/%E6%A7%9F%E5%9F%8E%E6%9C%80%E5%80%BC%E5%BE%97%E5%8E%BB%E7%9A%8412%E5%A4%A7%E7%83%AD%E9%97%A8%E8%B4%AD%E7%89%A9%E5%95%86%E5%9C%BA/"><link rel="next" title="槟城景点大汇总～热门景点vs小众景点" href="/http:/sin-ma.com/2019/08/01/%E6%A7%9F%E5%9F%8E%E6%99%AF%E7%82%B9%E5%A4%A7%E6%B1%87%E6%80%BB%EF%BD%9E%E7%83%AD%E9%97%A8%E6%99%AF%E7%82%B9vs%E5%B0%8F%E4%BC%97%E6%99%AF%E7%82%B9/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超","link":"链接: http://sin-ma.com/2019/08/02/%E5%85%B0%E5%8D%A1%E5%A8%81%E5%80%BC%E5%BE%97%E4%B8%80%E7%8E%A9%E7%9A%84%E6%99%AF%E7%82%B9/","source":"来源: 新马SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
 
-}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">新马SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 大马</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">110</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">141</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">20</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 新加坡</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-sg/"><i class="fa-fw fa fa-guide-sg"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-sg/"><i class="fa-fw fa fa-food-sg"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-sg/"><i class="fa-fw fa fa-scene-sg"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-sg/"><i class="fa-fw fa fa-education-sg"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-sg/"><i class="fa-fw fa fa-culture-sg"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 大马</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-my/"><i class="fa-fw fa fa-guide-my"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-my/"><i class="fa-fw fa fa-food-my"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-my/"><i class="fa-fw fa fa-scene-my"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-my/"><i class="fa-fw fa fa-education-my"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-my/"><i class="fa-fw fa fa-culture-my"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-巨鹰广场-Lagenda-Langkawi-Dalam-Taman"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">No.1 巨鹰广场 Lagenda Langkawi Dalam Taman</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-珍南海滨-Pantai-Chenang"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.2 珍南海滨 Pantai Chenang</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-黑沙海滩-Pantai-Pair-Hitam"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.3 黑沙海滩 Pantai Pair Hitam</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-东方村-Oriental-Village"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.4 东方村 Oriental Village</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-5-浮罗交怡-Kota-Mahsuri"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.5 浮罗交怡 Kota Mahsuri</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-6-七仙井-Kompleks-Kraf-Langkawi"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">No.6 七仙井 Kompleks Kraf Langkawi</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-7-丹绒鲁海滩-Tanjung-Rhu-Beach"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">No.7 丹绒鲁海滩 Tanjung Rhu Beach</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-8-兰卡威海底世界-Underwater-World"><span class="toc_mobile_items-number">8.</span> <span class="toc_mobile_items-text">No.8 兰卡威海底世界 Underwater World</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-9-天空之桥-Langkawi-Sky-Bridge"><span class="toc_mobile_items-number">9.</span> <span class="toc_mobile_items-text">No.9 天空之桥 Langkawi Sky Bridge</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-10-苏丽之墓-Mahsuri-Mausoleum"><span class="toc_mobile_items-number">10.</span> <span class="toc_mobile_items-text">No.10 苏丽之墓 Mahsuri Mausoleum</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">11.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-巨鹰广场-Lagenda-Langkawi-Dalam-Taman"><span class="toc-number">1.</span> <span class="toc-text">No.1 巨鹰广场 Lagenda Langkawi Dalam Taman</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-珍南海滨-Pantai-Chenang"><span class="toc-number">2.</span> <span class="toc-text">No.2 珍南海滨 Pantai Chenang</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-黑沙海滩-Pantai-Pair-Hitam"><span class="toc-number">3.</span> <span class="toc-text">No.3 黑沙海滩 Pantai Pair Hitam</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-东方村-Oriental-Village"><span class="toc-number">4.</span> <span class="toc-text">No.4 东方村 Oriental Village</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-5-浮罗交怡-Kota-Mahsuri"><span class="toc-number">5.</span> <span class="toc-text">No.5 浮罗交怡 Kota Mahsuri</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-6-七仙井-Kompleks-Kraf-Langkawi"><span class="toc-number">6.</span> <span class="toc-text">No.6 七仙井 Kompleks Kraf Langkawi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-7-丹绒鲁海滩-Tanjung-Rhu-Beach"><span class="toc-number">7.</span> <span class="toc-text">No.7 丹绒鲁海滩 Tanjung Rhu Beach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-8-兰卡威海底世界-Underwater-World"><span class="toc-number">8.</span> <span class="toc-text">No.8 兰卡威海底世界 Underwater World</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-9-天空之桥-Langkawi-Sky-Bridge"><span class="toc-number">9.</span> <span class="toc-text">No.9 天空之桥 Langkawi Sky Bridge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-10-苏丽之墓-Mahsuri-Mausoleum"><span class="toc-number">10.</span> <span class="toc-text">No.10 苏丽之墓 Mahsuri Mausoleum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">11.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/10.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">兰卡威值得一玩的景点</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-08-02<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-11-28</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/%E6%97%85%E6%B8%B8%E6%99%AF%E7%82%B9/">旅游景点</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>FeiFei</center>
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
 
-<p>兰卡威（Langkawi）海岛是马来西亚吉打州最大的一组岛屿,位于马六甲海峡，槟榔屿的北方，靠近泰国。不用FeiFei说，想必都知道兰卡威拥有美丽的海滩、丰富的海底生物以及非常悠闲的度假环境。可以让人感受到林中隐退和心灵释放的乐趣。</p>
-<p>因为兰卡威是免税中心，再加上岛上美丽的景色、宁静的地形环境，所以它已成为马来西亚国内外旅客非常喜爱的旅游景点。以下FeiFei将分别介绍兰卡威那些值得一玩的景点。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/10.jpg" class="lazyload"></p>
-<h2 id="No-1-巨鹰广场-Lagenda-Langkawi-Dalam-Taman"><a href="#No-1-巨鹰广场-Lagenda-Langkawi-Dalam-Taman" class="headerlink" title="No.1 巨鹰广场 Lagenda Langkawi Dalam Taman"></a><center>No.1 巨鹰广场 Lagenda Langkawi Dalam Taman</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/11.jpg" class="lazyload"></p>
-<p>在兰卡威的海边有一个占地面积很大的广场－－巨鹰广场，广场上矗立着被称为兰卡威新地标的鹰塔（Dataran Lang）。</p>
-<p>Langkawi在马来古文中是“红褐色老鹰”的意思，鹰塔也就是兰卡威的标志，鹰塔高45米，耗资1000多万马元，老鹰的雄伟姿态，象征着兰卡威就象展翅高飞的老鹰一样，未来的经济更加蓬勃发展。 整个广场还有景色优美的湖泊、喷泉、小桥、回廊等。</p>
-<h2 id="No-2-珍南海滨-Pantai-Chenang"><a href="#No-2-珍南海滨-Pantai-Chenang" class="headerlink" title="No.2 珍南海滨 Pantai Chenang"></a><center>No.2 珍南海滨 Pantai Chenang</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/12.jpg" class="lazyload"></p>
-<p>珍南海滨(Pantai Chenang)是兰卡威岛最美丽的海滩之一，每年都有许多欧洲人来这里度假。 珍南海滨沙滩洁净，海水湛蓝，风光十分旖旎。而且，听FeiFei的朋友说，这里有十分先进的旅游设施，快艇、摩托艇以及滑水等水上运动项目随处可及。</p>
-<h2 id="No-3-黑沙海滩-Pantai-Pair-Hitam"><a href="#No-3-黑沙海滩-Pantai-Pair-Hitam" class="headerlink" title="No.3 黑沙海滩 Pantai Pair Hitam"></a><center>No.3 黑沙海滩 Pantai Pair Hitam</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/13.jpg" class="lazyload"></p>
-<p>黑沙海滩（Pantai Pasir Hitam）以布满黑沙而闻名，据说黑沙滩的形成与火山作用有关，远古时候的一次海底火山爆发，海底的泥层都翻出地面，与海边的泥土糅合在一起，加上海水和风力长年累月的作用，熔岩与泥土化整为零，变成绵绵不绝的黑沙滩。</p>
-<h2 id="No-4-东方村-Oriental-Village"><a href="#No-4-东方村-Oriental-Village" class="headerlink" title="No.4 东方村 Oriental Village"></a><center>No.4 东方村 Oriental Village</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/14.jpg" class="lazyload"></p>
-<p>东方村位于Machincang 山脚，是周润发电影《安娜与国王》的拍摄地。不过电影拍摄结束后，基本上变成一个购物中心，手工艺品价格还算实惠。搭完缆车下来吃个饭，喝个冷饮，拍几张照还行。</p>
-<h2 id="No-5-浮罗交怡-Kota-Mahsuri"><a href="#No-5-浮罗交怡-Kota-Mahsuri" class="headerlink" title="No.5 浮罗交怡 Kota Mahsuri"></a><center>No.5 浮罗交怡 Kota Mahsuri</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/15.jpg" class="lazyload"></p>
-<p>浮罗交怡是一个集中了许多免税商店的小岛，这里有优美的海港和完善的旅游设施。 浮罗交怡的主要景点有孕妇岛、狮子岛、湿米岛和丹绒鲁，一般去那里都是乘一种游船联游数岛，当地把这种游览方式称为“跳岛”，全程时间为4个小时，每人收费220至360元马币。</p>
-<p>来到浮罗交怡，FeiFei觉得最不能错过的就是当地的游艇俱乐部，这里有完善的康乐设施，游泳、桑拿、深海钓鱼、潜水、滑水、舢板等活动项目一应俱全。</p>
-<h2 id="No-6-七仙井-Kompleks-Kraf-Langkawi"><a href="#No-6-七仙井-Kompleks-Kraf-Langkawi" class="headerlink" title="No.6 七仙井 Kompleks Kraf Langkawi"></a><center>No.6 七仙井 Kompleks Kraf Langkawi</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/16.jpg" class="lazyload"></p>
-<p>七仙井是著名的地理奇观，位于兰卡威岛西北角。它是一处被山体截为七段的瀑布，每段瀑布下都有一个水潭。传说从前有很多仙女都喜欢在这里的水潭里沐浴和嬉戏。 七仙井周围有大片青翠的森林，为该瀑布又增添了不少景致。</p>
-<h2 id="No-7-丹绒鲁海滩-Tanjung-Rhu-Beach"><a href="#No-7-丹绒鲁海滩-Tanjung-Rhu-Beach" class="headerlink" title="No.7 丹绒鲁海滩 Tanjung Rhu Beach"></a><center>No.7 丹绒鲁海滩 Tanjung Rhu Beach</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/17.jpg" class="lazyload"></p>
-<p>丹绒鲁海滩在兰卡威的东北角，是兰卡威最美的海滩。退潮时，丹绒鲁和附近几座迷人的小岛连成一片，FeiFei觉得在这里步行，是非常独特的体验。</p>
-<h2 id="No-8-兰卡威海底世界-Underwater-World"><a href="#No-8-兰卡威海底世界-Underwater-World" class="headerlink" title="No.8 兰卡威海底世界 Underwater World"></a><center>No.8 兰卡威海底世界 Underwater World</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/18.jpg" class="lazyload"></p>
-<p>兰卡威的海底世界坐落于珍南海滨，这里有各种淡水和海水鱼类及海洋生物。通过15公尺长的隧道，游客可以观赏到5000多种鱼类，500多种海底生物。喂食鱼类的时间为：每天下午3时。</p>
-<h2 id="No-9-天空之桥-Langkawi-Sky-Bridge"><a href="#No-9-天空之桥-Langkawi-Sky-Bridge" class="headerlink" title="No.9 天空之桥 Langkawi Sky Bridge"></a><center>No.9 天空之桥 Langkawi Sky Bridge</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/19.jpg" class="lazyload"></p>
-<p>天空之桥（Skybridge）位于马来西亚的兰卡威（langkawi）群岛，建成于2004年10月，总长125米，桥形呈圆弧状，主体由钢材料构成。</p>
-<p>特别让FeiFei不解的是，这么个又大又重的“钢架”居然只用了一根支柱来支撑，支柱高87米，被固定在山腰，然后再由8根钢缆牵引，整个桥就这样最终被“吊”在了海拔687米的高空，连接着两个山头，这肯定是它取名为天空之桥（Langkawi Sky Bridge）的原因吧。</p>
-<h2 id="No-10-苏丽之墓-Mahsuri-Mausoleum"><a href="#No-10-苏丽之墓-Mahsuri-Mausoleum" class="headerlink" title="No.10 苏丽之墓 Mahsuri Mausoleum"></a><center>No.10 苏丽之墓 Mahsuri Mausoleum</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/20.jpg" class="lazyload"></p>
-<p>兰卡威的玛苏丽之墓 (Mahsuri Mausoleum) 距离市镇瓜镇大约12公里，陵墓是为了纪念200多年前曾经居住在这的美丽的玛苏丽公主。</p>
-<p>传说在十九世纪，绝色美女玛苏丽是兰卡威岛上的公主，她的丈夫经常出海经商，有一天一位年轻的马来吟游诗人到她家里讲述流浪者的诗歌与经历，嫉妒她美貌的酋长妻子诬指她与诗人有染，数月之后玛苏丽产下一男婴，她因通奸罪被判处用马来弯刀刺死，身上竟然流出了白色的血，仿佛在宣告她的清白。她临终前发下毒誓，诅咒兰卡威将没落七代，而且岛上只能长出不能食用的蓖麻。不久，兰卡威就遭到暹罗（泰国）人的大举入侵，长时期的经济萧条，只能依靠进口，似乎应验了传说的真实性。</p>
-<p>不管上面的传说是否真实，FeiFei觉得还是给兰卡威增添了一些神秘的色彩。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>当然，兰卡威的景点不止上面FeiFei介绍的那些，还有其他的景点等着你自己去发现了！</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/08/02/%E5%85%B0%E5%8D%A1%E5%A8%81%E5%80%BC%E5%BE%97%E4%B8%80%E7%8E%A9%E7%9A%84%E6%99%AF%E7%82%B9/">http://sin-ma.com/2019/08/02/%E5%85%B0%E5%8D%A1%E5%A8%81%E5%80%BC%E5%BE%97%E4%B8%80%E7%8E%A9%E7%9A%84%E6%99%AF%E7%82%B9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">新马SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B5%B7%E5%B2%9B/">海岛</a><a class="post-meta__tags" href="/tags/%E5%85%B0%E5%8D%A1%E5%A8%81/">兰卡威</a><a class="post-meta__tags" href="/tags/%E6%B2%99%E6%BB%A9/">沙滩</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190802/10.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/08/03/%E6%A7%9F%E5%9F%8E%E6%9C%80%E5%80%BC%E5%BE%97%E5%8E%BB%E7%9A%8412%E5%A4%A7%E7%83%AD%E9%97%A8%E8%B4%AD%E7%89%A9%E5%95%86%E5%9C%BA/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190803/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>槟城最值得去的12大热门购物商场</span></div></a></div><div class="next-post pull_right"><a href="/2019/08/01/%E6%A7%9F%E5%9F%8E%E6%99%AF%E7%82%B9%E5%A4%A7%E6%B1%87%E6%80%BB%EF%BD%9E%E7%83%AD%E9%97%A8%E6%99%AF%E7%82%B9vs%E5%B0%8F%E4%BC%97%E6%99%AF%E7%82%B9/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190801/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>槟城景点大汇总～热门景点vs小众景点</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/02/25/仙本那的行前须知、度假村选择、潜水攻略和交通方式/" title="仙本那的行前须知、度假村选择、潜水攻略和交通方式"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201902/20190225/0.jpg"><div class="relatedPosts_title">仙本那的行前须知、度假村选择、潜水攻略和交通方式</div></a></div><div class="relatedPosts_item"><a href="/2019/10/14/马来西亚必去的岛屿/" title="马来西亚必去的岛屿"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg"><div class="relatedPosts_title">马来西亚必去的岛屿</div></a></div><div class="relatedPosts_item"><a href="/2019/05/05/马来西亚美景～天空之境-天鹅岛/" title="马来西亚美景～天空之境+天鹅岛"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201905/20190505/0.jpg"><div class="relatedPosts_title">马来西亚美景～天空之境+天鹅岛</div></a></div><div class="relatedPosts_item"><a href="/2019/06/28/兰卡威的美食餐厅、购物商场和特产/" title="兰卡威的美食餐厅、购物商场和特产"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201906/20190628/0.jpg"><div class="relatedPosts_title">兰卡威的美食餐厅、购物商场和特产</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug
