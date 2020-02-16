@@ -1,79 +1,125 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚必去的岛屿 | SM</title><meta name="description" content="马来西亚必去的岛屿"><meta name="keywords" content="马来西亚,海岛"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sin.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚必去的岛屿"><meta name="twitter:description" content="马来西亚必去的岛屿"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚必去的岛屿"><meta property="og:url" content="http://sin-ma.com/2019/10/14/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BF%85%E5%8E%BB%E7%9A%84%E5%B2%9B%E5%B1%BF/"><meta property="og:site_name" content="SM"><meta property="og:description" content="马来西亚必去的岛屿"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/10/14/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BF%85%E5%8E%BB%E7%9A%84%E5%B2%9B%E5%B1%BF/"><link rel="prev" title="为什么马来西亚是最佳的医疗旅游国家" href="/http:/sin-ma.com/2019/10/20/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%98%AF%E6%9C%80%E4%BD%B3%E7%9A%84%E5%8C%BB%E7%96%97%E6%97%85%E6%B8%B8%E5%9B%BD%E5%AE%B6/"><link rel="next" title="吉隆坡值得一去的空中餐厅和酒吧" href="/http:/sin-ma.com/2019/10/08/%E5%90%89%E9%9A%86%E5%9D%A1%E5%80%BC%E5%BE%97%E4%B8%80%E5%8E%BB%E7%9A%84%E7%A9%BA%E4%B8%AD%E9%A4%90%E5%8E%85%E5%92%8C%E9%85%92%E5%90%A7/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2019/10/14/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BF%85%E5%8E%BB%E7%9A%84%E5%B2%9B%E5%B1%BF/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">117</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">148</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">14</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序言"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序言</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-刁曼岛-Tioman-Island"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.1 刁曼岛 Tioman Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-兰卡威-Langkawi-Island"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.2 兰卡威 Langkawi Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-停泊岛-Pulau-Perhentian"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.3 停泊岛 Pulau Perhentian</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-纳闽岛-Labuan-Island"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.4 纳闽岛 Labuan Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-5-卡央岛-Lankayang-Island"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">No.5 卡央岛 Lankayang Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-6-诗巴丹岛-Semporna-Island"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">No.6 诗巴丹岛 Semporna Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-7-槟城岛-Penang-Island"><span class="toc_mobile_items-number">8.</span> <span class="toc_mobile_items-text">No.7 槟城岛 Penang Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-8-热浪岛-Redang-Island"><span class="toc_mobile_items-number">9.</span> <span class="toc_mobile_items-text">No.8 热浪岛 Redang Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-9-拉央拉央岛-Layang-Layang-Island"><span class="toc_mobile_items-number">10.</span> <span class="toc_mobile_items-text">No.9 拉央拉央岛 Layang-Layang Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-10-邦邦岛-PomPom-Island"><span class="toc_mobile_items-number">11.</span> <span class="toc_mobile_items-text">No.10 邦邦岛 PomPom Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-11-邦咯岛-Pangkor-Island"><span class="toc_mobile_items-number">12.</span> <span class="toc_mobile_items-text">No.11 邦咯岛 Pangkor Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-12-曼达那尼岛-Mantanani-Island"><span class="toc_mobile_items-number">13.</span> <span class="toc_mobile_items-text">No.12 曼达那尼岛 Mantanani Island</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#尾"><span class="toc_mobile_items-number">14.</span> <span class="toc_mobile_items-text">尾</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序言"><span class="toc-number">1.</span> <span class="toc-text">序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-刁曼岛-Tioman-Island"><span class="toc-number">2.</span> <span class="toc-text">No.1 刁曼岛 Tioman Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-兰卡威-Langkawi-Island"><span class="toc-number">3.</span> <span class="toc-text">No.2 兰卡威 Langkawi Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-停泊岛-Pulau-Perhentian"><span class="toc-number">4.</span> <span class="toc-text">No.3 停泊岛 Pulau Perhentian</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-纳闽岛-Labuan-Island"><span class="toc-number">5.</span> <span class="toc-text">No.4 纳闽岛 Labuan Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-5-卡央岛-Lankayang-Island"><span class="toc-number">6.</span> <span class="toc-text">No.5 卡央岛 Lankayang Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-6-诗巴丹岛-Semporna-Island"><span class="toc-number">7.</span> <span class="toc-text">No.6 诗巴丹岛 Semporna Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-7-槟城岛-Penang-Island"><span class="toc-number">8.</span> <span class="toc-text">No.7 槟城岛 Penang Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-8-热浪岛-Redang-Island"><span class="toc-number">9.</span> <span class="toc-text">No.8 热浪岛 Redang Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-9-拉央拉央岛-Layang-Layang-Island"><span class="toc-number">10.</span> <span class="toc-text">No.9 拉央拉央岛 Layang-Layang Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-10-邦邦岛-PomPom-Island"><span class="toc-number">11.</span> <span class="toc-text">No.10 邦邦岛 PomPom Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-11-邦咯岛-Pangkor-Island"><span class="toc-number">12.</span> <span class="toc-text">No.11 邦咯岛 Pangkor Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-12-曼达那尼岛-Mantanani-Island"><span class="toc-number">13.</span> <span class="toc-text">No.12 曼达那尼岛 Mantanani Island</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尾"><span class="toc-number">14.</span> <span class="toc-text">尾</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚必去的岛屿</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-10-14<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-16</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E6%97%85%E6%B8%B8%E6%99%AF%E7%82%B9/">旅游景点</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+<h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a><center>序言</center></h2><p>马来西亚一年四季都有热度，没有明显的季节之分。通常早上会碰到一场中到大雨，但很快会雨过天晴。</p>
+<p>不过，这里有很多不错的岛屿，而且不少都可以进行浮潜活动。今天FeiFei特地选出一些马来西亚必去的岛屿，让你们感受一下在天堂度假般的感觉！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg" class="lazyload"></p>
+<h2 id="No-1-刁曼岛-Tioman-Island"><a href="#No-1-刁曼岛-Tioman-Island" class="headerlink" title="No.1 刁曼岛 Tioman Island"></a><center>No.1 刁曼岛 Tioman Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/1.jpg" class="lazyload"></p>
+<p>刁曼岛位于马来西亚半岛东海岸外约30公里处，是彭亨海岸外最大的火山群岛，分别由 64 岛屿所组成。</p>
+<p>在1970年代,刁曼岛被认为是世界上最美的岛屿之一。当时这座位于南中国海并拥有戏剧性地形的泪珠形小岛，被一部名为南太平洋(South Pacific)的奥斯卡得奖电影选作为拍摄场地搬上了大荧幕。</p>
+<p>刁曼岛商业开发比较成熟，FeiFei觉得这里是马来西亚邻国新加坡人旅游的最爱。海水清澈异常，肉眼就可透视到13米深的海底，也是知名的潜水天堂。</p>
+<h2 id="No-2-兰卡威-Langkawi-Island"><a href="#No-2-兰卡威-Langkawi-Island" class="headerlink" title="No.2 兰卡威 Langkawi Island"></a><center>No.2 兰卡威 Langkawi Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/2.jpg" class="lazyload"></p>
+<p>在马来西亚，兰卡威是最富盛名的自驾度假之地，由安达曼海中的99个马来西亚群岛组成，靠近泰国边境。</p>
+<p>这里是有名度假胜地，FeiFei觉得乘坐通往海拔710米的2200米的缆车，是将兰卡威尽收眼底的最佳方法。</p>
+<p>马来西亚前任首相——马哈迪（现总理）在1986年宣布要把兰卡威打造成一个度假岛屿，并且宣布兰卡威为免税岛。从此，兰卡威便迅速发展起来了。</p>
+<h2 id="No-3-停泊岛-Pulau-Perhentian"><a href="#No-3-停泊岛-Pulau-Perhentian" class="headerlink" title="No.3 停泊岛 Pulau Perhentian"></a><center>No.3 停泊岛 Pulau Perhentian</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/3.jpg" class="lazyload"></p>
+<p>马来西亚的停泊岛在时代的洪流中，FeiFei感觉她一直保留了那独特的低调风格，被列为“自由的”世外桃源。尽管对国外游客来说，这里不容易抵达。但位于马来西亚半岛东北海岸的停泊岛，在背包客的旅游清单上占有标志性的地位。</p>
+<p>在这里，你随时可以从沙滩跳进那清澈见底的海水进行浮潜活动。在清澈的海水里可以观赏各种各样的鱼类和海洋生物，细细体会海洋的多姿多彩与那份悠悠的自由。</p>
+<h2 id="No-4-纳闽岛-Labuan-Island"><a href="#No-4-纳闽岛-Labuan-Island" class="headerlink" title="No.4 纳闽岛 Labuan Island"></a><center>No.4 纳闽岛 Labuan Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/4.jpg" class="lazyload"></p>
+<p>纳闽是马来西亚的一个联邦直辖区，位于南中国海，是东马的免税岛及度假的旅游胜地。多年来，有无数的船只沉没在纳闽的浅水海域，所以这里非常适合潜水新手。</p>
+<p>另外，纳闽的6个小岛屿不仅可以观赏到壮观的海底世界，还能进行乘风波浪、滑翔等丰富的海上娱乐项目。FeiFei以前的同学有空都会来这里玩！</p>
+<h2 id="No-5-卡央岛-Lankayang-Island"><a href="#No-5-卡央岛-Lankayang-Island" class="headerlink" title="No.5 卡央岛 Lankayang Island"></a><center>No.5 卡央岛 Lankayang Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/5.jpg" class="lazyload"></p>
+<p>在马来西亚沙巴东端Sulu Sea上唯一的浮潜度假岛屿，很少有人提及且报导过，最主要的原因在于交通不便且潜水点一般，但听FeiFei的朋友说，这里是西方潜水员常常到访之处。</p>
+<p>卡央岛度假村完全是人工开发出来的，全岛环境优美，具有目前沙巴州所有dive resort中最美丽的白沙滩，就潜点的标准来说，大多数潜点的能见度均不佳（5-10米），困难度也不高，无wall dive，而无强流。</p>
+<h2 id="No-6-诗巴丹岛-Semporna-Island"><a href="#No-6-诗巴丹岛-Semporna-Island" class="headerlink" title="No.6 诗巴丹岛 Semporna Island"></a><center>No.6 诗巴丹岛 Semporna Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/6.jpg" class="lazyload"></p>
+<p>诗巴丹岛屿，绝对是仙本那岛屿中的老大，作为世界十大潜点的诗巴丹岛屿，水上水下都非常精彩，在这里除了绝美海滩，更精彩的莫过于他的水下世界。</p>
+<p>这里一年四季都适合潜水，诗巴丹岛屿拥有得天独厚的潜水条件，5米的浅滩之后就是垂直落下600至700米深的湛蓝深海。被誉为全世界潜水人的“麦加圣地”、“神的水族箱”，FeiFei忘了从哪里看到的消息：世界潜水之父雅克-伊夫•库斯托称它是“未曾受过侵犯的艺术品”。</p>
+<h2 id="No-7-槟城岛-Penang-Island"><a href="#No-7-槟城岛-Penang-Island" class="headerlink" title="No.7 槟城岛 Penang Island"></a><center>No.7 槟城岛 Penang Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/7.jpg" class="lazyload"></p>
+<p>槟城也是马来西亚必去的度假岛屿之一。槟城，槟榔屿因其在海上贸易路线中所占的重要位置又被称为“东方明珠”，以其多样的文化、古迹和小吃著称。</p>
+<p>除此之外，槟城还多次获得CNN评选的全球最佳旅游胜地之一，FeiFei觉得主要是因为这里是著名的美食天堂。</p>
+<h2 id="No-8-热浪岛-Redang-Island"><a href="#No-8-热浪岛-Redang-Island" class="headerlink" title="No.8 热浪岛 Redang Island"></a><center>No.8 热浪岛 Redang Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/8.jpg" class="lazyload"></p>
+<p>不知道你是否记得《夏日么么茶》这部电影？FeiFei好像看过。 2000年，这座马来西亚岛屿被设置为香港电影《夏日的么么茶》的电影场景，由流行歌曲明星郑秀文和台湾小天王任贤齐主演。这部电影的成功，导致了很多游客突然涌入。</p>
+<p>出色的珊瑚保育与清澈的海水，让热浪岛成为浮潜和潜水的热门地点之一。而且，热浪岛以海龟岛及海洋公园著称，这里的海底生长着500余种色彩缤纷绮丽的珊瑚礁，超过1,000种双壳类生物和3,000种鱼类品种，吸引了世界各地的潜水爱好者以及摄影师。</p>
+<h2 id="No-9-拉央拉央岛-Layang-Layang-Island"><a href="#No-9-拉央拉央岛-Layang-Layang-Island" class="headerlink" title="No.9 拉央拉央岛 Layang-Layang Island"></a><center>No.9 拉央拉央岛 Layang-Layang Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/9.jpg" class="lazyload"></p>
+<p>马来西亚的拉央拉央岛屿被称为“燕子礁”，位于亚庇西市西北300公里的向南中国海。最初是一个为了作为马来西亚海军基地特意打造的人造礁岛，之后成功发展为拉央拉央唯一的潜水度假村。</p>
+<p>这里占据优势的地理、未受污染的珊瑚礁、极佳的水底能见度，2000公尺深的峭壁加上远洋景观等优越条件，造就了拉央拉央岛被冠上世界十大潜水胜地之一的佳誉。</p>
+<h2 id="No-10-邦邦岛-PomPom-Island"><a href="#No-10-邦邦岛-PomPom-Island" class="headerlink" title="No.10 邦邦岛 PomPom Island"></a><center>No.10 邦邦岛 PomPom Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/10.jpg" class="lazyload"></p>
+<p>马来西亚的邦邦岛上有两间潜水度假村，其中一间规模较大且设备齐全，还提供Spa服务，另一间则是风格简约的旅舍。</p>
+<p>这里大部分的潜点皆以微生物为主，有时候，可以发现海龟和小魟鱼，也不难发现到躄鱼、蝴蝶鱼和天竺鲷等小鱼等。FeiFei觉得这里与她的名字一样可爱！</p>
+<h2 id="No-11-邦咯岛-Pangkor-Island"><a href="#No-11-邦咯岛-Pangkor-Island" class="headerlink" title="No.11 邦咯岛 Pangkor Island"></a><center>No.11 邦咯岛 Pangkor Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/11.jpg" class="lazyload"></p>
+<p>马来西亚的邦咯岛，是一个集捕鱼及度假胜地于一身的小岛屿，是旅游度假的好去处，经常被槟城和兰卡威的盛名所遮蔽。它是马来西亚开发最早的海滩胜地，仍旧保持着原始的美丽，成为游客梦寐以求的世外桃源，是公认的世界上最美丽的岛屿之一。</p>
+<p>当地的重要景点是17世纪的荷兰古堡和十分灵验的富临宫，其中福临宫的迷你版中国长城十分有特色。不过，FeiFei觉得这里的夜生活不多，但不太拥挤的沙滩，你能拥有当地的美食和热情友好的人情味儿！</p>
+<h2 id="No-12-曼达那尼岛-Mantanani-Island"><a href="#No-12-曼达那尼岛-Mantanani-Island" class="headerlink" title="No.12 曼达那尼岛 Mantanani Island"></a><center>No.12 曼达那尼岛 Mantanani Island</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/12.jpg" class="lazyload"></p>
+<p>曼达那尼岛，坐落在亚庇市西北海岸，由曼达那尼伯沙岛、林基山岛Lingisan Island和曼达那尼格吉岛Mantanani Kecil三个孤岛所组成。</p>
+<p>从古达毛律镇Kota Belud的瓜拉阿拜KualaAbai出发，乘快艇约一小时可抵达。曼达那尼伯沙岛上西侧建有一家小规模的潜水度假村，曼达那尼格吉则有一座建立在浅滩上的潜水旅舍。</p>
+<p>另外，在岛屿附近被发掘到的三艘沉船遗骸，是狮子鱼、鮋鱼、玻璃鱼、章鱼等各种海洋生物的家园。</p>
+<h2 id="尾"><a href="#尾" class="headerlink" title="尾"></a><center>尾</center></h2><p>逛了上面FeiFei介绍的岛屿，不知道你对马来西亚的印象是否又深刻了一些！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/10/14/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BF%85%E5%8E%BB%E7%9A%84%E5%B2%9B%E5%B1%BF/">http://sin-ma.com/2019/10/14/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BF%85%E5%8E%BB%E7%9A%84%E5%B2%9B%E5%B1%BF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E6%B5%B7%E5%B2%9B/">海岛</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191014/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/10/20/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%98%AF%E6%9C%80%E4%BD%B3%E7%9A%84%E5%8C%BB%E7%96%97%E6%97%85%E6%B8%B8%E5%9B%BD%E5%AE%B6/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191020/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>为什么马来西亚是最佳的医疗旅游国家</span></div></a></div><div class="next-post pull_right"><a href="/2019/10/08/%E5%90%89%E9%9A%86%E5%9D%A1%E5%80%BC%E5%BE%97%E4%B8%80%E5%8E%BB%E7%9A%84%E7%A9%BA%E4%B8%AD%E9%A4%90%E5%8E%85%E5%92%8C%E9%85%92%E5%90%A7/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191008/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>吉隆坡值得一去的空中餐厅和酒吧</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2018/12/26/假如给我一个机会接触马来西亚的“掌上明珠”-仙本那/" title="假如给我一个机会接触马来西亚的“掌上明珠”-仙本那"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2018/201812/20181226/0.jpg"><div class="relatedPosts_title">假如给我一个机会接触马来西亚的“掌上明珠”-仙本那</div></a></div><div class="relatedPosts_item"><a href="/2019/07/16/全球最安全的15大城市/" title="全球最安全的15大城市"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190716/1.png"><div class="relatedPosts_title">全球最安全的15大城市</div></a></div><div class="relatedPosts_item"><a href="/2019/07/25/全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢/" title="全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190725/1.png"><div class="relatedPosts_title">全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢</div></a></div><div class="relatedPosts_item"><a href="/2019/07/21/吃遍马来西亚各地的代表性美食/" title="吃遍马来西亚各地的代表性美食"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190721/1-0.png"><div class="relatedPosts_title">吃遍马来西亚各地的代表性美食</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
