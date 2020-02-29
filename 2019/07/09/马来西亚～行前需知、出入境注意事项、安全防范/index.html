@@ -1,79 +1,151 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚～行前需知、出入境注意事项、安全防范 | SM</title><meta name="description" content="马来西亚～行前需知、出入境注意事项、安全防范"><meta name="keywords" content="马来西亚,入境,安全"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sm.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚～行前需知、出入境注意事项、安全防范"><meta name="twitter:description" content="马来西亚～行前需知、出入境注意事项、安全防范"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚～行前需知、出入境注意事项、安全防范"><meta property="og:url" content="http://sin-ma.com/2019/07/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BD%9E%E8%A1%8C%E5%89%8D%E9%9C%80%E7%9F%A5%E3%80%81%E5%87%BA%E5%85%A5%E5%A2%83%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%81%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83/"><meta property="og:site_name" content="SM"><meta property="og:description" content="马来西亚～行前需知、出入境注意事项、安全防范"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/07/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BD%9E%E8%A1%8C%E5%89%8D%E9%9C%80%E7%9F%A5%E3%80%81%E5%87%BA%E5%85%A5%E5%A2%83%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%81%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83/"><link rel="prev" title="美食大PK~新加坡VS马来西亚" href="/http:/sin-ma.com/2019/07/14/%E7%BE%8E%E9%A3%9F%E5%A4%A7PK-%E6%96%B0%E5%8A%A0%E5%9D%A1VS%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/"><link rel="next" title="在马来西亚境内怎么坐火车" href="/http:/sin-ma.com/2019/07/06/%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A2%83%E5%86%85%E6%80%8E%E4%B9%88%E5%9D%90%E7%81%AB%E8%BD%A6/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2019/07/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BD%9E%E8%A1%8C%E5%89%8D%E9%9C%80%E7%9F%A5%E3%80%81%E5%87%BA%E5%85%A5%E5%A2%83%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%81%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">136</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">158</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">16</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#马来西亚～行前需知"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">马来西亚～行前需知</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.1.</span> <span class="toc_mobile_items-text">1）最佳旅游时间</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.2.</span> <span class="toc_mobile_items-text">2）关于时差</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.3.</span> <span class="toc_mobile_items-text">3）关于签证</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.4.</span> <span class="toc_mobile_items-text">4）插座</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.5.</span> <span class="toc_mobile_items-text">5）货币</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.6.</span> <span class="toc_mobile_items-text">6）退税</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.7.</span> <span class="toc_mobile_items-text">7）电话卡</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.0.8.</span> <span class="toc_mobile_items-text">8）关于小费</span></a></li></ol></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#出入境注意事项"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">出入境注意事项</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.0.1.</span> <span class="toc_mobile_items-text">1）入境注意事项</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.0.2.</span> <span class="toc_mobile_items-text">2）出海关注意事项</span></a></li></ol></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#马来西亚～安全防范"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">马来西亚～安全防范</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.0.1.</span> <span class="toc_mobile_items-text">1）注意事项</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.0.2.</span> <span class="toc_mobile_items-text">2）护照遗失或被偷、被抢怎办？</span></a></li></ol></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#马来西亚～行前需知"><span class="toc-number">2.</span> <span class="toc-text">马来西亚～行前需知</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.1.</span> <span class="toc-text">1）最佳旅游时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.2.</span> <span class="toc-text">2）关于时差</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.3.</span> <span class="toc-text">3）关于签证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.4.</span> <span class="toc-text">4）插座</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.5.</span> <span class="toc-text">5）货币</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.6.</span> <span class="toc-text">6）退税</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.7.</span> <span class="toc-text">7）电话卡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.0.8.</span> <span class="toc-text">8）关于小费</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#出入境注意事项"><span class="toc-number">3.</span> <span class="toc-text">出入境注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">1）入境注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">2）出海关注意事项</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#马来西亚～安全防范"><span class="toc-number">4.</span> <span class="toc-text">马来西亚～安全防范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">1）注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.0.2.</span> <span class="toc-text">2）护照遗失或被偷、被抢怎办？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#最后"><span class="toc-number">5.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚～行前需知、出入境注意事项、安全防范</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-07-09<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-16</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E6%94%BB%E7%95%A5%E6%8C%87%E5%8D%97/">攻略指南</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h1 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h1><p>马来西亚是东南亚以美景、美食著称的国家，对于没来过马来西亚的朋友，FeiFei觉得出发前，还是有需要先了解一些基本的事物。另外，一些出入镜的注意事项和安全防范，FeiFei也会在后面给你们一一列出来的！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/0.jpg" class="lazyload"></p>
+<h1 id="马来西亚～行前需知"><a href="#马来西亚～行前需知" class="headerlink" title="马来西亚～行前需知"></a><center>马来西亚～行前需知</center></h1><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/10.jpg" class="lazyload"></p>
+<h4><center>1）最佳旅游时间</center></h4>
+
+<p>11月～来年3月比较好，天气不太热，也不是很干燥，台风也比较少！</p>
+<h4><center>2）关于时差</center></h4>
+
+<p>马来西亚和新加坡、中国没有时差。</p>
+<h4><center>3）关于签证</center></h4>
+
+<p>中国的朋友持外交、公务护照者，可免签证进入马来西亚停留30天。而持普通护照的中国公民赴马来西亚仍应行前办好签证。</p>
+<p>需要注意，持因公护照虽可以免签，但仅限从吉隆坡国际机场、吉隆坡国际机场第二航站楼等口岸入境，其它中、小口岸无权办理免签入境。</p>
+<h4><center>4）插座</center></h4>
+
+<p>马来西亚电压220V，电源插座为三芯垂直插座。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/11.jpg" class="lazyload"></p>
+<h4><center>5）货币</center></h4>
+
+<p>马来西亚的货币叫林吉特（Ringgit，货币符号RM），俗称马币。在马来西亚的各大机场、饭店以及购物商场都有外币兑换中心，可以在那里将人民币可兑换成马币。</p>
+<p>不过，FeiFei还是建议你们在ATM机，直接用银联卡取钱，可以直接出马币的！</p>
+<h4><center>6）退税</center></h4>
+
+<p>马来西亚消费税税率：6%，马来西亚关税局已在8个国际机场开设旅客退税柜台，只限于坐飞机的游客哦！</p>
+<h4><center>7）电话卡</center></h4>
+
+<p>马来西亚的通讯花费较低，可以直接在各大机场、商场等购买当地手机SIM卡，主要电话卡有Hotlink、Celcom、Digi等。各运营商的资费虽略有差别，但差别不大！</p>
+<h4><center>8）关于小费</center></h4>
+
+<p>马来西亚不属于小费国家，一般没有收小费的习惯的！</p>
+<h1 id="出入境注意事项"><a href="#出入境注意事项" class="headerlink" title="出入境注意事项"></a><center>出入境注意事项</center></h1><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/20.jpg" class="lazyload"></p>
+<h4><center>1）入境注意事项</center></h4>
+
+<p>（1）入境时，机场移民局会视情况，检查旅客携带现金数额是否足以支付在马期间的费用开支。对此，马方无具体数额限定，但据了解，其基本参考标准至少为1500 马币（约合500 美元）。</p>
+<p>（2）机场当局对中国游客（散客）尤其是30 岁以下妇女入境审查比较严格，如发现当事人短期内频繁来马，该人将被拒绝入境。另外，FeiFei提醒你们，由西马去东马需持用护照。</p>
+<p>（3）外国游客随身携带的生活用品，总价值不超过250 美元/人的货物，（包括200支香烟或50支雪茄或200克烟叶，1升含酒精饮料，适量的香水）享受免税待遇。而外国游客的照相机、摄像机、卡带式录音机、望远镜、运动器械、笔记本电脑、手机或其它类似设备需申报，离境时须带回。</p>
+<p>（4）入境人员携带需缴税的个人用品，需交纳保证金，保证金额为实际物品价格的30%，出境时，凭票据退还保证金。</p>
+<p>（5）携带10,000 美元或以上（马币34,000 或以上）入境或出境马来西亚的游客，必须填写海关22 号表格（Customs No.22）向海关申报，这是为了杜绝海外洗黑钱活动而采取的国际措施。</p>
+<p>（6）入境前, 游客必须申报所有需纳税或违禁的物品。海关根据需要有权要求旅客打开行李物品进行检验，在东、西马间旅行不征收关税。</p>
+<p>（7）免征税物品包括：钢笔、打火机、书籍、报刊杂志、香水、化妆品、便携式收音机、手表、照相机、录像机、电脑、渔具、球类（除了高尔夫球）、各种音乐器材（除了钢琴）等。</p>
+<p>（8）游客也必须申报所携带的农作物产品，海关须对物件进行检验以确保不含对本地生态有威胁的害虫和菌类。</p>
+<p>（9）外籍访客如能满足下列条件，可享受若干商品免纳关税待遇：<br>a.有关物品是由访客随身或放在行李中携带；<br>b.有关物品是日常使用的私用物品；<br>c.访客需向海关官员表明他并非马来西亚居民，并打算访问马来西亚不少于72小时。</p>
+<p>（10）外观似真枪的玩具枪是被禁止带入境的。另外，危险武器（如武士刀）、烟花类（如鞭炮），色情刊物和盗版光碟也是违禁品。</p>
+<p>（11）最后，FeiFei提醒你们，走私毒品在马来西亚是非常严重的罪行，携带或进行毒品交易者可被判处死刑的！</p>
+<h4><center>2）出海关注意事项</center></h4>
+
+<p>（1）游客抵达马来西亚机场后，先到指定柜台办理回国登机手续，需要出示个人护照和返程机票，然后领取登机牌。</p>
+<p>（2）领取登机牌后，进入出境检查区，把护照、出境登记表、登机牌交给工作人员进行检查，检查合格后，工作人员在护照上加盖出境章，游客携带好相应证件前往安检处和海关处进行检查，合格后，便可以前往航班候机室等待登机。</p>
+<p>（3）无论是马来西亚人还是外国人，每次出入马来西亚所携带外币或旅行支票数额不受限制，但如超过10000美元需向海关申报，需事先向马来西亚国家银行取得书面许可。</p>
+<h1 id="马来西亚～安全防范"><a href="#马来西亚～安全防范" class="headerlink" title="马来西亚～安全防范"></a><center>马来西亚～安全防范</center></h1><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/30.jpg" class="lazyload"></p>
+<h4><center>1）注意事项</center></h4>
+
+<p>（1）来马来西亚之前，应留存和携带本人护照复印件或电子版及国内身份证原件，并与护照原件分开存放，以应对不慎丢失护照情况，不要将护照交给他人保管。</p>
+<p>（2）上、下飞机时，应检查护照是否在身上，在机场内也应随时留意护照是否安在。如在机场移民关口内丢失护照，首先应积极查找，如最终未果应尽快报警并拨打使领馆领保电话寻求帮助。</p>
+<p>（3）方便的话，最好从国内携带一些个人药品。主要是带一些常用感冒药、肠胃药、防蚊虫的花露水、防暑药品、晕船晕车药等。</p>
+<p>（4）提防摩托抢包。因为马来西亚有一些不法分子利用摩托车抢夺路边行人手提或肩背包，建议游客尽量不要使用肩带较长的手提或肩背包。不过，FeiFei觉得现在情况好转了一些，不过还是小心为好！毕竟，这种事情很多国家都有！</p>
+<p>（5）一个人避免独自前往偏僻地区，最好结伴出行，尤其是晚上。女士外出要结伴而行，经过人迹较少的地下通道、车库或过街天桥时要保持警觉。</p>
+<p>（6）增强自我保护意识，做到处变不惊，灵活机智地处理问题。如果发生意外，应在第一时间到警察局报案或设法与使领馆联系。</p>
+<p>（7）不要非法滞留，打黑工。部分持短期签证来马的中国公民因受本地非法代理蛊惑而非法滞留马来西亚找工作，最后花了大笔中介费，非但没找到工作，反因逾期滞留而有家不能回，甚至被警方抓扣。</p>
+<p>（8）参加海岛游，尤其是潜水等水上项目时，请听从导游安全提醒，观察有关水域安全标示，注意救生设备和救生员位置，切勿到偏远海域游泳。身体不适及有高血压、心脏病等不适宜下海者，切勿冒险。</p>
+<p>（9）沙巴东海岸时有绑架事件发生，到那些地区旅游时，注意人身安全，提高风险意识，加强安全防范，注意了解当地安全形势，尽量避免夜间单独出行，或前往偏僻海岛及其他人迹罕至地区。</p>
+<h4><center>2）护照遗失或被偷、被抢怎办？</center></h4>
+
+<p>（1）第一时间到当地警察局挂失。如果确定护照丢失，要尽快去当地的派出所或警察局报案挂失。到警察局挂失这一步非常重要，所在国警方出具的护照丢失证明是办理旅行证的必备材料之一。</p>
+<p>（2）申请办理旅行证或补办护照。可到中国驻马来西亚总领馆办理护照补发手续。申请人必须亲自来大使馆、总领事馆申请补办护照或旅行证，才能回国。补办护照需要15天，不适合短期出国旅行者。办理相关证件，需出示所在国警方出具的护照丢失证明、护照复印件等文件。注意哦，不是所有的使领馆都能够补发正式护照，处理时间也不同。</p>
+<p>（3）回国补办护照。凭旅行证回国的，需本人携带旅行证、身份证、户口簿、护照丢失证明原件及复印件，到当地出入境部门挂失重新申请办理护照。旅行证是和护照等同大小的蓝本，除个人信息外都是空白签证页。原则上，空白旅行证只能做回国使用，不允许做跨国旅行。同时需要注意的是，空白旅行证必须和护照复印件及所在国警方出具的护照丢失证明共同使用，否则空白旅行证将被视为空白护照，持证人有可能被视为非法入境。</p>
+<p>（4）FeiFei提醒你们：买卖、转让、伪变造、故意损毁护照是违法行为，违者可能要承担法律责任。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h1><p>说了这么多，希望你们不要嫌弃FeiFei啰嗦。毕竟，出发前多了解一点会减少很多不必要的麻烦，也避免出入境陷入进退两难的困境，同时做好安全防范，接下来的马来西亚之旅才会一帆风顺，心情舒畅！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/07/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BD%9E%E8%A1%8C%E5%89%8D%E9%9C%80%E7%9F%A5%E3%80%81%E5%87%BA%E5%85%A5%E5%A2%83%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%81%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83/">http://sin-ma.com/2019/07/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%EF%BD%9E%E8%A1%8C%E5%89%8D%E9%9C%80%E7%9F%A5%E3%80%81%E5%87%BA%E5%85%A5%E5%A2%83%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E3%80%81%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E5%85%A5%E5%A2%83/">入境</a><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%85%A8/">安全</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190709/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/07/14/%E7%BE%8E%E9%A3%9F%E5%A4%A7PK-%E6%96%B0%E5%8A%A0%E5%9D%A1VS%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190714/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>美食大PK~新加坡VS马来西亚</span></div></a></div><div class="next-post pull_right"><a href="/2019/07/06/%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A2%83%E5%86%85%E6%80%8E%E4%B9%88%E5%9D%90%E7%81%AB%E8%BD%A6/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190706/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>在马来西亚境内怎么坐火车</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/07/16/全球最安全的15大城市/" title="全球最安全的15大城市"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190716/1.png"><div class="relatedPosts_title">全球最安全的15大城市</div></a></div><div class="relatedPosts_item"><a href="/2020/01/28/马来西亚暂停中国武汉和湖北游客的入境/" title="马来西亚暂停中国武汉和湖北游客的入境"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200128/0.png"><div class="relatedPosts_title">马来西亚暂停中国武汉和湖北游客的入境</div></a></div><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
