@@ -1,79 +1,199 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>13项指标解读马来西亚公立大学VS私立大学 | SM</title><meta name="description" content="13项指标解读马来西亚公立大学VS私立大学"><meta name="keywords" content="马来西亚,公立大学,私立大学"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sm.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="13项指标解读马来西亚公立大学VS私立大学"><meta name="twitter:description" content="13项指标解读马来西亚公立大学VS私立大学"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="13项指标解读马来西亚公立大学VS私立大学"><meta property="og:url" content="http://sin-ma.com/2019/11/01/13%E9%A1%B9%E6%8C%87%E6%A0%87%E8%A7%A3%E8%AF%BB%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6VS%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/"><meta property="og:site_name" content="SM"><meta property="og:description" content="13项指标解读马来西亚公立大学VS私立大学"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/11/01/13%E9%A1%B9%E6%8C%87%E6%A0%87%E8%A7%A3%E8%AF%BB%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6VS%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/"><link rel="prev" title="大马彭亨州30个值得一去的景点" href="/http:/sin-ma.com/2019/11/03/%E5%A4%A7%E9%A9%AC%E5%BD%AD%E4%BA%A8%E5%B7%9E30%E4%B8%AA%E5%80%BC%E5%BE%97%E4%B8%80%E5%8E%BB%E7%9A%84%E6%99%AF%E7%82%B9/"><link rel="next" title="中国驾照如何在马来西亚开车" href="/http:/sin-ma.com/2019/10/29/%E4%B8%AD%E5%9B%BD%E9%A9%BE%E7%85%A7%E5%A6%82%E4%BD%95%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BC%80%E8%BD%A6/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2019/11/01/13%E9%A1%B9%E6%8C%87%E6%A0%87%E8%A7%A3%E8%AF%BB%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6VS%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">140</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">159</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">16</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-学费"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.1 学费</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-学校排名"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.2 学校排名</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">3.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-学制"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.3 学制</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">4.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-学历认可度"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.4 学历认可度</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-5-录取难度"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">No.5 录取难度</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">6.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">6.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-6-奖助学金"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">No.6 奖助学金</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">7.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">7.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-7-校园环境"><span class="toc_mobile_items-number">8.</span> <span class="toc_mobile_items-text">No.7 校园环境</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">8.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">8.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-8-语言环境"><span class="toc_mobile_items-number">9.</span> <span class="toc_mobile_items-text">No.8 语言环境</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">9.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">9.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-9-学校规模"><span class="toc_mobile_items-number">10.</span> <span class="toc_mobile_items-text">No.9 学校规模</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">10.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">10.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-10-教学特色"><span class="toc_mobile_items-number">11.</span> <span class="toc_mobile_items-text">No.10 教学特色</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">11.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">11.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-11-入学时间"><span class="toc_mobile_items-number">12.</span> <span class="toc_mobile_items-text">No.11 入学时间</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">12.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">12.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-12-毕业前景"><span class="toc_mobile_items-number">13.</span> <span class="toc_mobile_items-text">No.12 毕业前景</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">13.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">13.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-13-学校推荐"><span class="toc_mobile_items-number">14.</span> <span class="toc_mobile_items-text">No.13 学校推荐</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">14.0.1.</span> <span class="toc_mobile_items-text">公立大学</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">14.0.2.</span> <span class="toc_mobile_items-text">私立大学</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">15.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-学费"><span class="toc-number">2.</span> <span class="toc-text">No.1 学费</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-学校排名"><span class="toc-number">3.</span> <span class="toc-text">No.2 学校排名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">3.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-学制"><span class="toc-number">4.</span> <span class="toc-text">No.3 学制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">4.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-学历认可度"><span class="toc-number">5.</span> <span class="toc-text">No.4 学历认可度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-5-录取难度"><span class="toc-number">6.</span> <span class="toc-text">No.5 录取难度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">6.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">6.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-6-奖助学金"><span class="toc-number">7.</span> <span class="toc-text">No.6 奖助学金</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">7.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">7.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-7-校园环境"><span class="toc-number">8.</span> <span class="toc-text">No.7 校园环境</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">8.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">8.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-8-语言环境"><span class="toc-number">9.</span> <span class="toc-text">No.8 语言环境</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">9.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">9.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-9-学校规模"><span class="toc-number">10.</span> <span class="toc-text">No.9 学校规模</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">10.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">10.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-10-教学特色"><span class="toc-number">11.</span> <span class="toc-text">No.10 教学特色</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">11.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">11.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-11-入学时间"><span class="toc-number">12.</span> <span class="toc-text">No.11 入学时间</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">12.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">12.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-12-毕业前景"><span class="toc-number">13.</span> <span class="toc-text">No.12 毕业前景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">13.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">13.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-13-学校推荐"><span class="toc-number">14.</span> <span class="toc-text">No.13 学校推荐</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">14.0.1.</span> <span class="toc-text">公立大学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">14.0.2.</span> <span class="toc-text">私立大学</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">15.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">13项指标解读马来西亚公立大学VS私立大学</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-11-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-16</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%95%99%E5%AD%A6%E7%A7%BB%E6%B0%91/">留学移民</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg" class="lazyload"></p>
+<p>马来西亚因为英文授课环境，以及较为低廉的学费，越来越受到外国留学生的青睐，尤其是来自中国的学生，有不少选择在马来西亚读大学。</p>
+<p>马来西亚的大学有很多间，主要分为政府公立大学和私立大学两种类型，这两种学校都有各自的优势和特色；而且，这两种类型的学校，都可以花英美澳等国1/3至1/4的学费，就能获得与这些国家同等含金量的国际文凭！下面就从13个方面好好分析一下，马来西亚的公立大学与私立大学都有哪些差别吧！</p>
+<h2 id="No-1-学费"><a href="#No-1-学费" class="headerlink" title="No.1 学费"></a><center>No.1 学费</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/1.jpg" class="lazyload"></p>
+<p>马来西亚的公立大学一般是政府投资，无论是本地学生还是国际学生，学费和生活费都比较少，可以享受学校的优质资源。公立大学本科学费5k-1.5万马币/年，公立大学研究生学费8k-1.5万马币/年，生活费6k-1.5万马币/年。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/2.jpg" class="lazyload"></p>
+<p>马来西亚的私立大学费用会比公立大学稍微多一点，但还是比欧美国家少很多。马来西亚私立大学本科学费：2万-4万马币/年，私立大学研究生学费2万-6万马币/年，生活费1万-3万马币/年。另外，私立大学也为没有雅思和托福成绩的学生开设了语言课程，课程费用约2k-4k马币/月。（想要在马来西亚报考雅思的同学，可以参考<a href="https://mp.weixin.qq.com/s?__biz=MzA4MjcwNjMwNA==&mid=2658507250&idx=1&sn=c2ac14497ecfaabbbfeebc4416a5f608&chksm=8400931db3771a0bce21febe3fedcf85692c283db1066570b51273715daf1b00bfd0d56e374d&token=630773368&lang=zh_CN&scene=21#wechat_redirect" target="_blank" rel="noopener">《中国雅思考试难？如何在马来西亚轻松考出高分？》</a>）</p>
+<h2 id="No-2-学校排名"><a href="#No-2-学校排名" class="headerlink" title="No.2 学校排名"></a><center>No.2 学校排名</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/3.jpg" class="lazyload"></p>
+<p>大马的公立大学比私立大学世界排名更好，不仅在亚洲排名优越，更是跻身国际知名大学。例如，马来亚大学世界排名第70名，马来西亚博特拉大学世界排名第159名，马来西亚国民大学世界排名第160名，马来西亚理科大学世界排名第165名，马来西亚理工大学排名第217名。另外，马来西亚沙巴大学商科专业在东南亚是名列前茅的。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/4.jpg" class="lazyload"></p>
+<p>马来西亚私立大学的排名比公立大学稍微差一点，但也有世界排名不错的学校。例如，思特雅大学UCSI世界排名第442名，泰莱大学Taylor‘s 世界排名520名左右。</p>
+<h2 id="No-3-学制"><a href="#No-3-学制" class="headerlink" title="No.3 学制"></a><center>No.3 学制</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/5.jpg" class="lazyload"></p>
+<p>马来西亚公立大学的本科学制为3年，语言课程为300-800个学时；硕士研究生1-2年左右；博士研究生3-5年。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/6.jpg" class="lazyload"></p>
+<p>马来西亚私立大学的学制跟公立差不多，本科学制为3年，硕士研究生1-2年左右；博士研究生3-5年。</p>
+<h2 id="No-4-学历认可度"><a href="#No-4-学历认可度" class="headerlink" title="No.4 学历认可度"></a><center>No.4 学历认可度</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/7.jpg" class="lazyload"></p>
+<p>马来西亚有20所左右的政府公立大学，这些公立大学的文凭都是获得世界认可的，因此中国教育部也承认其学历的有效性。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/8.jpg" class="lazyload"></p>
+<p>马来西亚私立学校中，有30多所大学本科学位或硕士学位是受到马来西亚教育部承认的，同时也受到中国教育部认证。而且私立大学有很多双联课程，能够获得英美澳等国的学位文凭，花费也只是英美澳等国学费的1/3至1/4，这些双联课程的合作学校很多都是世界排名靠前的英法美澳、新西兰等国家的大学。</p>
+<h2 id="No-5-录取难度"><a href="#No-5-录取难度" class="headerlink" title="No.5 录取难度"></a><center>No.5 录取难度</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/9.jpg" class="lazyload"></p>
+<p>申请马来西亚公立大学无需高考成绩，也不需要雅思成绩，只要高中会考成绩合格既可以报名申请，而且很容易被录取。但公立大学招收的公平性比较差，一般70%以上都是招收马来人，也会招收10%左右的国际生，但一些国际学生甚至很难申请到好就业的专业，比如经济、会计等。一般申请公立大学的本科和研究生，都要求有3.0以上的绩点成绩，即平均分在80分以上。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/10.jpg" class="lazyload"></p>
+<p>马来西亚私立大学的生源主要是国际学生，因此所有学生都有机会申请任何自己喜欢的专业和课程，只要自己的成绩不差。私立大学对国际生的要求不高，招生条件也相对宽松，申请难度相对较低，录取率会比较大！</p>
+<h2 id="No-6-奖助学金"><a href="#No-6-奖助学金" class="headerlink" title="No.6 奖助学金"></a><center>No.6 奖助学金</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/11.jpg" class="lazyload"></p>
+<p>公立大学一般会给予马来学生一定的学费优惠和减免政策，但国际学生基本上享受不到任何奖学金资助或学费减免政策。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/12.jpg" class="lazyload"></p>
+<p>大马的私立大学一般不会给国际学生提供奖助学金，即使是马来西亚本地学生，能获得的学费减免和优惠政策也不多。</p>
+<h2 id="No-7-校园环境"><a href="#No-7-校园环境" class="headerlink" title="No.7 校园环境"></a><center>No.7 校园环境</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/13.jpg" class="lazyload"></p>
+<p>马来西亚公立大学的环境优美，设施比较多，例如，马来西亚沙巴大学曾被评为“世界最美丽大学”；而且公立大学的生活费用较低，学生安全有保障。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/14.jpg" class="lazyload"></p>
+<p>私立大学的环境可能比公立大学差一点，因为私立大学的学校规模比较小，所以四周的绿化和生态可能无法与公立大学相比，另外，学校的宿舍也不多，在校外租房比较多。</p>
+<h2 id="No-8-语言环境"><a href="#No-8-语言环境" class="headerlink" title="No.8 语言环境"></a><center>No.8 语言环境</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/15.jpg" class="lazyload"></p>
+<p>马来西亚的公立大学一般实行的是马来文与英文双语授课方式，入校的学生不仅要求会英文，而且还要学习马来文，这在一定程度上增加了国际生的学习负担，但有利于提高学生的综合能力，方便在马来西亚的生活，更有助于将来在马来西亚工作。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/16.jpg" class="lazyload"></p>
+<p>大马的私立大学或国际学院，通常都是采用英文授课，很多老师都有欧美留学或工作的经历，英语口音比较纯正，学生也不需要学习马来文，只要专心学好自己的学科就可以了。</p>
+<h2 id="No-9-学校规模"><a href="#No-9-学校规模" class="headerlink" title="No.9 学校规模"></a><center>No.9 学校规模</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/17.jpg" class="lazyload"></p>
+<p>马来西亚公立大学通常来说，创办时间比私立大学要早，例如，马来亚大学创办于1905年，马来西亚博特拉大学成立于1931年，马来西亚理科大学创办于1969年，马来西亚国民大学创办于1970年。另外，公立学校的规模相对较大，除了马来亚大学因为在首都吉隆坡的原因，其他排名靠前的公立大学面积都超过1.5万亩。当然了，公立大学的学生数量也会多一些，一般在校生超过2万。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/18.jpg" class="lazyload"></p>
+<p>马来西亚私立大学的收入主要来自学费、基金会捐助和科研收入等，因此为了平衡学校的收支，私立大学更会注重教学质量、专业热度、就业机会等。如果私立大学的生源不足，学校的经费也会短缺，很可能面临关门的危险。</p>
+<h2 id="No-10-教学特色"><a href="#No-10-教学特色" class="headerlink" title="No.10 教学特色"></a><center>No.10 教学特色</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/19.jpg" class="lazyload"></p>
+<p>在马来西亚，公立大学享有国家政策支持，因此也会承担大马国家高等教育的使命，教学上偏重基础学科教学、学术研究和人文培养，很适合将来打算从事研究或者深造的学生。公立大学一般都是综合性大学，学校开设了文理工商医等几百种专业课程。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/20.jpg" class="lazyload"></p>
+<p>马来西亚的私立大学是依赖市场需要而存在，也会注重教学质量和学科的实用性，所开设的课程一般以商科、管理、工程、计算机、设计、酒店管理等居多，比较使用好就业。另外，私立大学还有一个优势——“双联课程”，学生可以交换到英国、澳大利亚、新西兰、加拿大等国家的大学学习1-2年，而且毕业后可以拿到这些国家的学位证书。这对想去欧美留学的学生来说，真是一个华丽的跳板！</p>
+<h2 id="No-11-入学时间"><a href="#No-11-入学时间" class="headerlink" title="No.11 入学时间"></a><center>No.11 入学时间</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/21.jpg" class="lazyload"></p>
+<p>马来西亚公立大学每年有两次入学时间，分别是2月和9月，因此尽量提前申请，一般提前5到6个月开始申请比较好，以免中途出现各种突发事件。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/22.jpg" class="lazyload"></p>
+<p>马来西亚私立大学每年有3次入学机会，分别是1月、5月和9月，所以申请时间比较充足，申请流程也相对简单，提前两个月申请即可。如果没有语言成绩，还可以选择读语言班，最后只要雅思成绩达到专业要求，下一步就可以开始专业学习了。</p>
+<h2 id="No-12-毕业前景"><a href="#No-12-毕业前景" class="headerlink" title="No.12 毕业前景"></a><center>No.12 毕业前景</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/23.jpg" class="lazyload"></p>
+<p>大多数就读马来西亚公立大学的学生一般毕业之后只能选择留在马来西亚工作或者回自己国家工作，也有不少人重新申请去其它英联邦国家深造。</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/24.jpg" class="lazyload"></p>
+<p>在马来西亚私立大学就读的学生，将有机会与英国、澳大利亚等英联邦国家的上百所大学进行国际化交换，交换的学分也是获得各学校的认可。无论是本科三年级，还是研究生都可以交换到第三国就读，学校的国际服务部，会为本校学生向第三国转移学分或重新申请提供帮助各种帮助，包括，录取通知书、办理签证、提供各种证明文件等。</p>
+<h2 id="No-13-学校推荐"><a href="#No-13-学校推荐" class="headerlink" title="No.13 学校推荐"></a><center>No.13 学校推荐</center></h2><center><h4>公立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/25.jpg" class="lazyload"></p>
+<p>马来亚大学(University of Malaya)</p>
+<p>马来西亚国民大学(Universiti Kebangsaan Malaysia)</p>
+<p>马来西亚理科大学(University of Science Malaysia)</p>
+<p>马来西亚博特拉大学(University Putra Malaysia)</p>
+<p>马来西亚理工大学(Technology University of Malaysia)</p>
+<center><h4>私立大学</h4></center>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/26.jpg" class="lazyload"></p>
+<p>泰莱大学 （Taylor’s University）</p>
+<p>思特雅大学 （University College Sedaya International）</p>
+<p>英迪大学 （INTI International University）</p>
+<p>亚太科技大学 （Asia Pacific University of Technology &amp;Innovation）</p>
+<p>林国荣创意科技大学 （Limkokwing University）</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>对于在马来西亚留学的学生来说，无论是公立大学还是私立大学，都有各自的特色和优势，所以选择专业时要考虑学校的专业优势和自己的兴趣爱好。可能每一年专业的热度会不一样，学校的竞争大小也会不同。总之，申请学科或专业的时候，一定要从自己的实际和市场的需要出发，适合自己的才是好的！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/11/01/13%E9%A1%B9%E6%8C%87%E6%A0%87%E8%A7%A3%E8%AF%BB%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6VS%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/">http://sin-ma.com/2019/11/01/13%E9%A1%B9%E6%8C%87%E6%A0%87%E8%A7%A3%E8%AF%BB%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6VS%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E5%85%AC%E7%AB%8B%E5%A4%A7%E5%AD%A6/">公立大学</a><a class="post-meta__tags" href="/tags/%E7%A7%81%E7%AB%8B%E5%A4%A7%E5%AD%A6/">私立大学</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/11/03/%E5%A4%A7%E9%A9%AC%E5%BD%AD%E4%BA%A8%E5%B7%9E30%E4%B8%AA%E5%80%BC%E5%BE%97%E4%B8%80%E5%8E%BB%E7%9A%84%E6%99%AF%E7%82%B9/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191103/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>大马彭亨州30个值得一去的景点</span></div></a></div><div class="next-post pull_right"><a href="/2019/10/29/%E4%B8%AD%E5%9B%BD%E9%A9%BE%E7%85%A7%E5%A6%82%E4%BD%95%E5%9C%A8%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%BC%80%E8%BD%A6/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191029/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>中国驾照如何在马来西亚开车</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div><div class="relatedPosts_item"><a href="/2019/07/16/全球最安全的15大城市/" title="全球最安全的15大城市"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190716/1.png"><div class="relatedPosts_title">全球最安全的15大城市</div></a></div><div class="relatedPosts_item"><a href="/2019/07/25/全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢/" title="全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190725/1.png"><div class="relatedPosts_title">全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢</div></a></div><div class="relatedPosts_item"><a href="/2018/12/26/假如给我一个机会接触马来西亚的“掌上明珠”-仙本那/" title="假如给我一个机会接触马来西亚的“掌上明珠”-仙本那"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2018/201812/20181226/0.jpg"><div class="relatedPosts_title">假如给我一个机会接触马来西亚的“掌上明珠”-仙本那</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
