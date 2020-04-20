@@ -1,79 +1,104 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>2019马来西亚Google热搜榜～大马人都在关注啥 | SM</title><meta name="description" content="2019马来西亚Google热搜榜～大马人都在关注啥"><meta name="keywords" content="马来西亚,谷歌"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sm.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="2019马来西亚Google热搜榜～大马人都在关注啥"><meta name="twitter:description" content="2019马来西亚Google热搜榜～大马人都在关注啥"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="2019马来西亚Google热搜榜～大马人都在关注啥"><meta property="og:url" content="http://sin-ma.com/2019/12/17/2019%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9AGoogle%E7%83%AD%E6%90%9C%E6%A6%9C%EF%BD%9E%E5%A4%A7%E9%A9%AC%E4%BA%BA%E9%83%BD%E5%9C%A8%E5%85%B3%E6%B3%A8%E5%95%A5/"><meta property="og:site_name" content="SM"><meta property="og:description" content="2019马来西亚Google热搜榜～大马人都在关注啥"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/12/17/2019%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9AGoogle%E7%83%AD%E6%90%9C%E6%A6%9C%EF%BD%9E%E5%A4%A7%E9%A9%AC%E4%BA%BA%E9%83%BD%E5%9C%A8%E5%85%B3%E6%B3%A8%E5%95%A5/"><link rel="prev" title="如何从马来西亚驾车入境新加坡" href="/http:/sin-ma.com/2019/12/19/%E5%A6%82%E4%BD%95%E4%BB%8E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E9%A9%BE%E8%BD%A6%E5%85%A5%E5%A2%83%E6%96%B0%E5%8A%A0%E5%9D%A1/"><link rel="next" title="短视频～台北-宁夏夜市" href="/http:/sin-ma.com/2019/12/15/%E7%9F%AD%E8%A7%86%E9%A2%91%EF%BD%9E%E5%8F%B0%E5%8C%97-%E5%AE%81%E5%A4%8F%E5%A4%9C%E5%B8%82/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2019/12/17/2019%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9AGoogle%E7%83%AD%E6%90%9C%E6%A6%9C%EF%BD%9E%E5%A4%A7%E9%A9%AC%E4%BA%BA%E9%83%BD%E5%9C%A8%E5%85%B3%E6%B3%A8%E5%95%A5/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">155</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">170</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">16</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#电影"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">电影</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#电视剧"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">电视剧</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#音乐"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">音乐</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#新闻"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">新闻</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#科技产品"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">科技产品</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#热门人物"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">热门人物</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#体育"><span class="toc_mobile_items-number">8.</span> <span class="toc_mobile_items-text">体育</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#热搜词"><span class="toc_mobile_items-number">9.</span> <span class="toc_mobile_items-text">热搜词</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">10.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电影"><span class="toc-number">2.</span> <span class="toc-text">电影</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电视剧"><span class="toc-number">3.</span> <span class="toc-text">电视剧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#音乐"><span class="toc-number">4.</span> <span class="toc-text">音乐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新闻"><span class="toc-number">5.</span> <span class="toc-text">新闻</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#科技产品"><span class="toc-number">6.</span> <span class="toc-text">科技产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热门人物"><span class="toc-number">7.</span> <span class="toc-text">热门人物</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#体育"><span class="toc-number">8.</span> <span class="toc-text">体育</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热搜词"><span class="toc-number">9.</span> <span class="toc-text">热搜词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">10.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">2019马来西亚Google热搜榜～大马人都在关注啥</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-17<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-16</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg" class="lazyload"></p>
+<p>再过两个礼拜就是2020年了，2019年就这么匆匆忙忙的过完了。不知道今年，你们都做了什么有趣的事？完成了哪些梦想？都在关注什么热点？反正FeiFei这一年，除了打酱油，偶尔跟你们胡言乱语，周末逛逛街，关注过一些电视电影，其他啥都没干（有罪呀）！</p>
+<p>2019年，虽然世界发生了不少事情；不过，FeiFei比较关注的是：那谁谁又分手了，某某离婚了，还有我的很多偶像终于结婚或者找到真爱了。</p>
+<p>对于马来西亚人来说，2019年他们又在关注什么呢！谷歌刚不久就公布了2019年大马人<a href="https://trends.google.com/trends/yis/2019/MY/" target="_blank" rel="noopener">热搜前10排行榜</a>，主要类别包括：电影、电视剧、音乐、新闻、科技产品、热门人物、体育等，下面一起来看看吧！</p>
+<h2 id="电影"><a href="#电影" class="headerlink" title="电影"></a><center>电影</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/1.jpg" class="lazyload"></p>
+<p>（1）小丑（Joker）<br>（2）惊奇队长（Captain Marvel）<br>（3）复仇者联盟4：终局之战（Avengers：Endgame）<br>（4）阿丽塔：战斗天使（Alita Battle Angel）<br>（5）雷霆沙赞（Shazam）<br>（6）冰雪奇缘2（Frozen 2）<br>（7）阿拉丁（Aladdin）<br>（8）捍卫任务3（John Wick 3）<br>（9）海王（Aquaman）<br>（10）小丑回魂2（IT Chapter 2）</p>
+<h2 id="电视剧"><a href="#电视剧" class="headerlink" title="电视剧"></a><center>电视剧</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/2.jpg" class="lazyload"></p>
+<p>（1）Setelah Terlafaznya Akad<br>（2）Nur 2<br>（3）Curi Curi Cinta<br>（4）白色强人<br>（5）亲爱的，热爱的<br>（6）德鲁纳酒店<br>（7）解决师<br>（8）Kerana Dia Manusia Biasa<br>（9）全职高手<br>（10）Cemburu Seorang Perempuan</p>
+<h2 id="音乐"><a href="#音乐" class="headerlink" title="音乐"></a><center>音乐</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/3.jpg" class="lazyload"></p>
+<p>（1）Senorita（Shawn Mendes 和 Camilla Cabello演唱）<br>（2）Mimpi（K-Clique演唱）<br>（3）Memories（Maroon 5演唱）<br>（4）Kill This Love（Blackpink演唱）<br>（5）7 Rings（Ariana Grande演唱）<br>（6）A Whole New World（阿拉丁主题曲，ZAYN 和 Zhavia Ward演唱）<br>（7）Someone You Loved（Lewis Capaldi演唱）<br>（8）Cinta Luar Biasa（Andmesh Kamaleng演唱）<br>（9）生僻字（陈珂宇演唱）<br>（10）Sumpah（Naim Daniel演唱）</p>
+<h2 id="新闻"><a href="#新闻" class="headerlink" title="新闻"></a><center>新闻</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/4.jpg" class="lazyload"></p>
+<p>（1）IPU空气烟霾指数<br>（2）丹绒比艾补选<br>（3）2020大马财政预算案<br>（4）The Alley鹿角巷<br>（5）汽油价格<br>（6）外星人探险事件（Area 51）<br>（7）基督城屠杀案（Chirstchurch）<br>（8）香港示威（Hong Kong Protest）<br>（9）柔佛越野马拉松失踪案（Acap Hilang）<br>（10）金金河污染事件（巴西古当）</p>
+<h2 id="科技产品"><a href="#科技产品" class="headerlink" title="科技产品"></a><center>科技产品</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/5.jpg" class="lazyload"></p>
+<p>（1）iPhone 11<br>（2）华为P30<br>（3）华为P30 Pro<br>（4）iPhone 11 Pro Max<br>（5）华为Nova 3i<br>（6）vivo S1<br>（7）OPPO F9<br>（8）Nova 5t<br>（9）Realme 5 Pro<br>（10）OPPO A3s</p>
+<h2 id="热门人物"><a href="#热门人物" class="headerlink" title="热门人物"></a><center>热门人物</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/6.jpg" class="lazyload"></p>
+<p>（1）Vanessa Angel<br>（2）Azmin Ali（大马经济事务部长）<br>（3）Emma Maembong<br>（4）Aliff Aziz<br>（5）郑俊英<br>（6）Ben Amir<br>（7）胜利（Seungri）<br>（8）黄心颖<br>（9）Haziq Aziz<br>（10）Pu Abu</p>
+<h2 id="体育"><a href="#体育" class="headerlink" title="体育"></a><center>体育</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/7.jpg" class="lazyload"></p>
+<p>（1）美洲杯 2019<br>（2）橄榄球世界杯<br>（3）温布尔顿网球公开赛2019<br>（4）板球（Cricket）世界杯2019<br>（5）澳大利亚网球公开赛 2019<br>（6）电竞赛 The International 9<br>（7）亚足联亚洲杯2019<br>（8）印度板球超级联赛2019<br>（9）板球世界杯<br>（10）马来西亚杯 2019（Piala Malaysia）</p>
+<h2 id="热搜词"><a href="#热搜词" class="headerlink" title="热搜词"></a><center>热搜词</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/8.jpg" class="lazyload"></p>
+<p>（1）世界地球日问答（Earth Day Quiz）<br>（2）灭霸（Thanos，电影复联中的反派大boss）<br>（3）大马生活援助金（BSH）<br>（4）Copa America 2019<br>（5）马来西亚空气污染指数（APIMS）<br>（6）穆斯林祈祷时间<br>（7）小丑（电影Joker）<br>（8）惊奇队长（电影Captain Marvel）<br>（9）复联4：终局之战（电影Avengers: Endgame）<br>（10）Perodua Aruz（SUV）</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>回顾2019年大马谷歌热搜排行榜，FeiFei发现，大马人的视野还是很国际化的。不知道2019年你又在关注啥呢？</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/12/17/2019%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9AGoogle%E7%83%AD%E6%90%9C%E6%A6%9C%EF%BD%9E%E5%A4%A7%E9%A9%AC%E4%BA%BA%E9%83%BD%E5%9C%A8%E5%85%B3%E6%B3%A8%E5%95%A5/">http://sin-ma.com/2019/12/17/2019%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9AGoogle%E7%83%AD%E6%90%9C%E6%A6%9C%EF%BD%9E%E5%A4%A7%E9%A9%AC%E4%BA%BA%E9%83%BD%E5%9C%A8%E5%85%B3%E6%B3%A8%E5%95%A5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E8%B0%B7%E6%AD%8C/">谷歌</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/12/19/%E5%A6%82%E4%BD%95%E4%BB%8E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E9%A9%BE%E8%BD%A6%E5%85%A5%E5%A2%83%E6%96%B0%E5%8A%A0%E5%9D%A1/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191219/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>如何从马来西亚驾车入境新加坡</span></div></a></div><div class="next-post pull_right"><a href="/2019/12/15/%E7%9F%AD%E8%A7%86%E9%A2%91%EF%BD%9E%E5%8F%B0%E5%8C%97-%E5%AE%81%E5%A4%8F%E5%A4%9C%E5%B8%82/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191215/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>短视频～台北-宁夏夜市</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div><div class="relatedPosts_item"><a href="/2018/12/26/假如给我一个机会接触马来西亚的“掌上明珠”-仙本那/" title="假如给我一个机会接触马来西亚的“掌上明珠”-仙本那"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2018/201812/20181226/0.jpg"><div class="relatedPosts_title">假如给我一个机会接触马来西亚的“掌上明珠”-仙本那</div></a></div><div class="relatedPosts_item"><a href="/2019/07/25/全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢/" title="全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190725/1.png"><div class="relatedPosts_title">全球最宜居城市2019，新加坡和马来西亚城市的排名如何呢</div></a></div><div class="relatedPosts_item"><a href="/2019/07/16/全球最安全的15大城市/" title="全球最安全的15大城市"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201907/20190716/1.png"><div class="relatedPosts_title">全球最安全的15大城市</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
