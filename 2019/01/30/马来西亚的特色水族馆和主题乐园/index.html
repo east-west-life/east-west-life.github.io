@@ -1,79 +1,172 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚的特色水族馆和主题乐园 | SM</title><meta name="description" content="马来西亚的特色水族馆和主题乐园"><meta name="keywords" content="水族馆,主题乐园,海底世界"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sm.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚的特色水族馆和主题乐园"><meta name="twitter:description" content="马来西亚的特色水族馆和主题乐园"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚的特色水族馆和主题乐园"><meta property="og:url" content="http://sin-ma.com/2019/01/30/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%89%B9%E8%89%B2%E6%B0%B4%E6%97%8F%E9%A6%86%E5%92%8C%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/"><meta property="og:site_name" content="SM"><meta property="og:description" content="马来西亚的特色水族馆和主题乐园"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2019/01/30/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%89%B9%E8%89%B2%E6%B0%B4%E6%97%8F%E9%A6%86%E5%92%8C%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/"><link rel="prev" title="移民新加坡的“得”与“失”" href="/http:/sin-ma.com/2019/02/01/%E7%A7%BB%E6%B0%91%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%9A%84%E2%80%9C%E5%BE%97%E2%80%9D%E4%B8%8E%E2%80%9C%E5%A4%B1%E2%80%9D/"><link rel="next" title="槟城旅游景点之终极指南" href="/http:/sin-ma.com/2019/01/25/%E6%A7%9F%E5%9F%8E%E6%97%85%E6%B8%B8%E6%99%AF%E7%82%B9%E4%B9%8B%E7%BB%88%E6%9E%81%E6%8C%87%E5%8D%97/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2019/01/30/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%89%B9%E8%89%B2%E6%B0%B4%E6%97%8F%E9%A6%86%E5%92%8C%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 恋爱实验室</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">177</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">183</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">21</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 恋爱实验室</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#大马的特色水族馆"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">大马的特色水族馆</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">1.0.1.</span> <span class="toc_mobile_items-text">1）Aquaria KLCC</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">1.0.2.</span> <span class="toc_mobile_items-text">2）Aquarium &amp; Marine Museum</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">1.0.3.</span> <span class="toc_mobile_items-text">3）Underwater World Langkawi</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">1.0.4.</span> <span class="toc_mobile_items-text">4）The Shore Oceanarium</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#马来西亚的主题乐园"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">马来西亚的主题乐园</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.1.</span> <span class="toc_mobile_items-text">1）双威水上主题乐园</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.2.</span> <span class="toc_mobile_items-text">2）乐高乐园</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.3.</span> <span class="toc_mobile_items-text">3）淡汶双威水上迷失乐园</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.4.</span> <span class="toc_mobile_items-text">4）爱法摩沙度假村</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.5.</span> <span class="toc_mobile_items-text">5）i-City WaterWorld</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.6.</span> <span class="toc_mobile_items-text">6）Wet World Shah Alam</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.7.</span> <span class="toc_mobile_items-text">7）Tiram Indoor Water Park</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.8.</span> <span class="toc_mobile_items-text">8）Sunway Lost World of Tambun</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.9.</span> <span class="toc_mobile_items-text">9）Bukit Merah Laketown Resort</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.10.</span> <span class="toc_mobile_items-text">10）Wet World Wild Adventure Park</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.11.</span> <span class="toc_mobile_items-text">11）Bukit Gambang Resort City</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.12.</span> <span class="toc_mobile_items-text">12）Melaka Wonderland Theme Park &amp; Resort</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">2.0.13.</span> <span class="toc_mobile_items-text">13）A’ Famosa Resort</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#大马的特色水族馆"><span class="toc-number">1.</span> <span class="toc-text">大马的特色水族馆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.1.</span> <span class="toc-text">1）Aquaria KLCC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.2.</span> <span class="toc-text">2）Aquarium &amp; Marine Museum</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.3.</span> <span class="toc-text">3）Underwater World Langkawi</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.4.</span> <span class="toc-text">4）The Shore Oceanarium</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#马来西亚的主题乐园"><span class="toc-number">2.</span> <span class="toc-text">马来西亚的主题乐园</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.1.</span> <span class="toc-text">1）双威水上主题乐园</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.2.</span> <span class="toc-text">2）乐高乐园</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.3.</span> <span class="toc-text">3）淡汶双威水上迷失乐园</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.4.</span> <span class="toc-text">4）爱法摩沙度假村</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.5.</span> <span class="toc-text">5）i-City WaterWorld</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.6.</span> <span class="toc-text">6）Wet World Shah Alam</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.7.</span> <span class="toc-text">7）Tiram Indoor Water Park</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.8.</span> <span class="toc-text">8）Sunway Lost World of Tambun</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.9.</span> <span class="toc-text">9）Bukit Merah Laketown Resort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.10.</span> <span class="toc-text">10）Wet World Wild Adventure Park</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.11.</span> <span class="toc-text">11）Bukit Gambang Resort City</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.12.</span> <span class="toc-text">12）Melaka Wonderland Theme Park &amp; Resort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">2.0.13.</span> <span class="toc-text">13）A’ Famosa Resort</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚的特色水族馆和主题乐园</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-01-30<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-16</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E6%97%85%E6%B8%B8%E6%99%AF%E7%82%B9/">旅游景点</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+<p>FeiFei一直觉得海洋是很神秘的世界，非常想下去一探究竟，不过需要潜水很不方便。不过，水族馆可以很方便地满足这个愿望。对于不会游泳又想看海底世界的朋友，水族馆是很不错的选择。</p>
+<p>除了水族馆，马来西亚还能满足热爱主题乐园的朋友们！这里充满了欢声笑语，适合大人与小孩 ，从刺激到可爱的，马来西亚应有尽有，FeiFei觉得应该不会让你失望。而且，马来西亚还有一些很不错的本地水上乐园。</p>
+<p>喜欢玩的朋友们，可以跟随FeiFei的脚步，一起往下看哦！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/0.jpg" class="lazyload"></p>
+<h2 id="大马的特色水族馆"><a href="#大马的特色水族馆" class="headerlink" title="大马的特色水族馆"></a><center>大马的特色水族馆</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/110.jpg" class="lazyload"></p>
+<h4><center>1）Aquaria KLCC</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/111.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/112.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/113.jpg" class="lazyload"></p>
+<p>KLCC水族馆坐落在吉隆坡繁荣的金三角地区核心地段，距离标志性的双峰塔仅数步之遥。</p>
+<p>在Aquaria KLCC 水族馆，你可以探索迷人的海洋生物，欣赏到超过5000种海洋与陆地生物，馆内还设有一个附自动人行输送带且高达90米的隧道型空间，抬头一看成群的鱼儿就在你的周围畅游着。</p>
+<p>FeiFei觉得这里肯定能让你无论在视觉上或感官上都能体验到绝对壮观的海底奇景！另外，在喂食时间，你还有机会观看精彩的海洋生物表演呢！</p>
+<h4><center>2）Aquarium & Marine Museum</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/121.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/122.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/123.jpg" class="lazyload"></p>
+<p>Aquarium &amp; Marine Museum是附设在马来西亚沙巴大学内的海洋生物博物馆，因此这里与其他水族馆最大的不同是他们所拥有器材及设施更为先进且富教育性与研究性，</p>
+<p>FeiFei提醒各位哦，马来西亚的沙巴是海底资源比较丰富的地方，因此这里的珊瑚品种特别多，所展示的海底生态系统会更加完整。而且，这里可以观赏到不同的动物标本，顺便可以了解它们的生活习性。</p>
+<h4><center>3）Underwater World Langkawi</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/131.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/132.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/133.jpg" class="lazyload"></p>
+<p>对于在Langkawi旅游的朋友，FeiFei提醒你们，不一定要出兰卡威的海才能看到海底世界哦，只要去到Underwater World Langkawi水族馆，就能看到千奇百怪的海底世界哦！</p>
+<p>Underwater World Langkawi水族馆坐落在珍南海滩（Pantai Cenang），这里有各种各样的淡水鱼和海水鱼及海洋生物。</p>
+<p>兰卡威海底世界水族馆，主要分成三个部分，分别是热带雨林、温带（Temperate）及次南极（Sub-Antarctic）。</p>
+<p>其中，南极部分是最受欢迎的地方，因为不用特地飞到南极都可以看到企鹅！这里饲养的企鹅品种是Rockhopper和Black-footed企鹅。</p>
+<h4><center>4）The Shore Oceanarium</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/141.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/142.jpg" class="lazyload"><br><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/143.jpg" class="lazyload"></p>
+<p>The Shore Oceanarium是在马六甲一家高级购物商场里设有的一间海洋世界水族馆，这里可以观赏超过1,000种以上海洋与陆地生物,海洋生物与浮游生物的独特习性。</p>
+<p>The Shore Oceanarium里不只设有互动触摸区（Interactive Touch Pool），让大家能近距离接触特定的海底生物从而更认识它们，还提供3D眼镜让大家体会到仿佛置身于马六甲河畔、彭亨热带雨林、丁加奴沿海等等的真实环境！</p>
+<p>另外，FeiFei告诉你，在互动触摸区，我们可以体验近距离接触海星、珍珠狗鲨、龙虾和其它生物。</p>
+<h2 id="马来西亚的主题乐园"><a href="#马来西亚的主题乐园" class="headerlink" title="马来西亚的主题乐园"></a><center>马来西亚的主题乐园</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/210.jpg" class="lazyload"></p>
+<h4><center>1）双威水上主题乐园</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/211.jpg" class="lazyload"></p>
+<p>双威水上乐园，是马来西亚必去的第一个综合性主题乐园与度假村，其前身是锡矿厂。它拥有了六大主题公园，除了出名的水上乐园，还有滑浪海滩，探险乐园，西部牛仔，象园及亚洲最恐怖的鬼屋。</p>
+<p>另外，这里有种类多样的水上游戏和刺激的游乐设施，既可以欣赏表演，还可以在翠绿的热带雨林探秘及玩转马来西亚第一座5D观感娱乐电影院。FeiFei觉得可能是吉隆坡市中心优越的地理位置，这里是许多都市人的休闲好玩处。</p>
+<h4><center>2）乐高乐园</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/212.jpg" class="lazyload"></p>
+<p>乐高乐园(Legoland)位于马来西亚柔佛州，是亚洲首家乐高乐园。这座世界级户外主题乐园，分成了6个主题区，多大了40种游乐设施，表演节目，主题餐厅及经典。</p>
+<p>位于主题乐园中央的Mini Land是由30多万颗LEGO砖，打造出了亚洲17个国家著名的地标，是马来西亚必玩的地方！这马来西亚的乐高主题乐园 4D Movie最大的优点就是每一天都会有至少4种不同的电影题材。</p>
+<p>FeiFei觉得最值得一提的是，这里的住宿一点也不马虎哦！每一间房间都会有不一样的主题，不管是小孩或是大人都喜爱！</p>
+<h4><center>3）淡汶双威水上迷失乐园</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/213.jpg" class="lazyload"></p>
+<p>马来西亚的淡汶双威水上迷失乐园 (Lost World Of Tambun) 拥有最具动感、精彩刺激、民俗淳朴的怡保文化及震撼冒险的主题乐园与旅游景点。</p>
+<p>这座主题乐园位于距离吉隆坡市中心只有区区两个小时车程的霹雳州，据山城之称的怡保。此外，主题乐园建于绝美且令人叹为观止的大自然石岩景观之中，此处的天然温泉也是一大看点！</p>
+<p>这是一个马来西亚必去的地方，而且FeiFei觉得适合举家日夜欢乐，同欢共度美好假期时光的游乐天堂！8个主要因素构成了独一无二的冒险体验，让你欲罢不能！</p>
+<h4><center>4）爱法摩沙度假村</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/214.jpg" class="lazyload"></p>
+<p>爱法摩沙度假村 (A’Famosa) 是马六甲相当有名的一家休闲住宿及主题乐园，除了水上乐园、野生动物世界、牛仔城、骑马场、轻型滑翔机俱乐部。</p>
+<p>近来由于马来西亚提倡健康生活，这里也增加了许多刺激的户外活动，非常适合各个年龄层的人到此游玩。此外，喜欢高尔夫球的大人都能在这里的27洞国际高尔夫球场一展球艺。</p>
+<p>不用怀疑，FeiFei觉得这里是个适合一家大小游玩的主题乐园！</p>
+<h4><center>5）i-City WaterWorld</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/215.jpg" class="lazyload"></p>
+<p>由马来西亚雪兰莪州政府大力发展的I-City，近年来蜕变成功，不断增加景点，现在还有个水上乐园。</p>
+<h4><center>6）Wet World Shah Alam</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/216.jpg" class="lazyload"></p>
+<p>这个是OWG集团旗下的连锁水上主题乐园，除了在沙亚南，在柔佛Batu Pahat和森美兰Pedas也有Wet World。</p>
+<h4><center>7）Tiram Indoor Water Park</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/217.jpg" class="lazyload"></p>
+<p>这是一家位于柔佛州的水上乐园，怕晒的朋友，FeiFei觉得可以考虑这家室内的水上乐园！这里应该是全马来西亚唯一一间的室内水上乐园。</p>
+<h4><center>8）Sunway Lost World of Tambun</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/218.jpg" class="lazyload"></p>
+<p>这是霹雳州Sunway的另一个水上乐园，周末与假期依然很多人！</p>
+<h4><center>9）Bukit Merah Laketown Resort</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/219.jpg" class="lazyload"></p>
+<p>这里是霹雳州一个老牌水上乐园。整个度假村依湖而建，除了水上乐园还有许多其它活动。</p>
+<h4><center>10）Wet World Wild Adventure Park</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/220.jpg" class="lazyload"></p>
+<p>这是位于槟城的马来西亚本地第一个海上乐园哦！很有历史感！</p>
+<h4><center>11）Bukit Gambang Resort City</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/221.jpg" class="lazyload"></p>
+<p>这里一家彭亨的水上乐园，离关丹不远，位于东西大道上的一个大型综合度假村。</p>
+<h4><center>12）Melaka Wonderland Theme Park & Resort</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/222.jpg" class="lazyload"></p>
+<p>这是马六甲比较新的水上乐园，附近有许多旅游景点，靠近马六甲动物园。</p>
+<h4><center>13）A’ Famosa Resort</center></h4>
+
+<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/223.jpg" class="lazyload"></p>
+<p>这里是马六甲著名的度假村，度假村除了水上乐园还有渡假屋、高尔夫球场等，非常合适度假的朋友。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>以上FeiFei介绍的水族馆和主题乐园，有没有让你很心动呢？赶紧把以上的特色水族馆和主题乐园写进你的马来西亚行程吧！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2019/01/30/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%89%B9%E8%89%B2%E6%B0%B4%E6%97%8F%E9%A6%86%E5%92%8C%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/">http://sin-ma.com/2019/01/30/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%89%B9%E8%89%B2%E6%B0%B4%E6%97%8F%E9%A6%86%E5%92%8C%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B0%B4%E6%97%8F%E9%A6%86/">水族馆</a><a class="post-meta__tags" href="/tags/%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD/">主题乐园</a><a class="post-meta__tags" href="/tags/%E6%B5%B7%E5%BA%95%E4%B8%96%E7%95%8C/">海底世界</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190130/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/02/01/%E7%A7%BB%E6%B0%91%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%9A%84%E2%80%9C%E5%BE%97%E2%80%9D%E4%B8%8E%E2%80%9C%E5%A4%B1%E2%80%9D/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201902/20190201/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>移民新加坡的“得”与“失”</span></div></a></div><div class="next-post pull_right"><a href="/2019/01/25/%E6%A7%9F%E5%9F%8E%E6%97%85%E6%B8%B8%E6%99%AF%E7%82%B9%E4%B9%8B%E7%BB%88%E6%9E%81%E6%8C%87%E5%8D%97/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201901/20190125/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>槟城旅游景点之终极指南</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
