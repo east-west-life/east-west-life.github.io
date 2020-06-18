@@ -1,139 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚大丑闻｜从1MDB看国家制度的腐败 | SM</title><meta name="description" content="马来西亚大丑闻｜从1MDB看国家制度的腐败"><meta name="keywords" content="马来西亚,丑闻,腐败"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/sm.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚大丑闻｜从1MDB看国家制度的腐败"><meta name="twitter:description" content="马来西亚大丑闻｜从1MDB看国家制度的腐败"><meta name="twitter:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚大丑闻｜从1MDB看国家制度的腐败"><meta property="og:url" content="http://sin-ma.com/2020/05/26/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E4%B8%91%E9%97%BB-%E4%BB%8E1MDB%E7%9C%8B%E5%9B%BD%E5%AE%B6%E5%88%B6%E5%BA%A6%E7%9A%84%E8%85%90%E8%B4%A5/"><meta property="og:site_name" content="SM"><meta property="og:description" content="马来西亚大丑闻｜从1MDB看国家制度的腐败"><meta property="og:image" content="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
 
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://sin-ma.com/2020/05/26/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E4%B8%91%E9%97%BB-%E4%BB%8E1MDB%E7%9C%8B%E5%9B%BD%E5%AE%B6%E5%88%B6%E5%BA%A6%E7%9A%84%E8%85%90%E8%B4%A5/"><link rel="prev" title="中国一线和新一线城市到底有多美" href="/http:/sin-ma.com/2020/05/28/%E4%B8%AD%E5%9B%BD%E4%B8%80%E7%BA%BF%E5%92%8C%E6%96%B0%E4%B8%80%E7%BA%BF%E5%9F%8E%E5%B8%82%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E7%BE%8E/"><link rel="next" title="泰国值得一买的20大特产/伴手礼" href="/http:/sin-ma.com/2020/05/24/%E6%B3%B0%E5%9B%BD%E5%80%BC%E5%BE%97%E4%B8%80%E4%B9%B0%E7%9A%8420%E5%A4%A7%E7%89%B9%E4%BA%A7-%E4%BC%B4%E6%89%8B%E7%A4%BC/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://sin-ma.com/2020/05/26/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E4%B8%91%E9%97%BB-%E4%BB%8E1MDB%E7%9C%8B%E5%9B%BD%E5%AE%B6%E5%88%B6%E5%BA%A6%E7%9A%84%E8%85%90%E8%B4%A5/","source":"来源: SM","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
-
-}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SM</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 恋爱实验室</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">181</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">186</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">21</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 诗和远方</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 恋爱实验室</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 在人间</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚大丑闻｜从1MDB看国家制度的腐败</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-05-26<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-05-30</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>FeiFei</center>
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/0.jpg" class="lazyload"></p>
-<p>马来西亚人可能都知道1MDB，1MDB（1Malaysia Development Berhad），即一个马来西亚发展有限公司，简称一马公司或一马发展有限公司，是一个国家型战略性开发公司，由马来西亚财政部全资拥有。1MDB曾建立了全球伙伴关系并促进外商直接投资，为马来西亚的国家战略出谋划策，且涉及了几个高知名度的项目。例如，敦拉萨国际贸易中心、马来西亚城（Bandar Malaysia），以及3座马来西亚独立发电厂。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/1.jpg" class="lazyload"></p>
-<p>2015年，马来西亚前首相兼前财政部长纳吉布遭反对党指控，将马来西亚政府管辖的一马公司资金转入他的个人银行账户，美国《华尔街日报》声称有大约7.6亿美元（约26亿令吉）从一马公司流入纳吉的私人银行户口，该事件又称“廿六亿门事件”或“一个马来西亚有限公司丑闻”，这是马来西亚建国近60年以来最严重的政治经济丑闻。事件一被揭发，立即激起了马来西亚的全民批评声浪，也导致马来西亚的令吉汇率大跌。当时马哈蒂尔还未回任总理，并带头呼吁纳吉布辞职，时任马来西亚公正党实权领袖安瓦尔也公开质疑一马公司的财务。</p>
-<p>但之后，一马公司官方澄清，那笔26亿令吉的款项其实只是政治捐献，捐献者是一名来自中东的沙特阿拉伯王室人物。当时，马哈蒂尔回驳，称中东人捐献是一派胡言，中东人虽然慷慨，但不至于如此大手笔捐献。但对于捐献目的，目前都没有统一的说法。但美国司法部的最新调查表明，那笔巨款其实是来自Tanore金融机构，而非沙特王室。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/2.jpg" class="lazyload"></p>
-<p>根据一马公司公开提交的帐户报告，1MDB在2013-2015年，被爆出负债421亿令吉（100亿左右美元），当中一部分是于2013年由高盛公司牵头发行和由国家担保的30亿美元债券，传媒也报道高盛公司从这笔交易中赚取高达3亿美元费用，不过后来高盛反驳了这项报道。不过，这件事引发了马来西亚国家级的贪污丑闻和争议，这宗丑闻后来也成为导致马来西亚政权交替的主要原因之一。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/3.jpg" class="lazyload"></p>
-<p>2018年马来西亚大选，纳吉布领导的国民阵线无法继续获得选民支持而败北，马哈蒂尔领导的新政府上台后则表示将有足够的证据重新调查一马公司丑闻。大选后的几个月，马来西亚政府先是禁止纳吉布出境，后搜查与他有关联的住宅，充公了大量现金和贵重物品，也将他本人提控上庭，罪名包括失信、洗黑钱和滥用权力。同时，有关当局也指控了案件的另一名关键人物——马来西亚商人刘特佐犯下洗黑钱罪行，并对他发出全球通辑令。</p>
-<p>针对一马公司丑闻，美国司法部曾与马来西亚当局合作，对一马公司展开调查，并在调查后指控刘特佐及其同谋涉及盗用一马公司资金超过45亿美元，并称此案牵连来自马来西亚、沙特阿拉伯和阿拉伯联合酋长国的数位政府官员。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/4.jpg" class="lazyload"></p>
-<p>关于一马公司的丑闻报道不曾间断。2015年3月，根据马来西亚《砂拉越报告》和《The Edge财经日报》所获的电子邮件资料显示，一马公司于2009月9月28日与沙地石油国际公司（PetroSaudi International）签署了10亿美元联营投资计划，当中7亿美元原本应由一马公司付给联营公司，却转进马来西亚商人刘特佐成立的Good Star公司。7月3日，《华尔街日报》进一步透露一马公司的7亿美元（约马币26亿林吉特）辗转流入纳吉布的银行账户。</p>
-<p>2015年7月27日，马来西亚时任政府吊销《The Edge周刊》和《The Edge财经日报》的出版准证，为期3个月，因为这两份刊物针对一马公司的报道“会损害或可能破坏公共秩序和安全，可能会引起舆论恐慌，或可能会损害公众和国家的利益”。The Edge媒体集团出版人何启达回应称无法理解为何揭发一项数十亿林吉特的骗局可以被解读为损害公众和国家利益。他指称吊销准证是为了打压新闻媒体，使其闭嘴而已。</p>
-<p>2015年7月28日，时任总理纳吉布宣布，解除穆希丁的副总理职务，改由艾哈迈德扎希担任该职。纳吉布表示内阁成员不应在公开场合发表可以影响大众对政府和国家印象的意见。据称，穆希丁曾与访客谈起纳吉布26亿林吉特汇款案，而访谈内容遭人录影后在网站流传。</p>
-<p>2015年8月，马来西亚通讯及多媒体委员会以威胁国家安全为理由，封锁《砂拉越报告》网站，该网站广泛报导关于一马公司丑闻和净选盟4.0集会的讯息。同月，警方向《砂拉越报告》主编克莱尔发出逮捕令，并向国际刑警组织要求发出红色通缉令。但是国际刑警组织拒绝要求，同时忠告马来西亚不要滥用国际刑警管道。</p>
-<p>同年9月，《华尔街日报》报道一马公司又有一笔高达14亿美元的款项下落不明。据称，一马公司曾说支付14亿美元抵押金给阿联酋的国际石油投资公司，但该公司并未收到付款。这笔钱与一马公司收购发电厂有关，国际石油投资公司替一马公司的35亿美元债券作担保，以协助融资收购发电厂，并选择以收购发电厂49%股权或抵押债券作为回报。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/5.jpg" class="lazyload"></p>
-<p>2016年3月，《华尔街日报》揭发纳吉布于2011至2014年之间，在美国、马来西亚、意大利等地使用近1500万美元（约5880万林吉特）购买服饰、珠宝及名车。根据马来西亚调查单位取得的银行汇款资料显示，这些钱大多数来自一马公司。</p>
-<p>同年4月，《华尔街日报》有报道，一马公司于2012年将1亿5500万美元（4亿6500万林吉特）资金辗转汇入纳吉布继子里扎阿齐兹所成立的红岩制片公司。该制片公司耗资1亿美元（3亿9000万林吉特）邀请名导演马丁斯科塞斯执导《华尔街之狼》，该电影由奥斯卡影帝小李子（莱昂纳多·迪卡普里奥）主演。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/6.jpg" class="lazyload"></p>
-<p>2018年5月9日，马来西亚举行第14届大选，马哈蒂尔领导的希望联盟取得胜利。5月12日，马哈蒂尔宣布成立国家元老理事会以辅助新政府，理事会成员包括前财政部长达因、前国家银行总裁洁蒂、前国油主席哈桑玛力肯、大马富豪郭鹤年和经济学家佐摩。此外，马哈蒂尔政府也成立一马公司调查委员会和特别调查队，以探讨如何索回一马公司弊案中属于政府的资金、追查和充公涉案资金和资产，以及提控犯法者。</p>
-<p>同日，马来西亚移民局证实，因纳吉布夫妇涉嫌贪污案，已被列入黑名单，禁止出境。5月16日、17日，警方以调查一马公司案为由，突击与纳吉布有关的住宅和办公室，搜获大批现款、首饰、手提袋及名表等财物，总值或高达11亿林吉特；警方起获的首饰超过1万2000件，同时充公了由26个不同国家货币组成、折合马币1亿1670万林吉特的现款。马来西亚警方表示，这是马来西亚有史以来充公数额最大的充公案。</p>
-<p>2018年6月，特别调查队冻结了408个马来西亚涉及个人、政党及非政府组织的银行账户，总金额高达11亿林吉特；这些银行账户据信与滥用及欺诈一马公司资金有关。7月3日，前总理纳吉布遭反贪会逮捕，并于次日在吉隆坡地庭面控。纳吉布共面临四项指控，其中三项为刑事法典第409条文下的失信罪，剩余一项则为滥用SRC国际有限公司（一马公司的子公司）4200万林吉特的贪污罪。8月8日，纳吉布被追加3项洗黑钱的指控。9月19日，纳吉布因涉嫌一马公司舞弊案而再遭反贪会逮捕，该案中纳吉布被指涉嫌以个人银行户口接收了一笔数额高达26亿林吉特的汇款。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/7.jpg" class="lazyload"></p>
-<p>2018年2月28日，一马公司丑闻关键人物刘特佐拥有的“平静号”豪华游艇在巴厘岛遭印尼警方扣押，该艘游艇估计价值超过2亿5000万美元。美国司法部推测刘特佐购买该艘游艇时使用了一马公司的资金。印尼政府于8月7日将该游艇归还给马来西亚。同年8月，马来西亚海事高等法庭批准公开拍卖这艘豪华游艇，并于次年4月批准将该游艇以1亿2600万美元出售给云顶马来西亚有限公司，售卖净所得则转入一马公司资产。</p>
-<p>2018年8月24日，总检察署以洗黑钱罪名提控刘特佐与其父刘福平，并向法庭申请逮捕令，以便引渡相信匿藏在国外的刘氏父子。12月4日，总检察署再次提控刘特佐，控状指控刘特佐涉及金额高达10.3亿美元的洗钱活动。与刘特佐关系密切的陈金龙（Eric Tan Kim Loong）、唐敬志（Casey Tang Keng Chee）、卢爱璇（Jasmine Loo Ai Swan）及吴卓兴（Geh Choh Heng）也面临洗黑钱控状。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/8.jpg" class="lazyload"></p>
-<p>2018年6月9日，马来西亚政府向美国司法部提出申请，要求索回高盛集团协助一马公司出售债券时赚取的6亿美元利润。12月17日，马来西亚政府对高盛提出刑事诉讼，要求法庭对高盛和被控4人处以33亿美元以上的罚款。罚款数字涵括了高盛涉嫌挪用的金额，以及高盛在这些交易中获得的6亿美元额外手续费。</p>
-<p>此外，检方还要求对4人判处最高10年的监禁。前高盛东南亚董事长提姆·莱斯纳（Tim Leissner）是被控4人中的其中一位。之前，莱斯纳于11月10日在美国承认对高盛隐瞒了部分事实，当中包括刘特佐通过贿赂马来西亚和阿布扎比官员获得了银行业务。美国法庭勒令充公莱斯纳的4370万美元资产。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/9.jpg" class="lazyload"></p>
-<p>2018年11月25日，马来西亚总审计司玛蒂娜发文告说，纳吉布与其机要秘书苏克里曾先后指示删除和修改一马公司最终审计报告的内容，遭删改之前的内容提及了刘特佐曾出席一马公司董事会会议。纳吉布与其机要秘书发出指示时在场的人士包括了时任政府首席秘书阿里韩沙、苏克里和时任总审计司安比林。反贪会对总审计报告可能遭到窜改一事展开调查。</p>
-<p>12月12日，纳吉布和一马公司前总裁阿鲁甘达因涉及指示篡改一马公司审计报告内容，被控滥权罪名。控状指纳吉布于2016年2月22日至26日期间，身为公职人员，在布城总理署指示有关人士在一马公司最终审计报告完成及提呈国会公共账目委员会前对其进行修改，以保护本身免受于与一马公司有关的纪律、民事或刑事对付。阿鲁甘达则被指与纳吉布串谋，指使他人更改报告。两人否认有罪，获准各别以50万林吉特及一名担保人保外候审。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/10.jpg" class="lazyload"></p>
-<p>自从2018年大选之后重新调查一马公司丑闻以来，马来西亚已经追回一马公司资产价值3亿2200万美元。所收回的资金包括马来西亚经由法庭批准出售“平静号”豪华游艇给云顶集团所得1亿2600万美元，美国司法部脱售刘特佐在纽约曼哈顿的柏宁酒店（Park Lane Hotel）股权所得1亿3900万美元，以及美国处置红岩电影公司的充公案所得净额5700万美元。该笔净额已扣除了调查、没收和诉讼等费用，并汇回给马来西亚。</p>
-<p>除此之外，另一笔与一马公司有关的5000万新币（1亿5200万马币）已由新加坡法院判定可以退回给马来西亚。马来西亚至少与6个国家或地区（美国、瑞士、新加坡、澳洲、阿拉伯联合酋长国、英国、香港、印尼、卢森堡）合作以追回一马公司被盗用约45亿美元的资产，当中包括美国司法部寻求没收的资产预估约17亿美元。2017年6月23日，奥斯卡影帝小李子将“小金人”奖座交给负责调查一马公司洗黑钱案件的美国调查单位后，澳洲名模米兰达·凯尔也将刘特佐赠予她的价值810万美元的珠宝交给美国司法部，这些赠品涉及滥用一马公司资金购得。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/11.jpg" class="lazyload"></p>
-<p>2020年5月14日，吉隆坡法庭在整理前任总理纳吉布的继子里扎阿齐兹涉及的5项挪用一马公司资金，总价值2亿4817万3104美元的洗黑钱案件中，里扎阿齐兹与检方达成“和解协议”，只需归还数百万林吉特就可以获得假释（discharge not amounting to an acquittal），检方也要归还里扎阿齐兹此前缴付的100万林吉特保释金。根据控辩双方达成的协议，在完成交易前，检方也不会继续提控里扎阿齐兹。马来西亚反贪污委员会也发文告认为，政府也可从美国司法部追回约4亿6530万林吉特的资产。</p>
-<p>里扎阿兹与检方达成的协议内容充满争议，现任马来西亚总检察长依德鲁斯哈伦发文告表明，他是根据前总检察长丹斯里汤米·汤姆斯“原则上”同意里扎阿齐兹和解条款的建议后，而采取让里扎支付罚款后获释的决定。马来西亚反贪污委员会也发文告证实汤米汤姆斯当时也同意这份“和解协议”。</p>
-<p>但是，汤米汤姆斯坚持否认有关同意政府撤销里扎阿兹洗黑钱的控状，并对马来西亚反贪污委员会发表的虚假声明感到彻底失望。并认为这份“和解协议”对里扎阿兹而言是‘甜心交易’，但对大马而言太糟糕了。</p>
-<p>前任总理马哈蒂尔也在社交媒体上通过视频表达不满，认为犯人只需将贪污得来的金钱交回出来就可以逃过法律制裁，担忧未来国内的最大罪犯唯恐也可用相同方式逃过法律制裁。但被现任掌管法律事务的总理署部长拿督达基尤丁批评马哈蒂尔的态度“虚伪”，因为案件是由马哈蒂尔任内的希盟政府的总检察司所判决。2020年5月19日，法院充公了从纳吉布住家没收的有关一马发展公司的60万林吉特，也是里扎阿齐兹此前与控方达致的协议之一，里扎阿齐兹也成为控方证人。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/12.jpg" class="lazyload"></p>
-<p>如今马来西亚制度腐败的趋势，是从马哈迪时期（1981-2003年）的个人化权威开始产生，从马哈迪时代后期一直到纳吉政府的施政，马来西亚政治上充满许多个人化、随意性、非理性和暴冲式的政治行为，因此导致政府治理经常出现前后矛盾、逻辑不通、极具个性化的措施。这也使得马来西亚的国家制度规范错失成长的良机，最后陷入国家腐败和制度溃败的窘境！造成这种现象的主要原因是：马来西亚苏丹式权威，缺少横向问责和理性中立，服从和跟随领袖的文化普遍存在。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2><p>[1] BBC中文国际</p>
-<p>[2] 1mdb.com.my</p>
-<p>[3] 新海峡时报</p>
-<p>[4] 华尔街日报</p>
-<p>[5] 南洋商报</p>
-<p>[6] 星洲网</p>
-<p>[7] The Edge Markets</p>
-<p>[8] 马来西亚诗华日报</p>
-<p>[9] Malaysiakini</p>
-<p>[10] The Malaysian Insight</p>
-<p>[11] The New York Times</p>
-<p>[12] SuperYacht News</p>
-<p>[13] 华尔街见闻</p>
-<p>[14] 马来西亚制度腐败化</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/sin-ma.com/2020/05/26/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E4%B8%91%E9%97%BB-%E4%BB%8E1MDB%E7%9C%8B%E5%9B%BD%E5%AE%B6%E5%88%B6%E5%BA%A6%E7%9A%84%E8%85%90%E8%B4%A5/">http://sin-ma.com/2020/05/26/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E4%B8%91%E9%97%BB-%E4%BB%8E1MDB%E7%9C%8B%E5%9B%BD%E5%AE%B6%E5%88%B6%E5%BA%A6%E7%9A%84%E8%85%90%E8%B4%A5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sin-ma.com">SM</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E4%B8%91%E9%97%BB/">丑闻</a><a class="post-meta__tags" href="/tags/%E8%85%90%E8%B4%A5/">腐败</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200526/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat-qrcode.png"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/05/28/%E4%B8%AD%E5%9B%BD%E4%B8%80%E7%BA%BF%E5%92%8C%E6%96%B0%E4%B8%80%E7%BA%BF%E5%9F%8E%E5%B8%82%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E7%BE%8E/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200528/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>中国一线和新一线城市到底有多美</span></div></a></div><div class="next-post pull_right"><a href="/2020/05/24/%E6%B3%B0%E5%9B%BD%E5%80%BC%E5%BE%97%E4%B8%80%E4%B9%B0%E7%9A%8420%E5%A4%A7%E7%89%B9%E4%BA%A7-%E4%BC%B4%E6%89%8B%E7%A4%BC/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202005/20200524/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>泰国值得一买的20大特产/伴手礼</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/12/2020中马旅游年～中国与马来西亚的“钱”景到底有多大？/" title="2020中马旅游年～中国与马来西亚的“钱”景到底有多大？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200112/0.png"><div class="relatedPosts_title">2020中马旅游年～中国与马来西亚的“钱”景到底有多大？</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div><div class="relatedPosts_item"><a href="/2018/12/26/假如给我一个机会接触马来西亚的“掌上明珠”-仙本那/" title="假如给我一个机会接触马来西亚的“掌上明珠”-仙本那"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/Malaysia-Online/site/master/resource/images/2018/201812/20181226/0.jpg"><div class="relatedPosts_title">假如给我一个机会接触马来西亚的“掌上明珠”-仙本那</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
+
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
+
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug
