@@ -1,79 +1,119 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>谈恋爱就要找有见识的人～而不是以si相逼 | See Much</title><meta name="description" content="谈恋爱就要找有见识的人～而不是以si相逼"><meta name="keywords" content="恋爱,爱情"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="谈恋爱就要找有见识的人～而不是以si相逼"><meta name="twitter:description" content="谈恋爱就要找有见识的人～而不是以si相逼"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="谈恋爱就要找有见识的人～而不是以si相逼"><meta property="og:url" content="http://seemuch.org/2019/04/16/%E8%B0%88%E6%81%8B%E7%88%B1%E5%B0%B1%E8%A6%81%E6%89%BE%E6%9C%89%E8%A7%81%E8%AF%86%E7%9A%84%E4%BA%BA%EF%BD%9E%E8%80%8C%E4%B8%8D%E6%98%AF%E4%BB%A5si%E7%9B%B8%E9%80%BC/"><meta property="og:site_name" content="See Much"><meta property="og:description" content="谈恋爱就要找有见识的人～而不是以si相逼"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2019/04/16/%E8%B0%88%E6%81%8B%E7%88%B1%E5%B0%B1%E8%A6%81%E6%89%BE%E6%9C%89%E8%A7%81%E8%AF%86%E7%9A%84%E4%BA%BA%EF%BD%9E%E8%80%8C%E4%B8%8D%E6%98%AF%E4%BB%A5si%E7%9B%B8%E9%80%BC/"><link rel="prev" title="此生最幸运的事就是遇到了她" href="/http:/seemuch.org/2019/04/25/%E6%AD%A4%E7%94%9F%E6%9C%80%E5%B9%B8%E8%BF%90%E7%9A%84%E4%BA%8B%E5%B0%B1%E6%98%AF%E9%81%87%E5%88%B0%E4%BA%86%E5%A5%B9/"><link rel="next" title="别让“幸福”麻痹了生活" href="/http:/seemuch.org/2019/04/04/%E5%88%AB%E8%AE%A9%E5%B9%B8%E7%A6%8F%E9%BA%BB%E7%97%B9%E4%BA%86%E7%94%9F%E6%B4%BB/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2019/04/16/%E8%B0%88%E6%81%8B%E7%88%B1%E5%B0%B1%E8%A6%81%E6%89%BE%E6%9C%89%E8%A7%81%E8%AF%86%E7%9A%84%E4%BA%BA%EF%BD%9E%E8%80%8C%E4%B8%8D%E6%98%AF%E4%BB%A5si%E7%9B%B8%E9%80%BC/","source":"来源: See Much","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">See Much</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">200</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">185</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#谭先生"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">谭先生</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#孙先生"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">孙先生</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#方先生"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">方先生</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#谭先生"><span class="toc-number">2.</span> <span class="toc-text">谭先生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#孙先生"><span class="toc-number">3.</span> <span class="toc-text">孙先生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方先生"><span class="toc-number">4.</span> <span class="toc-text">方先生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">5.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">谈恋爱就要找有见识的人～而不是以si相逼</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-04-16<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-11</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%9B%B4%E5%A4%9A/">更多</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%9B%B4%E5%A4%9A/%E7%88%B1%E6%83%85%E4%B9%8B%E9%81%93/">爱情之道</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>林子</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/0.jpg" class="lazyload"></p>
+<p>年轻的时候，很多事情都不懂，谈恋爱找对象，也不知道什么样的才算合适。再后来，遇见和经历了三位男士，才慢慢晓得，找一个有见识的男士太重要了！</p>
+<h2 id="谭先生"><a href="#谭先生" class="headerlink" title="谭先生"></a><center>谭先生</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/1.jpg" class="lazyload"></p>
+<p>谭先生是朋友的表哥，31岁，身高167cm。</p>
+<p>有一次在微信群里看到谭先生说，要找1米7以上的女生结婚，这样后代才不会矮。群里有人说谭先生，你都不到1米7，还想找1米7的，hold得住吗？谭先生反驳道，你不懂，只有女性的身高才影响下一代，男性的不影响！群里一阵呵呵声。</p>
+<p>闺蜜的姐姐——惠芳姐虽然没到1米7，可是谭先生居然对她一见钟情。</p>
+<p>惠芳姐是那种坚定“趁着年轻，世界很大，多去看看”态度生活的人，一有假期就会出去旅行，而且还喜欢晒朋友圈。</p>
+<p>有一次，惠芳姐去巴塞罗那度假，朋友圈发的照片不巧被谭先生看到了，谭先生点了赞，在特地发消息给惠芳姐说，真不知道旅游有什么好玩的，跑那么远，还花了几千块，不如在家休息呢，你们就是虚荣，喜欢晒！</p>
+<p>惠芳姐顿时无语，出去旅游怎么就虚荣了？后来才知道，谭先生都不怎么出省的，除了春节回老家的时候要跨省，更别提出国旅游了。</p>
+<p>有一次，在酒吧，谭先生悄悄坐在惠芳姐身旁，神秘地说，快把你的冒牌货藏起来。惠芳姐一脸懵逼，谭先生指着她的香奈儿手表。惠芳姐疑惑说，你怎么知道是冒牌的？谭先生得意的说，他家是卖包包的，怎么会卖手表？你骗别人骗不了我，改天我给你买支罗西尼牌的手表，那个才是品牌。</p>
+<p>惠芳姐笑着说，谢谢啊，我带不起品牌表，我就喜欢我这冒牌货。惠芳姐虽然奢侈品不多，但都是真品。</p>
+<p>谭先生不懂晓松，说人家装X；不知道爵士乐，说它阴阳怪气的；拿巧克力喂惠芳姐的吉娃娃，气得惠芳姐想打他；他觉得自己年薪20万已经很厉害，其实还没有惠芳姐的多。</p>
+<p>性格超好的惠芳姐跟谭先生相处了三个月，终于看清了谭先生什么也不懂，还装；后来，拉黑了他。</p>
+<h2 id="孙先生"><a href="#孙先生" class="headerlink" title="孙先生"></a><center>孙先生</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/2.jpg" class="lazyload"></p>
+<p>闺蜜的朋友，给惠芳姐介绍了对象孙先生，说家境不错，父母开公司，人长得也不错。</p>
+<p>孙先生翻了翻惠芳姐的朋友圈，跟闺蜜的朋友说，这妹子有意思，我想接触认识一下。</p>
+<p>孙先生约惠芳姐在三环的一家星巴克见面，一见到惠芳姐就很绅士，问惠芳姐喝什么？惠芳姐说，拿铁就行了。孙先生说，那怎么行，女生要喝焦糖玛奇朵。惠芳姐没说话，孙先生就直接去前台了。</p>
+<p>10分钟过后，孙先生端着两杯焦糖玛奇朵和一些点心回来了。孙先生坐下来，说的第一句话就是，看你的朋友圈经常出去玩，好像不怕晒黑哦！</p>
+<p>晒黑？惠芳姐努力回想自己曾经发过的朋友圈，的确有不少是户外观光活动。</p>
+<p>孙先生说，我在国外玩的时候，都只在会所、场馆、演艺厅里面玩，不晒太阳。惠芳姐明白他暗示的意思。</p>
+<p>孙先生问惠芳姐，除了旅游还有什么其他爱好。惠芳姐说，看电影、瑜伽、读小说。孙先生说，这也单调了一点，我跟朋友们经常去酒吧看美女表演，比较有趣。</p>
+<p>惠芳姐不想反驳他，你一个男士天天泡吧找乐子，那是正常的生活吗？有空不应该多约见客户吗？</p>
+<p>惠芳姐赶紧喝完咖啡就走了，不想多说一句。</p>
+<p>后来听闺蜜的朋友说，孙先生经常泡吧喝酒，也不怎么上班，父母开公司，毕业回国三年了，还在啃老，上一个女朋友也被他逼疯了，差点想自杀。</p>
+<h2 id="方先生"><a href="#方先生" class="headerlink" title="方先生"></a><center>方先生</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/3.jpg" class="lazyload"></p>
+<p>后来，惠芳姐遇到了方先生，人很成熟又能干，很受女生欢迎。一开始我们还担心惠芳姐搞不定他，实际上，惠芳姐是所有姐妹里面最幸福的一位。</p>
+<p>方先生想带惠芳姐去巴厘岛，提前一个星期，方先生每天下班后，查阅资料、搜索美食、规划行程，没让惠芳姐操任何心。到了出门那天，方先生拉着惠芳姐的行李，打车一直到机场。就这样，两个人在巴厘岛开始幸福的时光，我们每天都看到惠芳姐在朋友圈晒甜蜜，还时时称赞方先生很能干，定的房间和餐厅都别提有多喜欢！</p>
+<p>惠芳姐是电子产品小白，方先生亲自带她去商城选电脑买手机，还手把手教她学会使用单反相机，现在家里的所有电子设备，惠芳姐都能操作了。</p>
+<p>对于购物，方先生坚持品质。他一直喜欢一个日本的牌子，虽然不是一线品牌，但是有品位有质量，价格也不贵。</p>
+<p>方先生开公司，前两年亏损，第三年开始盈利。和方先生结婚以后，惠芳姐就辞职在家，生孩子，带孩子，照顾家庭。方先生工作再忙，每天都会回家陪惠芳姐和孩子吃饭，周末都会逛公园遛狗。</p>
+<p>惠芳姐说，有时候方先生也会跟她聊孩子的未来，计划着要去哪里留学。惠芳姐打趣说，只是孩子现在太小，说的有点早了。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>我，闺蜜，闺蜜的姐姐——惠芳姐，一起见证了惠芳姐遇见并经历了三位男士。</p>
+<p>我只想说，见识对于一个男人来说太重要了。越是没有见识的人，越容易盲目自大，还自我感觉良好，不能意识到自身的缺点，会经常引起尴尬和笑话，很小的事情都会计较。</p>
+<p>而有见识的人，不会觉得自己有多了不起，不会计较太多，不会让他人难受，更不会以si想逼；因为他知道还有很多的东西要学习，还有很多的事物值得去发现和探索。跟有见识的男士在一起，生活会有张有序，每天都会长见识，每天都能省心，每天都是正能量。</p>
+<p>有见识的男士，会帮你买姨妈巾，准备热水袋，分享给你没听过的故事，分享他精彩的人生经历，分享他对于艺术的理解和热爱，分享他的未来计划，甚至可以帮你出谋划策。这才是一个男士该有的姿势，一个有见识的男士！</p>
+<p>现在，有很多年轻女生都单身，不是她们故意而为之，其实是没有遇到合适的人，一个值得欣赏和愿意付出的有见识的男士。找有见识的人谈恋爱，生活才会幸福，爱情才会长久！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">See Much</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%81%8B%E7%88%B1/">恋爱</a><a class="post-meta__tags" href="/tags/%E7%88%B1%E6%83%85/">爱情</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190416/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/04/25/%E6%AD%A4%E7%94%9F%E6%9C%80%E5%B9%B8%E8%BF%90%E7%9A%84%E4%BA%8B%E5%B0%B1%E6%98%AF%E9%81%87%E5%88%B0%E4%BA%86%E5%A5%B9/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190425/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>此生最幸运的事就是遇到了她</span></div></a></div><div class="next-post pull_right"><a href="/2019/04/04/%E5%88%AB%E8%AE%A9%E5%B9%B8%E7%A6%8F%E9%BA%BB%E7%97%B9%E4%BA%86%E7%94%9F%E6%B4%BB/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201904/20190404/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>别让“幸福”麻痹了生活</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/06/07/12星座恋爱时做的那些傻事/" title="12星座恋爱时做的那些傻事"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202006/20200607/0.jpg"><div class="relatedPosts_title">12星座恋爱时做的那些傻事</div></a></div><div class="relatedPosts_item"><a href="/2019/11/24/2-大学为什么要谈恋爱/" title="2-大学为什么要谈恋爱"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191124/0.jpg"><div class="relatedPosts_title">2-大学为什么要谈恋爱</div></a></div><div class="relatedPosts_item"><a href="/2020/02/17/大马恋人初见家人～场面一度尴尬/" title="大马恋人初见家长～场面一度尴尬"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200217/0.jpg"><div class="relatedPosts_title">大马恋人初见家长～场面一度尴尬</div></a></div><div class="relatedPosts_item"><a href="/2020/04/02/如何稳住异地恋？/" title="如何稳住异地恋？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202004/20200402/0.jpg"><div class="relatedPosts_title">如何稳住异地恋？</div></a></div><div class="relatedPosts_item"><a href="/2020/02/04/如果一辈子不结婚，我会怎样？/" title="如果一辈子不结婚，我会怎样？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200204/0.jpg"><div class="relatedPosts_title">如果一辈子不结婚，我会怎样？</div></a></div><div class="relatedPosts_item"><a href="/2020/02/05/本周六2-8元宵节～大马脱单全城热恋～错过要再等一年/" title="元宵节～大马脱单全城热恋～错过要再等一年"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200205/0.png"><div class="relatedPosts_title">元宵节～大马脱单全城热恋～错过要再等一年</div></a></div><div class="relatedPosts_item"><a href="/2020/04/14/脱单3部曲成功告别单身/" title="脱单3部曲成功告别单身"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202004/20200414/0.jpg"><div class="relatedPosts_title">脱单3部曲成功告别单身</div></a></div><div class="relatedPosts_item"><a href="/2019/10/12/12星座选择爱情还是友情至上/" title="12星座选择爱情还是友情至上"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191012/0.jpg"><div class="relatedPosts_title">12星座选择爱情还是友情至上</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>

@@ -1,79 +1,199 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚理工大学UTM招生简章 | See Much</title><meta name="description" content="马来西亚理工大学UTM招生简章"><meta name="keywords" content="马来西亚,世界名校"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚理工大学UTM招生简章"><meta name="twitter:description" content="马来西亚理工大学UTM招生简章"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚理工大学UTM招生简章"><meta property="og:url" content="http://seemuch.org/2020/02/23/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6UTM%E6%8B%9B%E7%94%9F%E7%AE%80%E7%AB%A0/"><meta property="og:site_name" content="See Much"><meta property="og:description" content="马来西亚理工大学UTM招生简章"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2020/02/23/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6UTM%E6%8B%9B%E7%94%9F%E7%AE%80%E7%AB%A0/"><link rel="prev" title="泰国最美的10大海岛沙滩" href="/http:/seemuch.org/2020/02/29/%E6%B3%B0%E5%9B%BD%E6%9C%80%E7%BE%8E%E7%9A%8410%E5%A4%A7%E6%B5%B7%E5%B2%9B%E6%B2%99%E6%BB%A9/"><link rel="next" title="全马13州一州一景" href="/http:/seemuch.org/2020/02/20/%E5%85%A8%E9%A9%AC13%E5%B7%9E%E4%B8%80%E5%B7%9E%E4%B8%80%E6%99%AF/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2020/02/23/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6UTM%E6%8B%9B%E7%94%9F%E7%AE%80%E7%AB%A0/","source":"来源: See Much","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">See Much</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">200</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">185</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-学校概况"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.1 学校概况</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-学校声誉"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.2 学校声誉</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-学校资源"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.3 学校资源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-学制设置"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.4 学制设置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-5-院系设置"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">No.5 院系设置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-6-专业设置"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">No.6 专业设置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-7-学校特色"><span class="toc_mobile_items-number">8.</span> <span class="toc_mobile_items-text">No.7 学校特色</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-8-申请条件"><span class="toc_mobile_items-number">9.</span> <span class="toc_mobile_items-text">No.8 申请条件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-9-学费费用"><span class="toc_mobile_items-number">10.</span> <span class="toc_mobile_items-text">No.9 学费费用</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-10-奖助学金"><span class="toc_mobile_items-number">11.</span> <span class="toc_mobile_items-text">No.10 奖助学金</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">12.</span> <span class="toc_mobile_items-text">最后</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">13.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-学校概况"><span class="toc-number">2.</span> <span class="toc-text">No.1 学校概况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-学校声誉"><span class="toc-number">3.</span> <span class="toc-text">No.2 学校声誉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-学校资源"><span class="toc-number">4.</span> <span class="toc-text">No.3 学校资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-学制设置"><span class="toc-number">5.</span> <span class="toc-text">No.4 学制设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-5-院系设置"><span class="toc-number">6.</span> <span class="toc-text">No.5 院系设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-6-专业设置"><span class="toc-number">7.</span> <span class="toc-text">No.6 专业设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-7-学校特色"><span class="toc-number">8.</span> <span class="toc-text">No.7 学校特色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-8-申请条件"><span class="toc-number">9.</span> <span class="toc-text">No.8 申请条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-9-学费费用"><span class="toc-number">10.</span> <span class="toc-text">No.9 学费费用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-10-奖助学金"><span class="toc-number">11.</span> <span class="toc-text">No.10 奖助学金</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">12.</span> <span class="toc-text">最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">13.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚理工大学UTM招生简章</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-02-23<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-08</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%95%99%E5%AD%A6%E7%A7%BB%E6%B0%91/">留学移民</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/0.jpg" class="lazyload"></p>
+<p>马来西亚理工大学(Universiti Teknologi Malaysia)，又叫马来西亚工艺大学，是马来西亚最著名的国立大学之一（马来西亚五大国立院校之一，世界排名第217）。大学主校区位于马来西亚西马南端的Johor（柔佛州新山市）,占地面积1177公顷，另外在吉隆坡市中心还有一个校区（研究生院，全亚洲排名第8位），占地面积38公顷。</p>
+<h2 id="No-1-学校概况"><a href="#No-1-学校概况" class="headerlink" title="No.1 学校概况"></a><center>No.1 学校概况</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/1.jpg" class="lazyload"></p>
+<p>马来西亚理工大学，简称 UTM，成立于1984年3月,最早的历史可以追溯到1904年理工学校的建立，1946年升格为理工学院。2005年1月26日理工大学举行了33周年校庆暨建校100周年庆典。</p>
+<p>马来西亚理工大学致力于促进和发展科学、工程技术及建筑领域的高等教育，是马来西亚极富盛名的大学。校园由主校区和分校区组成。主校区位于柔佛州新山市，占地1177公顷（17650亩）；分校区位于吉隆坡市，占地38公顷（570亩），也称为“城市校园”。</p>
+<p>学校本地学生人数约1.14万，国际学生约5千人，教职工约2600人。提供的学位有：学士学位、硕士学位、博士学位-研究型/学术型、博士学位-专业实操型、博士学位-其他类型。</p>
+<p>1）学校名称：马来西亚理工大学/马来西亚工艺大学 (Universiti Teknologi Malaysia)</p>
+<p>2）地理位置：马来西亚 柔佛州新山市</p>
+<p>3）创立时间：1984年</p>
+<p>4）官网网址：<a href="http://www.utm.my" target="_blank" rel="noopener">www.utm.my</a></p>
+<p>5）学校性质：公立大学(马来西亚五大公立大学之一)</p>
+<p>6）学生类别：本科、研究生、博士</p>
+<p>7）师生比：1:11左右</p>
+<p>8）世界排名: 2020年QS世界大学排名全球 第217位</p>
+<p>9）开学时间：2月、9月</p>
+<p>10）申请截止时间：5月20日（本科/硕士）、9月30日</p>
+<h2 id="No-2-学校声誉"><a href="#No-2-学校声誉" class="headerlink" title="No.2 学校声誉"></a><center>No.2 学校声誉</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/2.png" class="lazyload"></p>
+<p>马来西亚理工大学位列2020QS世界大学排名第217位。在2019上海交通大学发布的ARWU世界大学学术排名中，马来西亚理工大学进步巨大，上升300位至世界第501-600位，是具有冲击500强大学潜力的高校。</p>
+<p>在追求卓越学术的过程中，正如在积累和传播知识方面所作的贡献一样，马来西亚理工大学发挥着引导研究的作用。学校在全球著名高校中占据着不可忽视的作用，其学科设置覆盖电机工程、化工与自然资源工程、环境建设、民用工程、医学工程、综合科学、管理与人力资源发展、教育、地理信息科学与工程等领域。如今，马来西亚理工大学在亚洲排名前30位。</p>
+<p>马来西亚理工大学是一所马来西亚国立大学，积极倡导有益于社会和国家的研究课题，也在努力把大学建设成为“世界级大学”。另外，大学也获得了广泛的国际认可，近几年，大学的科研人员屡次获得国际奖项，如在日内瓦举行的国际新技术和产品发明展（1999、2000、2001、2002、2003、2004）、创意-发明-新产品国际展（2003和2004）、发明和新产品博览会（2002和2004）、2004英国发明展、汉城国际发明展（2002和2004）中都曾获得多种国际大奖和其它数项本国奖项。</p>
+<p>秉承创造、革新和产业化的理念，马来西亚理工大学在朝着建成优秀大学的过程中已经创造了各种各样的产品，其中包括：大学工业技术高级程序（UNITAP）的建立、20多个优秀研究中心的建立、为适应数码及信息时代通过综合的信息技术而建成的网络校园等。</p>
+<p>在学术交流方面，马来西亚理工大学与牛津大学、剑桥大学、清华大学等多所世界著名高校建立了广泛的联系，与世界50多个学术机构进行合作和交流。除此之外，理工大学也举办了一系列学习英文的活动。举办活动的目的是为了让小学生在没有华语的情况下，使用英语与人交流，也促进彼此的友谊。</p>
+<h2 id="No-3-学校资源"><a href="#No-3-学校资源" class="headerlink" title="No.3 学校资源"></a><center>No.3 学校资源</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/3.jpg" class="lazyload"></p>
+<p>马来西亚理工大学拥有一座东南亚最大及藏书量最多的大学图书馆，馆内设备齐全，所有的管理都采用电脑系统。校园里提供各种便利设施，如邮局、银行、商店、餐厅、各团体活动室、学生事务中心、医疗中心等等，为学生提供各种生活和娱乐的必要设施和服务。</p>
+<p>学校的图书馆、工程学院、管理与人力资源发展学院、教育学院、建筑环境院、改革与咨询局和研究管理中心等机构都已通过ISO9000认证。　</p>
+<h2 id="No-4-学制设置"><a href="#No-4-学制设置" class="headerlink" title="No.4 学制设置"></a><center>No.4 学制设置</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/4.jpg" class="lazyload"></p>
+<p>1）本科3年</p>
+<p>2）硕士1-2年</p>
+<p>3）博士3年</p>
+<p>4）专升本2年</p>
+<p>5）专升硕1-2年</p>
+<h2 id="No-5-院系设置"><a href="#No-5-院系设置" class="headerlink" title="No.5 院系设置"></a><center>No.5 院系设置</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/5.jpg" class="lazyload"></p>
+<p>马来西亚理工大学一共有12个学院：</p>
+<p>1）建筑环境学院</p>
+<p>2）土木工程学院</p>
+<p>3）电气工程学院</p>
+<p>4）机械工程学院</p>
+<p>5）自然科学学院</p>
+<p>6）计算机科学和信息系统学院</p>
+<p>7）化学及自然资源工程学院</p>
+<p>8）地理信息科学及工程学院</p>
+<p>9）教育学院</p>
+<p>10）管理及人力资源发展学院</p>
+<p>11）国际贸易学院</p>
+<p>12）商业和高级商业管理中心</p>
+<h2 id="No-6-专业设置"><a href="#No-6-专业设置" class="headerlink" title="No.6 专业设置"></a><center>No.6 专业设置</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/6.png" class="lazyload"></p>
+<p>马来西亚理工大学是一所综合型大学，专业非常广泛，有文、理、工、商、医科等各类专业。学校开设的主要专业有：电气工程、机电工程、电气控制与仪器、电子工程、电讯工程、计算机工程、微电子工程、医学电子工程、生物医药工程、机械工程、航空机械工程、汽车机械工程、航海技术机械工程、机械材料工程、工业机械工程、制造工程、工业设计、生物加工工程、天然气化学工程、化学工程、石油工程、高聚物化学工程、英语教育、电机工程、机械工程、沟通技巧、运动科学、土木工程、理科教育、计算机科学、工业物理学、工业化学、工业数学、工业生物学、材料物理学、健康物理学、生物学、物理学、化学、数学等170多个专业的本科、硕士和博士课程。</p>
+<p>艺术与人文：</p>
+<p>1）建筑(Architecture)</p>
+<p>2）历史、哲学与神学(History, Philosophy &amp; Theology)</p>
+<p>3）语言文学与语言学(Languages, Literature &amp; Linguistics)</p>
+<p>工程与技术：</p>
+<p>1）化学工程(Chemical Engineering)</p>
+<p>2）土木工程(Civil Engineering)</p>
+<p>3）电工电子工程(Electrical &amp; Electronic Engineering)</p>
+<p>4）一般工程(General Engineering)</p>
+<p>5）机械与航天工程(Mechanical &amp; Aerospace Engineering)</p>
+<p>生命科学：</p>
+<p>1）生物科学(Biological Sciences)</p>
+<p>2）体育科学(Sport Science)</p>
+<p>心理学：</p>
+<p>1）心理学(Psychology)</p>
+<p>物理科学：</p>
+<p>1）化学(Chemistry)</p>
+<p>2）地质学、环境学、地球和海洋科学(Geology, Environmental, Earth &amp; Marine Sciences)</p>
+<p>3）数学与统计(Mathematics &amp; Statistics)</p>
+<p>4）物理与天文学(Physics &amp; Astronomy)</p>
+<p>商业与经济学：</p>
+<p>1）会计与金融(Accounting &amp; Finance)</p>
+<p>2）商业与管理(Business &amp; Management)</p>
+<p>计算机科学：</p>
+<p>1）计算机科学(Computer Science)</p>
+<p>教育类：</p>
+<p>1）教育类(Education)</p>
+<h2 id="No-7-学校特色"><a href="#No-7-学校特色" class="headerlink" title="No.7 学校特色"></a><center>No.7 学校特色</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/7.jpg" class="lazyload"></p>
+<p>1）培养目标：利用自身优越的英语教学环境和多年为马来西亚国家培养出众多精英的强大师资力量为世界国家培养出国际性人才，共建和谐化地球。</p>
+<p>2）招生管理：大学规定批准招收的学生在行政上由高等教育中心（PKP）统一管理，教学管理上由各学院统一安排和实施，毕业文凭由国民大学统一颁发。</p>
+<p>3）学习方法：按照学院各专业的教学大纲的规定完成所有课程，和本地学生一起参加统一的学习、考试、实习和评估，便于交流沟通以及适应国外环境。部分涉及马来西亚文化、马来语以及部分公共课程由高等教育中心专门为国际学生开设，供有能力感兴趣的同学选修。</p>
+<p>4）授课语言：英语教学，利于英语能力的提高，同时学生可选择专业面广。</p>
+<p>5）授予学位：马来西亚理工大学学士学位（各专业）</p>
+<p>6）课程结构：大学公共课、各专业基础课、专业课I、专业课II、选修课</p>
+<p>7）授课方式：全日制授课，采取课堂教学、作业、辅导、项目课题、教学实习和论文等教学方式，部分专业课小班授课，每个班25人左右。</p>
+<p>8）学费费用：费用低廉，大大减少了家庭的经济压力和学生的心理负担；学生在课余时间可以打工，是工薪家庭学生出国留学的首选。</p>
+<p>9）校园环境：校园环境优美，领先的教学水平，一流的师资能力，并配备先进的实验器材和硬件设施。</p>
+<p>10）文化特色：马来西亚国家安宁，经济发展迅速，社会治安稳定，人民友好热情。</p>
+<p>11）签证难度：签证率高，无须经济担保，申请成功率几乎100%。</p>
+<h2 id="No-8-申请条件"><a href="#No-8-申请条件" class="headerlink" title="No.8 申请条件"></a><center>No.8 申请条件</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/8.jpg" class="lazyload"></p>
+<p>本科申请要求：</p>
+<p>1）应届或者往届的高中毕业生，成绩优秀;</p>
+<p>2）或大专毕业生或大学在读生，成绩优秀;</p>
+<p>3）或参加过高考并且被国内大学录取的学生将优先录取;</p>
+<p>4）或参加马来西亚政府举办的高中或者同等大学预科考试（至少12年从小学到高中的学习）；</p>
+<p>5）或普通教育证书 A-Level或者其它同等大学预科文凭；</p>
+<p>6）或其它被认可的同等资格，满足专业特殊要求；</p>
+<p>7）通过学校面试（在可能的情况下）；</p>
+<p>8）雅思5.5分以上，或托福iBT 60分以上，或英语考试测测评系统（TEEP）5.5分以上，或马来西亚大学英语测试（MUET）3分以上。</p>
+<p>硕士/博士申请要求：</p>
+<p>1）学历要求：中国国家教育部承认学历，有相关工作经验，GPA3.0以上;</p>
+<p>2）英语要求：雅思6.0分以上或托福iBT 80分以上。</p>
+<h2 id="No-9-学费费用"><a href="#No-9-学费费用" class="headerlink" title="No.9 学费费用"></a><center>No.9 学费费用</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/9.jpg" class="lazyload"></p>
+<p>本科（马来西亚林吉特RM）    </p>
+<p>1）学费：RM 6,800/学期    </p>
+<p>2）注册费：RM 20.00/人</p>
+<p>硕士/博士（马来西亚林吉特RM）    </p>
+<p>1）学费：RM 8,000/学期   </p>
+<h2 id="No-10-奖助学金"><a href="#No-10-奖助学金" class="headerlink" title="No.10 奖助学金"></a><center>No.10 奖助学金</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/10.jpg" class="lazyload"></p>
+<p>由马来西亚高等教育部Endowment Fund发起，旨在通过全额的资助，鼓励优秀的学生。</p>
+<p>1）数额：全额奖学金</p>
+<p>2）申请条件：CGPA达到3.75，英语、数学、专业课成绩将作为优先评选条件，并通过面试进行选拔。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>马来西亚理工大学是马来西亚最著名的国立大学之一，马来西亚国内排名第5名，学校藏书量大、设备齐全，校园里提供各种便利设施，为学生的生活和娱乐提供了各种方便。目前，学校和马来西亚政府，正在一起努力，把马来西亚理工大学建设成为“世界级大学”。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2><p>[1] UTM学校官网-<a href="http://www.utm.my" target="_blank" rel="noopener">www.utm.my</a></p>
+<p>[2] 维基百科-马来西亚理工大学</p>
+<p>[3] 百度百科-马来西亚工艺大学</p>
+<p>[4] 携程旅游-马来西亚理工大学</p>
+<p>[5] 东南亚留学-马来西亚工艺大学</p>
+<p>[6] Facebook-Universiti Teknologi Malaysia (UTM)</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">See Much</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E4%B8%96%E7%95%8C%E5%90%8D%E6%A0%A1/">世界名校</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200223/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/02/29/%E6%B3%B0%E5%9B%BD%E6%9C%80%E7%BE%8E%E7%9A%8410%E5%A4%A7%E6%B5%B7%E5%B2%9B%E6%B2%99%E6%BB%A9/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200229/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>泰国最美的10大海岛沙滩</span></div></a></div><div class="next-post pull_right"><a href="/2020/02/20/%E5%85%A8%E9%A9%AC13%E5%B7%9E%E4%B8%80%E5%B7%9E%E4%B8%80%E6%99%AF/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200220/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>全马13州一州一景</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/12/2020中马旅游年～中国与马来西亚的“钱”景到底有多大？/" title="2020中马旅游年～中国与马来西亚的“钱”景到底有多大？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200112/0.png"><div class="relatedPosts_title">2020中马旅游年～中国与马来西亚的“钱”景到底有多大？</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div><div class="relatedPosts_item"><a href="/2018/12/26/假如给我一个机会接触马来西亚的“掌上明珠”-仙本那/" title="假如给我一个机会接触马来西亚的“掌上明珠”-仙本那"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2018/201812/20181226/0.jpg"><div class="relatedPosts_title">假如给我一个机会接触马来西亚的“掌上明珠”-仙本那</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
