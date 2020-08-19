@@ -1,111 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻 | See Much</title><meta name="description" content="烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻"><meta name="keywords" content="烟霾,火灾"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻"><meta name="twitter:description" content="烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/0.png"><meta property="og:type" content="article"><meta property="og:title" content="烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻"><meta property="og:url" content="http://seemuch.org/2019/09/22/%E7%83%9F%E9%9C%BE%E8%AE%A9%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%99%BB%E4%B8%8A%E4%B8%96%E7%95%8C%E4%B9%8B%E5%B7%85%EF%BD%9E%E6%9D%A5%E8%87%AA%E5%8D%B0%E5%B0%BC%E6%9E%97%E7%81%AB%E7%9A%84%E7%A5%9E%E5%8A%A9%E6%94%BB/"><meta property="og:site_name" content="See Much"><meta property="og:description" content="烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/0.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
 
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2019/09/22/%E7%83%9F%E9%9C%BE%E8%AE%A9%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%99%BB%E4%B8%8A%E4%B8%96%E7%95%8C%E4%B9%8B%E5%B7%85%EF%BD%9E%E6%9D%A5%E8%87%AA%E5%8D%B0%E5%B0%BC%E6%9E%97%E7%81%AB%E7%9A%84%E7%A5%9E%E5%8A%A9%E6%94%BB/"><link rel="prev" title="马来西亚各地的家庭收入～月入5k马币也拖后腿？" href="/http:/seemuch.org/2019/09/27/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E5%9C%B0%E7%9A%84%E5%AE%B6%E5%BA%AD%E6%94%B6%E5%85%A5%EF%BD%9E%E6%9C%88%E5%85%A55k%E9%A9%AC%E5%B8%81%E4%B9%9F%E6%8B%96%E5%90%8E%E8%85%BF%EF%BC%9F/"><link rel="next" title="2020年QS世界大学毕业生就业力排名～马来西亚+新加坡篇" href="/http:/seemuch.org/2019/09/20/2020%E5%B9%B4QS%E4%B8%96%E7%95%8C%E5%A4%A7%E5%AD%A6%E6%AF%95%E4%B8%9A%E7%94%9F%E5%B0%B1%E4%B8%9A%E5%8A%9B%E6%8E%92%E5%90%8D%EF%BD%9E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A-%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%AF%87/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2019/09/22/%E7%83%9F%E9%9C%BE%E8%AE%A9%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%99%BB%E4%B8%8A%E4%B8%96%E7%95%8C%E4%B9%8B%E5%B7%85%EF%BD%9E%E6%9D%A5%E8%87%AA%E5%8D%B0%E5%B0%BC%E6%9E%97%E7%81%AB%E7%9A%84%E7%A5%9E%E5%8A%A9%E6%94%BB/","source":"来源: See Much","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
-
-}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">See Much</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">199</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">185</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 常用网站</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#各路武林豪强"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">各路武林豪强</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#被坑的马来西亚"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">被坑的马来西亚</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#新加坡也不好过"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">新加坡也不好过</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#印尼大火怎样了"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">印尼大火怎样了</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#烟霾引发更多哮喘"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">烟霾引发更多哮喘</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#烟霾预防措施"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">烟霾预防措施</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#各路武林豪强"><span class="toc-number">1.</span> <span class="toc-text">各路武林豪强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#被坑的马来西亚"><span class="toc-number">2.</span> <span class="toc-text">被坑的马来西亚</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新加坡也不好过"><span class="toc-number">3.</span> <span class="toc-text">新加坡也不好过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#印尼大火怎样了"><span class="toc-number">4.</span> <span class="toc-text">印尼大火怎样了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#烟霾引发更多哮喘"><span class="toc-number">5.</span> <span class="toc-text">烟霾引发更多哮喘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#烟霾预防措施"><span class="toc-number">6.</span> <span class="toc-text">烟霾预防措施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">7.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/0.png)"><div id="post-info"><div id="post-title"><div class="posttitle">烟霾让马来西亚登上世界之巅～来自印尼林火的神助攻</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-09-22<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-08</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>老J</center>
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/0.png" class="lazyload"></p>
-<p>前天，<br>世界空气质量指数（WAQI）<br>发布网站信息<br>马来西亚空气污染指数<br>曾一度登上世界之巅<br>（污染指数266点）<br>打败了武林中的各种国家<br>可以封神了！<br>大马之声的小伙伴<br>表示很受伤！<br>其实，这些<br>都归功于队友——<br>印尼林火的神助攻！！！</p>
-<h2 id="各路武林豪强"><a href="#各路武林豪强" class="headerlink" title="各路武林豪强"></a><center>各路武林豪强</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/10.png" class="lazyload"></p>
-<p>截止到前天下午<br>马来西亚的空气污染指数<br>最高可达270点（非常不健康）<br>而巴基斯坦鹤立鸡群<br>是污指数最高国家<br>（达到571点）<br>其他空气污染的国家包括<br>伊朗（371点）<br>印尼（332点）<br>印度（313点）<br>以及中国（247点）<br>另外，<br>邻国新加坡和北部泰国<br>空气也不咋滴，污染指数<br>分别为117点和155点。</p>
-<p>而从昨天开始，<br>马来西亚的空气污染<br>开始收敛了一点！<br>已退居二线（第10位）<br>印度、印尼霸榜！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/11.png" class="lazyload"></p>
-<h2 id="被坑的马来西亚"><a href="#被坑的马来西亚" class="headerlink" title="被坑的马来西亚"></a><center>被坑的马来西亚</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/20.jpg" class="lazyload"></p>
-<p>由于印尼林火<br>8月份开始，季风<br>把烟霾带到马来西亚<br>来到首都吉隆坡<br>吞没了大马的古晋<br>逼停了槟城的航班<br>多个城市遭殃<br>于是，马来西亚人民<br>发出了严肃的抗议</p>
-<p>截至到昨天下午<br>吉隆坡的空气依然不健康<br>unhealthy呀!</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/21.png" class="lazyload"></p>
-<h2 id="新加坡也不好过"><a href="#新加坡也不好过" class="headerlink" title="新加坡也不好过"></a><center>新加坡也不好过</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/30.jpg" class="lazyload"></p>
-<p>夹在印尼和马来西亚中间<br>新加坡也不好受<br>新加坡环境局预测未来一段时间<br>一个多月了<br>新加坡还是有轻微烟霾<br>这也是自2015年以来<br>印尼林火最多的一次<br>回想2015那次烟霾<br>夺走数10人性命<br>市民的生活、工作和学习<br>受到影响不用说<br>连新加坡的旅游业<br>也受到沉重打击<br>还被游客调侃<br>一个月看不见蓝天<br>希望往事不再重演</p>
-<p>不过，昨天下午<br>狮城的空气<br>依然不容乐观<br>不健康！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/31.png" class="lazyload"></p>
-<h2 id="印尼大火怎样了"><a href="#印尼大火怎样了" class="headerlink" title="印尼大火怎样了"></a><center>印尼大火怎样了</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/40.jpg" class="lazyload"></p>
-<p>虽然大马和狮城的烟霾<br>归功于印尼的苏门答腊等地<br>的林火<br>其实是由于<br>气候和烧芭的双重作用<br>因为马六甲对岸的<br>印尼苏门答腊等地<br>至今保留了习俗：<br>焚烧芭蕉树<br>来开荒和施肥。</p>
-<p>另外，印尼当地的泥沼地<br>富含碳容易起火<br>加上今年漫长的干燥<br>一旦被烧很难控制<br>而且产生浓浓的烟雾<br>所以空气就被烟霾笼罩</p>
-<p>其实，人家的首都雅加达<br>也被害惨了好吗！</p>
-<p>美国国家航空航天局（NASA）<br>通过卫星拍摄加里曼丹<br>公布了印尼烟霾照片<br>显示2019年的烟霾<br>严重度直逼2015年那次</p>
-<p>2015年的大火事件<br>污染了印尼自己<br>还玷污了大马、新加坡<br>文莱、泰国南部<br>越南、菲律宾<br>柬埔寨和文莱！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/41.png" class="lazyload"></p>
-<h2 id="烟霾引发更多哮喘"><a href="#烟霾引发更多哮喘" class="headerlink" title="烟霾引发更多哮喘"></a><center>烟霾引发更多哮喘</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/50.png" class="lazyload"></p>
-<p>马来西亚的卫生部近日发现<br>在烟霾地区的31间诊所<br>哮喘病病例<br>增加了15.8%！</p>
-<p>卫生部将持续关注哮喘病例<br>并建议儿童、老人<br>吸烟者、支气管炎、肺炎<br>和过敏的民众<br>应及时采取预防措施<br>减少烟霾对健康的伤害</p>
-<h2 id="烟霾预防措施"><a href="#烟霾预防措施" class="headerlink" title="烟霾预防措施"></a><center>烟霾预防措施</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/60.jpg" class="lazyload"></p>
-<p>1.减少户外体能运动。<br>2.若空污指数超过100，需停止户外活动。<br>3.关闭窗户，减少雾霾入屋。<br>4.可以的话，安装空气净化器。<br>5.避免吸烟，定时维持室内清洁。<br>6.每天至少喝8杯水，保持身体水分充足。<br>7.在户外，尽量带上口罩。<br>8.若患有咳嗽、感冒、哮喘，或眼部不适等症状，及时到附近诊所医院治疗。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>一个多月了，<br>我们没见过蓝天<br>朋友在新加坡也表示同意<br>不管怎样<br>希望印尼林火早日扑灭吧<br>提醒各位<br>保持清洁远离烟霾<br>身体健康才最重要！</p>
-<p>最后，<br>大马之声全体小伙伴<br>祝愿大家：<br>金刚不坏体，<br>烟霾又如何，<br>刀枪不入！</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">See Much</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%83%9F%E9%9C%BE/">烟霾</a><a class="post-meta__tags" href="/tags/%E7%81%AB%E7%81%BE/">火灾</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190922/0.png" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/09/27/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E5%9C%B0%E7%9A%84%E5%AE%B6%E5%BA%AD%E6%94%B6%E5%85%A5%EF%BD%9E%E6%9C%88%E5%85%A55k%E9%A9%AC%E5%B8%81%E4%B9%9F%E6%8B%96%E5%90%8E%E8%85%BF%EF%BC%9F/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190927/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚各地的家庭收入～月入5k马币也拖后腿？</span></div></a></div><div class="next-post pull_right"><a href="/2019/09/20/2020%E5%B9%B4QS%E4%B8%96%E7%95%8C%E5%A4%A7%E5%AD%A6%E6%AF%95%E4%B8%9A%E7%94%9F%E5%B0%B1%E4%B8%9A%E5%8A%9B%E6%8E%92%E5%90%8D%EF%BD%9E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A-%E6%96%B0%E5%8A%A0%E5%9D%A1%E7%AF%87/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190820/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>2020年QS世界大学毕业生就业力排名～马来西亚+新加坡篇</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
+
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
+
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug
