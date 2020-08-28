@@ -1,79 +1,105 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>国外租车攻略～马来西亚租车自驾指南 | See Much</title><meta name="description" content="国外租车攻略～马来西亚租车自驾指南"><meta name="keywords" content="马来西亚,租车"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="国外租车攻略～马来西亚租车自驾指南"><meta name="twitter:description" content="国外租车攻略～马来西亚租车自驾指南"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="国外租车攻略～马来西亚租车自驾指南"><meta property="og:url" content="http://seemuch.org/2019/12/02/%E5%9B%BD%E5%A4%96%E7%A7%9F%E8%BD%A6%E6%94%BB%E7%95%A5%EF%BD%9E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%A7%9F%E8%BD%A6%E8%87%AA%E9%A9%BE%E6%8C%87%E5%8D%97/"><meta property="og:site_name" content="See Much"><meta property="og:description" content="国外租车攻略～马来西亚租车自驾指南"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2019/12/02/%E5%9B%BD%E5%A4%96%E7%A7%9F%E8%BD%A6%E6%94%BB%E7%95%A5%EF%BD%9E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%A7%9F%E8%BD%A6%E8%87%AA%E9%A9%BE%E6%8C%87%E5%8D%97/"><link rel="prev" title="吉隆坡租房-Pantai Panorama公寓" href="/http:/seemuch.org/2019/12/05/%E5%90%89%E9%9A%86%E5%9D%A1%E7%A7%9F%E6%88%BF-Pantai-Panorama%E5%85%AC%E5%AF%93/"><link rel="next" title="大马柔佛州（Johor）你不知道的28个景点" href="/http:/seemuch.org/2019/12/01/%E5%A4%A7%E9%A9%AC%E6%9F%94%E4%BD%9B%E5%B7%9E%EF%BC%88Johor%EF%BC%89%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%8428%E4%B8%AA%E6%99%AF%E7%82%B9/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2019/12/02/%E5%9B%BD%E5%A4%96%E7%A7%9F%E8%BD%A6%E6%94%BB%E7%95%A5%EF%BD%9E%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%A7%9F%E8%BD%A6%E8%87%AA%E9%A9%BE%E6%8C%87%E5%8D%97/","source":"来源: See Much","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">See Much</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">209</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">186</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">26</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#必要证件"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">必要证件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#租车平台"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">租车平台</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#马来西亚租车说明"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">马来西亚租车说明</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#关于在马来西亚提车"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">关于在马来西亚提车</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#马来西亚驾车须知"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">马来西亚驾车须知</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">最后</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#必要证件"><span class="toc-number">2.</span> <span class="toc-text">必要证件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#租车平台"><span class="toc-number">3.</span> <span class="toc-text">租车平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#马来西亚租车说明"><span class="toc-number">4.</span> <span class="toc-text">马来西亚租车说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于在马来西亚提车"><span class="toc-number">5.</span> <span class="toc-text">关于在马来西亚提车</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#马来西亚驾车须知"><span class="toc-number">6.</span> <span class="toc-text">马来西亚驾车须知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">7.</span> <span class="toc-text">最后</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">国外租车攻略～马来西亚租车自驾指南</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-02<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-08</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E6%94%BB%E7%95%A5%E6%8C%87%E5%8D%97/">攻略指南</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>FeiFei</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p>出国旅游或办事的时候，不少人经常为交通出行而烦恼，身边要是有辆车该多好！于是，短期租车成了很多出国旅游和商务人士的选择，那在国外租车都要哪些证件呢？怎么租车呢？不要着急！下面，FeiFei将以外国人在马来西亚租车为例，告诉你怎么租车。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/0.jpg" class="lazyload"></p>
+<h2 id="必要证件"><a href="#必要证件" class="headerlink" title="必要证件"></a><center>必要证件</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/1.jpg" class="lazyload"></p>
+<p>首先护照肯定是必不可少的，其次，如果你本国的驾照在国外不受待见的话，你就需要办理国际驾照认证了！</p>
+<p>虽然很多国家有国际驾照，但是这个在中国是没有的，因为中国大陆没有加入国际驾照公约组织。因此，那些宣传可以给中国人办理国际驾照的，都是骗钱！那没有国际驾照，中国人在国外就不能开车了吗？</p>
+<p>其实，有个东西FeiFei想告诉你，中国驾照国际翻译认证件，在很多国家是可以租车的，比如在马来西亚就可以租车。</p>
+<p>那中国驾照国际翻译认证件要如何办理呢！其实，公证件可通过中国各地公证处办理，你可携带你的中国驾照原件及复印件、身份证原件及复印件、户口本原件及复印件前往你所在城市的公证处申请办理驾照英文公证件即可,通常3-5个工作日既可以拿到手。</p>
+<h2 id="租车平台"><a href="#租车平台" class="headerlink" title="租车平台"></a><center>租车平台</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/2.jpg" class="lazyload"></p>
+<p>目前，国外租车的平台和公司有不少，适合全球华人和中国人的租车平台，主要有：<a href="https://www.zuzuche.com/" target="_blank" rel="noopener">租租车</a>和<a href="https://car.ctrip.com/" target="_blank" rel="noopener">携程租车</a>。另外，租租车平台还可以办理中国驾照国际翻译认证件哦！还是免费的！另外，租租车还有闪租服务，无需国际驾照，也不需要驾照翻译件，可以直接用国内驾照开车。</p>
+<p>在马来西亚，也可以在Galaxy Asia 公司租车，全程是华人接待，纯中文交流无死角。</p>
+<h2 id="马来西亚租车说明"><a href="#马来西亚租车说明" class="headerlink" title="马来西亚租车说明"></a><center>马来西亚租车说明</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/3.jpg" class="lazyload"></p>
+<p>在马来西亚驾车是个很实惠的选择，因为马来西亚的油价便宜，大概3-4元人民币一升，过路费也便宜，0.2元左右一公里。另外，由于马来西亚不是大晴天就是大雨天，开车比较舒服。</p>
+<p>在马来西亚租车的话，建议在机场开始租，最后在机场还，因为机场可以租车的公司多。记得提前在网上预订好，要不然，现租可能没有车子！</p>
+<h2 id="关于在马来西亚提车"><a href="#关于在马来西亚提车" class="headerlink" title="关于在马来西亚提车"></a><center>关于在马来西亚提车</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/4.jpg" class="lazyload"></p>
+<p>在马来西亚取车的时候，要提前把取车单等资料打印准备好，跟工作人员确认后，就可以去停车场取车了。开车前，记得要检查一下车辆状况，比如确认有没有刮痕、车灯和空调是否正常，确认好车没有问题之后就可以签字交钱了！</p>
+<h2 id="马来西亚驾车须知"><a href="#马来西亚驾车须知" class="headerlink" title="马来西亚驾车须知"></a><center>马来西亚驾车须知</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/5.jpg" class="lazyload"></p>
+<p>1）在马来西亚开车之前，一定要提前买一张Touch n Go卡，可以在加油站、7-11便利店、高速休息区等柜台购买或充值。因为很多过路站、高速站和停车场都可以用这张卡，有了这张卡，开车方便很多！</p>
+<p>2）加油记得尽量用95号的油，黄色抢头的那个，可以找工作人员帮忙，给他现金。或者自己在加油站柜台告诉工作人员油枪号码和加油的钱，他们可以给你设置，付完钱，你可以直接过去拿油枪自助。</p>
+<p>3）因为马来西亚的车是右舵，和中国、美国等相反，很容易弄错行驶方向和信号灯方向。还有，转弯的时候，右转要等红灯，左转不用。如果是多车道，一般右侧车道是快车道，左侧是慢车道，停车也是靠左。</p>
+<p>4）马来西亚的高速平时不怎么堵车的，节假日可能会堵一下，另外，FeiFei告诉你一个不好的消息：马来西亚的路标都是马来文！所以，驾车建议使用谷歌地图导航。当然了，马来西亚人的路权意识还是很强的，行车谦让做得也不错！</p>
+<p>5）如果在驾车过程中遇到各种问题，要及时跟租车平台或租车公司联系和沟通。另外，马来西亚的摩托车很多，说不定就突然从哪里窜出来，而且摩托车是可以上高速的，所以转弯、超车都要小心。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>出门在外，租车就是图个方便。当然驾车安全和舒适也是很重要的，在国外租车记得要提前准备好相关文件，提前在租车平台预订好，在当地驾车要了解和遵守当地的驾照规则！最后，FeiFei祝你们在马来西亚驾车愉快！</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">See Much</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E7%A7%9F%E8%BD%A6/">租车</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191202/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/12/05/%E5%90%89%E9%9A%86%E5%9D%A1%E7%A7%9F%E6%88%BF-Pantai-Panorama%E5%85%AC%E5%AF%93/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191205/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>吉隆坡租房-Pantai Panorama公寓</span></div></a></div><div class="next-post pull_right"><a href="/2019/12/01/%E5%A4%A7%E9%A9%AC%E6%9F%94%E4%BD%9B%E5%B7%9E%EF%BC%88Johor%EF%BC%89%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%8428%E4%B8%AA%E6%99%AF%E7%82%B9/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191201/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>大马柔佛州（Johor）你不知道的28个景点</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/12/2020中马旅游年～中国与马来西亚的“钱”景到底有多大？/" title="2020中马旅游年～中国与马来西亚的“钱”景到底有多大？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200112/0.png"><div class="relatedPosts_title">2020中马旅游年～中国与马来西亚的“钱”景到底有多大？</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div><div class="relatedPosts_item"><a href="/2019/08/20/21款马来西亚超实用的手机APP推荐/" title="21款马来西亚超实用的手机APP推荐"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190820/0.jpg"><div class="relatedPosts_title">21款马来西亚超实用的手机APP推荐</div></a></div><div class="relatedPosts_item"><a href="/2018/12/01/不应该来马来西亚的20个理由/" title="不应该来马来西亚的20个理由"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181201/0.jpg"><div class="relatedPosts_title">不应该来马来西亚的20个理由</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/10/29/中国驾照如何在马来西亚开车/" title="中国驾照如何在马来西亚开车"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191029/0.jpg"><div class="relatedPosts_title">中国驾照如何在马来西亚开车</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
