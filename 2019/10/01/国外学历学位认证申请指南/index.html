@@ -1,79 +1,188 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>国外学历学位认证申请指南 | See Much</title><meta name="description" content="国外学历学位认证申请指南"><meta name="keywords" content="留学,学历认证,学位认证"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="国外学历学位认证申请指南"><meta name="twitter:description" content="国外学历学位认证申请指南"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/0.png"><meta property="og:type" content="article"><meta property="og:title" content="国外学历学位认证申请指南"><meta property="og:url" content="http://seemuch.org/2019/10/01/%E5%9B%BD%E5%A4%96%E5%AD%A6%E5%8E%86%E5%AD%A6%E4%BD%8D%E8%AE%A4%E8%AF%81%E7%94%B3%E8%AF%B7%E6%8C%87%E5%8D%97/"><meta property="og:site_name" content="See Much"><meta property="og:description" content="国外学历学位认证申请指南"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/0.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2019/10/01/%E5%9B%BD%E5%A4%96%E5%AD%A6%E5%8E%86%E5%AD%A6%E4%BD%8D%E8%AE%A4%E8%AF%81%E7%94%B3%E8%AF%B7%E6%8C%87%E5%8D%97/"><link rel="prev" title="榴莲吃货们有福了 | 跟着大马榴莲地图从南吃到北～" href="/http:/seemuch.org/2019/10/05/%E6%A6%B4%E8%8E%B2%E5%90%83%E8%B4%A7%E4%BB%AC%E6%9C%89%E7%A6%8F%E4%BA%86/"><link rel="next" title="马来西亚各地的家庭收入～月入5k马币也拖后腿？" href="/http:/seemuch.org/2019/09/27/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E5%9C%B0%E7%9A%84%E5%AE%B6%E5%BA%AD%E6%94%B6%E5%85%A5%EF%BD%9E%E6%9C%88%E5%85%A55k%E9%A9%AC%E5%B8%81%E4%B9%9F%E6%8B%96%E5%90%8E%E8%85%BF%EF%BC%9F/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2019/10/01/%E5%9B%BD%E5%A4%96%E5%AD%A6%E5%8E%86%E5%AD%A6%E4%BD%8D%E8%AE%A4%E8%AF%81%E7%94%B3%E8%AF%B7%E6%8C%87%E5%8D%97/","source":"来源: See Much","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">See Much</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">214</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">192</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序言"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序言</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#取消纸质认证"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">取消纸质认证</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#新认证系统上线"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">新认证系统上线</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#学历学位认证办理流程"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">学历学位认证办理流程</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#学历学位认证申请材料"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">学历学位认证申请材料</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.1.</span> <span class="toc_mobile_items-text">国外学历学位认证申请材料</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.2.</span> <span class="toc_mobile_items-text">港澳台学历学位认证申请材料</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#null"><span class="toc_mobile_items-number">5.0.3.</span> <span class="toc_mobile_items-text">中外合作办学学历学位认证申请材料</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#联系方式"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">联系方式</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序言"><span class="toc-number">1.</span> <span class="toc-text">序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#取消纸质认证"><span class="toc-number">2.</span> <span class="toc-text">取消纸质认证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新认证系统上线"><span class="toc-number">3.</span> <span class="toc-text">新认证系统上线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学历学位认证办理流程"><span class="toc-number">4.</span> <span class="toc-text">学历学位认证办理流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学历学位认证申请材料"><span class="toc-number">5.</span> <span class="toc-text">学历学位认证申请材料</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.1.</span> <span class="toc-text">国外学历学位认证申请材料</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.2.</span> <span class="toc-text">港澳台学历学位认证申请材料</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">5.0.3.</span> <span class="toc-text">中外合作办学学历学位认证申请材料</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#联系方式"><span class="toc-number">6.</span> <span class="toc-text">联系方式</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/0.png)"><div id="post-info"><div id="post-title"><div class="posttitle">国外学历学位认证申请指南</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-10-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-08</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%95%99%E5%AD%A6%E7%A7%BB%E6%B0%91/">留学移民</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>老J</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+<h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a><center>序言</center></h2><p>出国留学本来是一件很好的事，不过回国之后，假如不能顺利完成国外的学历学位认证，就不好了！那作为中国留学生，回国之后的国外学历学位要怎样认证呢？又如何申请呢？</p>
+<p>请看下文详细介绍（内容来自“中国教育部留学服务中心“官网最新资讯）</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/0.png" class="lazyload"></p>
+<h2 id="取消纸质认证"><a href="#取消纸质认证" class="headerlink" title="取消纸质认证"></a><center>取消纸质认证</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/10.jpg" class="lazyload"></p>
+<p>为进一步优化认证服务流程，改进“互联网+国（境）外学历学位认证服务”的工作，国（境）外学历学位认证系统预计将于2019年5月下旬完成升级改造。届时我中心将不再为申请者提供纸质认证结果，改为统一发放标准版式文档格式的电子证照认证结果。同时，电子证照认证结果中，认证编号格式也有所调整，改成12位数字编号。</p>
+<p>如广大申请者在升学、就业等事项中仍需提供纸质认证结果作为存档依据的,可自行打印带有电子签章的电子版认证书，经过在线核验后，与原纸质认证结果具有同等法律效力。</p>
+<p>以上特告，感谢社会各界对我中心工作的支持和配合，敬请关注我中心政务平台上线具体安排。</p>
+<p>教育部留学服务中心</p>
+<p>2019年5月5日</p>
+<h2 id="新认证系统上线"><a href="#新认证系统上线" class="headerlink" title="新认证系统上线"></a><center>新认证系统上线</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/20.jpg" class="lazyload"></p>
+<p>为贯彻落实国务院关于“互联网+”政务服务的要求，根据《国务院关于在线政务服务的若干规定》（中华人民共和国国务院第716号令），我中心将对国（境）外学历学位认证系统进行升级改造，新版认证系统将于2019年6月28日上线试运行。现将有关事项通知如下：</p>
+<p>一、 6月28日进行系统升级，上午10点新版认证系统正式对申请人开放。届时，进入中国留学网的留学政务服务平台可在线办理认证申请。</p>
+<p>二、 已经进入认证评估流程的申请人，认证评估工作仍将正常进行。在旧版系统中提交的申请，还需在旧版系统中查询进度及申请后续服务。旧版认证系统不再接收新认证申请。</p>
+<p>三、 新版认证系统在如下方面进行了调整：</p>
+<p>1.接入中国政务服务平台，认证系统的中国内地居民注册用户将需通过全国统一身份实人认证；</p>
+<p>2.系统上线后，“开证明”服务将即时进行调整，详情请查看《关于对“开证明”服务进行调整的通知》；</p>
+<p>3.新系统上线后，认证结果将以电子证照形式发布，不再提供纸质认证结果。详情请查看《关于国（境）外学历学位认证服务取消纸质认证结果的通知》；</p>
+<p>4.通过实人认证的中国内地居民，申请材料中可以不再提交留学期间护照或通行证上距申请日期10年以内的出入境章页面。详情请查看新版《国（境）外学历学位认证申请材料清单》（适用于新系统上线后）。</p>
+<p>四、新系统上线后，《国（境）外学历学位认证申请材料清单》、《常见问题解答》及《认证申请者使用手册》均有更新，供使用新系统在线注册及申请的用户查阅使用。</p>
+<p>五、在新认证系统使用过程中，如遇问题，申请人可发送邮件至<a href="mailto:rzxxtzx@cscse.edu.cn" target="_blank" rel="noopener">rzxxtzx@cscse.edu.cn</a>咨询（如为系统操作问题，建议附上系统问题页面截图），或拨打电话010-62677750（系统操作问题）,010-62677925（系统技术问题）咨询。</p>
+<p><a href="http://zwfwbl.cscse.edu.cn/authentication/Reconsideration" target="_blank" rel="noopener">在线办理入口</a></p>
+<p>教育部留学服务中心</p>
+<p>2019年6月25日</p>
+<h2 id="学历学位认证办理流程"><a href="#学历学位认证办理流程" class="headerlink" title="学历学位认证办理流程"></a><center>学历学位认证办理流程</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/30.png" class="lazyload"></p>
+<p>流程图</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/31.jpg" class="lazyload"></p>
+<h2 id="学历学位认证申请材料"><a href="#学历学位认证申请材料" class="headerlink" title="学历学位认证申请材料"></a><center>学历学位认证申请材料</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/40.jpg" class="lazyload"></p>
+<h4><center>国外学历学位认证申请材料</center></h4>
+
+<p>所有国别均需提供以下申请材料，请务必仔细阅读以下申请材料说明。部分国家还需提供额外申请材料，详情见下文中“五、其他相关材料”，并以认证申请系统中的提示信息为准。</p>
+<p>在线申请时，需上传申请材料原件的彩色扫描件。</p>
+<p><b>1.需要认证的国外文凭证书</b></p>
+<p>（1）需要认证的国外学文凭证书一般为所在国的官方语言书写，如获得两种语言的文凭证书，源语言文凭证书必须上传，其他语言可选择性上传；</p>
+<p>（2）如需要认证的国外学历学位证书或高等教育文凭的正反面均有文字图案，应同时提供其正反面的扫描件；</p>
+<p>（3）申请者如无法提供获颁的文凭证书，我中心原则上无法提供认证服务。但如系文凭证书丢失且无法补办，或确已获得学位，但证书延迟颁发的情况，请申请者仔细阅读以下文字，确保满足条件后可按要求提交申请材料。</p>
+<p>A. 已被授予学位，但尚未取得学位证书的情况：</p>
+<p>如确系有入职、升学等迫切需求，且预计证书颁授时间间隔较长的的申请者，可提供急需认证服务的合理化证明材料（如用人单位函件、录取通知、考试通知等），持院校官方出具的已授予学位的证明信(通常由学生注册部门或教务部门开具，证明信上必须阐明已授予申请者学位/文凭的事实，已授予学位/文凭的名称及授予时间)，并提供《文凭证书无法提交声明》（下载模板，填写后上传）。请注意，此类申请者还需提交学习期间完整成绩单；</p>
+<p>B. 证书丢失的情况：</p>
+<p>如证书丢失，请申请者向颁证院校申请补发证书后再提交认证申请，如颁证院校无法补发证书则应提供证书副本、或院校官方出具的学位授予证明(通常由学生注册部门或教务部门开具)，并提供《文凭证书无法提交声明》（下载模板，填写后上传）。请注意，此类申请者还需提交学习期间完整成绩单。</p>
+<p>请注意，上述A和B情况中的“证明信”往往核查困难，因此评估时间有可能超出文凭证书的正常认证周期，甚至可能无法通过认证评估。持“证明信”提交申请获得的认证结果与持文凭证书提交申请获得的认证结果有可能存在差异。在认证评估完成后，我中心不再受理要求替换认证对象的复核申请。</p>
+<p><b>2.国外学习期间使用的护照</b></p>
+<p>国外学习期间使用的护照用于判断申请者的个人信息、学习地点、及学习时间等情况，是认证评估所需的重要材料。在国外学习的申请者应提供留学期间使用的旅行证件（包括护照、旅行证等），需扫描上传的内容包括：首页（个人信息页）、学习期间签证页（不在护照上的电子签或居留卡也需提供）。如所认证的文凭证书早于10年前颁发，申请者还需提供留学期间护照上所有的出入境章。</p>
+<p><b>3.一张二寸证件照片</b></p>
+<p>本人近期标准证件照片，底色不限。</p>
+<p><b>4.按留服中心要求填写并签署的国（境）外文凭证书核查授权声明</b></p>
+<p>按照各国各院校的要求，我中心核查文凭证书真伪需获得证书持有人的书面授权。通用版《授权声明》适用于多数国别和院校（也可在申请系统中下载）。请申请者在空白填写处使用英文或留学国源语言填写，签名处务必由本人亲笔手写签名，以保证核查效力。少数院校对授权内容有特殊要求，详情点击下面的国别查看。</p>
+<p><b>5.其他相关材料</b></p>
+<p>（1）在国外颁证院校学习时间不满足学制要求的申请者务必提供学习期间完整成绩单或研究证明；</p>
+<p>（2）有多国、多校学习经历，或系在第二国学习获颁第三国文凭证书的申请者，务必提交学习期间完整成绩单，以及留学期间护照上学习所在国的所有出入境章；</p>
+<p>（3）为了便于准确判断申请者的专业领域，建议申请者提交学习期间完整成绩单；</p>
+<p>（4）由于少数国别教育制度的差异，日本、韩国、英国、新加坡、菲律宾、巴基斯坦、马来西亚、意大利、西班牙、法国、匈牙利、爱尔兰、俄罗斯、白俄罗斯、乌克兰还需提供额外申请材料。</p>
+<p>例如：</p>
+<p>A.新加坡</p>
+<p>在认证范围内新加坡私立教育机构就读获得第三国院校证书的申请者，请提交新加坡私立教育机构出具的成绩单或学习证明。</p>
+<p>在尚未纳入认证范围的新加坡私立教育机构学习获得的文凭证书的申请者，请先查阅所就读的院校是否已在CPE注册并获得4年期信托认证，如已获认证，建议请新加坡私立教育机构或颁证院校与我中心取得联系（<a href="mailto:renzheng@cscse.edu.cn" target="_blank" rel="noopener">renzheng@cscse.edu.cn</a>）。</p>
+<p>如在新加坡所就读的院校尚未在CPE 注册，或尚未获得4年期信托认证，暂时不在我中心认证范围内。</p>
+<p>B.马来西亚</p>
+<p>在马来西亚就读双联课程的申请者，须提交马来西亚校方出具的成绩单或学习证明。</p>
+<h4><center>港澳台学历学位认证申请材料</center></h4>
+
+<p>特别提示：在线申请时，需上传申请材料原件的彩色扫描件。</p>
+<p><b>一、需要认证的港澳台地区文凭证书</b></p>
+<p>1.申请者如无法提供获颁的文凭证书，我中心原则上无法提供认证服务。但如系文凭证书丢失且无法补办，或确已获得学位，但证书延迟颁发的情况，请申请者仔细阅读以下文字，确保满足条件后可按要求提交申请材料。</p>
+<p>A. 已被授予学位，但尚未取得学位证书的情况：</p>
+<p>如确系有入职、升学等迫切需求，且预计证书颁授时间间隔较长的的申请者，可提供急需认证服务的合理化证明材料（如用人单位函件、录取通知、考试通知等），持院校官方出具的已授予学位的证明信(通常由学生注册部门或教务部门开具，证明信上必须阐明已授予申请者学位/文凭的事实，已授予学位/文凭的名称及授予时间)，并提供《文凭证书无法提交声明》（下载模板，填写后上传）。请注意，此类申请者还需提交学习期间完整成绩单；</p>
+<p>B. 证书丢失的情况：</p>
+<p>如证书丢失，请申请者向颁证院校申请补发证书后再提交认证申请，如颁证院校无法补发证书则应提供证书副本、或院校官方出具的学位授予证明(通常由学生注册部门或教务部门开具)，并提供《文凭证书无法提交声明》（下载模板，填写后上传）。请注意，此类申请者还需提交学习期间完整成绩单。</p>
+<p>请注意，上述A和B情况中的“证明信”往往核查困难，因此评估时间有可能超出文凭证书的正常认证周期，甚至可能无法通过认证评估。持“证明信”提交申请获得的认证结果与持文凭证书提交申请获得的认证结果有可能存在差异。在认证评估完成后，我中心不再受理要求替换认证对象的复核申请。</p>
+<p>2.获得台湾地区文凭证书的申请者请提交中文学位证书或高等教育文凭。</p>
+<p><b>二、在境外学习期间使用的通行证件及签注</b></p>
+<p>通行证件及签注用于判断申请者的个人信息、学习地点、及学习时间等情况，是认证评估所需的重要材料。</p>
+<p>内地居民：在港澳台地区学习的内地居民应提供学习期间使用的通行证。需扫描上传的内容包括：个人信息页、学习期间签注记录（卡式通行证需提交正面及背面）。如所认证的文凭证书早于10年前颁发，申请者还需提供学习期间通行证上所有的出入境章；</p>
+<p>港澳台居民：为准确获取港澳台居民的个人信息，建议申请者提供目前有效的港澳居民来往内地通行证/台湾居民来往大陆通行证的个人信息页（卡式通行证需提交正面）；如未办理过通行证，则应提供本地身份证件；如系在非长期居住地学习的情况，还需提供学习期间使用旅行证件的签注及出入境记录；</p>
+<p>外籍人士：本人学习期间所使用的护照首页（个人信息页），及签证页和出入境章；如因免签政策等因素影响，确无签证及出入境章，则可不提供。如学习期间护照已过期，还需提供有效期内护照首页（个人信息页）。</p>
+<p><b>三、一张二寸证件照片</b></p>
+<p>本人近期标准证件照片，底色不限。</p>
+<p><b>四、按留服中心要求填写并签署的国（境）外文凭证书核查授权声明</b></p>
+<p>说明：按照港澳台地区各院校的要求，我中心核查文凭证书真伪需获得证书持有人的书面授权。点击下载《授权声明》（也可在申请系统中下载），并在空白填写处使用中英文填写，签名处需手写签名，以保证核查效力。因核查需要，香港地区学历学位认证申请者请在填写《授权声明》时务必填写学号及HKID（没有请填无）。</p>
+<p><b>五、其他相关材料</b></p>
+<p>（1）在外学习时间不满足学制要求的申请者务必提供学习期间完整成绩单或研究证明；</p>
+<p>（2）如需认证的文凭证书上未写明所学专业，但申请者仍希望在认证结果中体现专业领域时，务必提供学习期间完整成绩单或研究证明。</p>
+<h4><center>中外合作办学学历学位认证申请材料</center></h4>
+
+<p>特别提示：</p>
+<p>如您就读于中外合作办学项目/机构，但在境外学习时间超过6个月(180天)，请按照国外学历学位认证申请材料或港澳台地区学历学位认证申请材料要求，在申请时选择“国（境）外学历学位认证”提交认证申请；</p>
+<p>在境外学习时间不足6个月（180天），请按照以下清单准备材料，并选择“中外合作办学学历学位认证”提交认证申请。</p>
+<p>在线申请时，需上传申请材料原件的彩色扫描件。</p>
+<p><b>1.需要认证的国外文凭证书</b></p>
+<p>（1）需要认证的国外学文凭证书一般为所在国的官方语言书写，如获得两种语言的文凭证书，源语言文凭证书必须上传，其他语言可选择性上传；</p>
+<p>（2）如需要认证的国外学历学位证书和高等教育文凭的正反面均有文字图案，应同时提供其正反面的扫描件；</p>
+<p>（3）如证书丢失，请申请者向颁证院校申请补发证书后再提交认证申请，如颁证院校无法补发证书则应提供证书副本、或院校官方出具的学位授予证明(通常由学生注册部门或教务部门开具)，并提供《文凭证书无法提交声明》（下载模板，填写后上传）。</p>
+<p><b>2.个人身份证件</b></p>
+<p>（1）内地居民：需提供居民身份证正、反面；</p>
+<p>（2）港澳台居民：港澳居民来往内地通行证/台湾居民来往大陆通行证；</p>
+<p>（3）外籍人士：需提供学习期间使用的护照首页（个人信息页）与尚在有效期内护照的首页（个人信息页）。</p>
+<p><b>3.一张二寸证件照片</b></p>
+<p>本人近期标准证件照片，底色不限。</p>
+<p><b>4.按留服中心要求填写并签署的国（境）外文凭证书核查授权声明</b></p>
+<p>《授权声明》模板可在系统中下载，空白填写处应使用英文或留学国源语言填写，签名处需手写签名，以保证核查效力。</p>
+<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a><center>联系方式</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/50.png" class="lazyload"></p>
+<p>咨询电话： 010-62677800</p>
+<p>传真： 010-62677574</p>
+<p>电子邮件： 认证处的对外咨询邮箱为：<a href="mailto:renzheng@cscse.edu.cn" target="_blank" rel="noopener">renzheng@cscse.edu.cn</a>。一般会在2-5个工作日内给您答复。</p>
+<p>地址： 北京市海淀区北四环西路56号辉煌时代大厦6层认证处 邮编:100080</p>
+<p><a href="http://zwfw.cscse.edu.cn/cscse/xlxwrz/391584/index.html" target="_blank" rel="noopener">官网</a></p>
+<p>注意： 广大申请人通过互联网即可完成国（境）学历学位认证申请提交，无需到现场交验书面材料。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">See Much</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%95%99%E5%AD%A6/">留学</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E5%8E%86%E8%AE%A4%E8%AF%81/">学历认证</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%BD%8D%E8%AE%A4%E8%AF%81/">学位认证</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191001/0.png" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/10/05/%E6%A6%B4%E8%8E%B2%E5%90%83%E8%B4%A7%E4%BB%AC%E6%9C%89%E7%A6%8F%E4%BA%86/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191005/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>榴莲吃货们有福了 | 跟着大马榴莲地图从南吃到北～</span></div></a></div><div class="next-post pull_right"><a href="/2019/09/27/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E5%9C%B0%E7%9A%84%E5%AE%B6%E5%BA%AD%E6%94%B6%E5%85%A5%EF%BD%9E%E6%9C%88%E5%85%A55k%E9%A9%AC%E5%B8%81%E4%B9%9F%E6%8B%96%E5%90%8E%E8%85%BF%EF%BC%9F/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190927/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>马来西亚各地的家庭收入～月入5k马币也拖后腿？</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/05/1-留学值不值/" title="1-留学值不值"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191105/0.png"><div class="relatedPosts_title">1-留学值不值</div></a></div><div class="relatedPosts_item"><a href="/2019/11/21/新加坡和马来西亚哪些大学是中国教育部承认的？不要进了野鸡大学还不知道！/" title="新加坡和马来西亚哪些大学是中国教育部承认的？不要进了野鸡大学还不知道！"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191121/0.png"><div class="relatedPosts_title">新加坡和马来西亚哪些大学是中国教育部承认的？不要进了野鸡大学还不知道！</div></a></div><div class="relatedPosts_item"><a href="/2020/08/01/英国留学如何选学校？G5？金三角？罗素？红砖？/" title="英国留学如何选学校？G5？金三角？罗素？红砖？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200801/0.jpg"><div class="relatedPosts_title">英国留学如何选学校？G5？金三角？罗素？红砖？</div></a></div><div class="relatedPosts_item"><a href="/2020/06/16/马来西亚MBA课程申请指导手册/" title="马来西亚MBA课程申请指导手册"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202006/20200616/0.jpg"><div class="relatedPosts_title">马来西亚MBA课程申请指导手册</div></a></div><div class="relatedPosts_item"><a href="/2020/05/01/马来西亚留学10大热门专业和5所必读大学/" title="马来西亚留学10大热门专业和5所必读大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202005/20200501/0.jpg"><div class="relatedPosts_title">马来西亚留学10大热门专业和5所必读大学</div></a></div><div class="relatedPosts_item"><a href="/2019/11/22/马来西亚留学只有这10个优势/" title="马来西亚留学只有这10个优势"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191122/0.jpg"><div class="relatedPosts_title">马来西亚留学只有这10个优势</div></a></div><div class="relatedPosts_item"><a href="/2020/03/21/马来西亚留学如何“专升本”和“专升硕”？/" title="马来西亚留学如何“专升本”和“专升硕”？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202003/20200321/0.jpg"><div class="relatedPosts_title">马来西亚留学如何“专升本”和“专升硕”？</div></a></div><div class="relatedPosts_item"><a href="/2019/11/28/马来西亚留学签证和陪读签证～办理攻略/" title="马来西亚留学签证和陪读签证～办理攻略"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191128/0.jpg"><div class="relatedPosts_title">马来西亚留学签证和陪读签证～办理攻略</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
