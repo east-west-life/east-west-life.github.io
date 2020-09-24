@@ -1,79 +1,128 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>美国为什么会彻底输掉新冠病毒之战？ | SeeMuch Lab</title><meta name="description" content="美国为什么会彻底输掉新冠病毒之战？"><meta name="keywords" content="新冠病毒,美国"><meta name="author" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="copyright" content="FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="美国为什么会彻底输掉新冠病毒之战？"><meta name="twitter:description" content="美国为什么会彻底输掉新冠病毒之战？"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="美国为什么会彻底输掉新冠病毒之战？"><meta property="og:url" content="http://seemuch.org/2020/08/18/%E7%BE%8E%E5%9B%BD%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%BD%BB%E5%BA%95%E8%BE%93%E6%8E%89%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E4%B9%8B%E6%88%98%EF%BC%9F/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="美国为什么会彻底输掉新冠病毒之战？"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2020/08/18/%E7%BE%8E%E5%9B%BD%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%BD%BB%E5%BA%95%E8%BE%93%E6%8E%89%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E4%B9%8B%E6%88%98%EF%BC%9F/"><link rel="prev" title="马来西亚大学生一个月多少钱才够用？" href="/http:/seemuch.org/2020/08/23/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E5%AD%A6%E7%94%9F%E4%B8%80%E4%B8%AA%E6%9C%88%E5%A4%9A%E5%B0%91%E9%92%B1%E6%89%8D%E5%A4%9F%E7%94%A8%EF%BC%9F/"><link rel="next" title="2020软科世界大学排名刚出炉，那软科排名到底有多靠谱？" href="/http:/seemuch.org/2020/08/15/2020%E8%BD%AF%E7%A7%91%E4%B8%96%E7%95%8C%E5%A4%A7%E5%AD%A6%E6%8E%92%E5%90%8D%E5%88%9A%E5%87%BA%E7%82%89%EF%BC%8C%E9%82%A3%E8%BD%AF%E7%A7%91%E6%8E%92%E5%90%8D%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E9%9D%A0%E8%B0%B1%EF%BC%9F/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐","link":"链接: http://seemuch.org/2020/08/18/%E7%BE%8E%E5%9B%BD%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%BD%BB%E5%BA%95%E8%BE%93%E6%8E%89%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E4%B9%8B%E6%88%98%EF%BC%9F/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">220</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">195</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/life-view-am/"><i class="fa-fw fa fa-life-view-am"></i><span> 诗和远方</span></a></li><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">1.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">美国为什么会彻底输掉新冠病毒之战？</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-08-18<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-20</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%8C%97%E7%BE%8E/">北美</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%8C%97%E7%BE%8E/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>金姐</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg" class="lazyload"></p>
+<p>这是一个生活在美国的可怕时刻！COVID-19新冠病毒是一种看似随机却残酷的新型疾病，实际上正在成千上万的人类中选取目标；甚至许多“恢复”的人可能再也不会真正恢复如前了！这场大流行病暴露了美国对自己公民的承诺与实际交付之间的差距和鸿沟。随着美国大选的临近，疫情肯定会使投票程序复杂化，结果可能会造成无法预估的灾难性后果！</p>
+<p>在春季的一小段时间里，美国似乎开始控制疫情的爆发。像纽约这样受灾严重的州成功地使病例增长曲线变平，这主要归功于州政府在全州范围内实施了关闭无关紧要的业务、要求人们戴口罩和进行社交疏导的新规定。但是，随着其他州在春季末期和初夏开始重新开放，新的爆发点开始出现，首先是在“太阳带”（东南-西南），然后在德克萨斯州、亚利桑那州和佛罗里达州，最近在中西部，在印第安纳州、伊利诺伊州和明尼苏达州。而在西海岸，加利福尼亚州的确诊病例在8月10日达到新高；在东海岸，弗吉尼亚州也于8月7日出现了同样的情况。在全美范围内，住院率已达到惊人的历史水平，而且似乎将会有更多的死亡人数。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/1.jpg" class="lazyload"></p>
+<center>2020年3月底，一名医护人员坐在纽约市中央公园附近的长凳上</center>
+
+
+
+<p>毫无疑问，美国肯定会在COVID-19的战争中因自己的傲慢输掉自己的一世英名，原本可以不这样的！在“7国集团”国家中，美国、英国、加拿大、法国、日本、德国和意大利，只有美国爆发的疫情仍在继续失控。其他一些国家，例如新西兰，甚至已经接近完全消除COVID-19新冠病毒（当然了，在人口较少和偏僻的国家，这更容易实现）。令人沮丧的是，在疫情大流行之前的几个月里，美国曾被认为是最有能力应对重大疫情的国家之一（回过头再来看，是个多么大的讽刺啊，估计川建国又要打脸一次了）！</p>
+<p>在这一点上，我们可以开始更清楚地看到为什么像美国这样的国家如此悲惨地倒台，各级政治领导层失灵，普遍不信任科学家、媒体和专业知识，以及根深蒂固的关于个性化和生活价值观的态度相结合，导致对流行病的反应严重落伍，与传统上被认为是美国的同等国家相比，也是相差甚远！</p>
+<p>到目前为止，傻子都能看出来，美国联邦政府未能履行其在危机时期保护美国人的健康和福祉的职责。尽管有公共卫生官员和其他人的最大努力，但美国许多在位官员并未认真对待COVID-19新冠病毒的威胁性。等到病毒明显构成主要威胁时，联邦政府的努力充其量也就构成了混乱！美国政府的混乱状况在四月份发生的事件中得到了最好的体现，白宫高级顾问贾里德·库什纳（Jared Kushner），他的岳父是唐纳德·特朗普（Donald Trump），当时策划了联邦对新冠病毒的应对工作，混淆了联邦政府物资储备不足的现实，呼吸机和其他用于挽救重病患者的关键设备，根部不适用于有差异化的美国各州！</p>
+<p>库什纳说道，“联邦储备的概念，应该是我们美国的储备，而不是各个州的储备”。其实，他根本不清楚这些救援物资到底是给谁的，即使不是所有美国人，也至少是生活在一两个州的美国老百姓！</p>
+<p>在某些情况下，美国联邦政府的所谓政策根本没效果，而且还是雪上加霜！由于美国疫情大流行在2020年4月初恶化，那时候整个美国急需物资，一些医院高管、医生和其他护理人员私底下求助于非正规的经销商，安排从中国发货高价的救援装备。在疫情爆发最严重的时候，由于一些尚不清楚的原因，美国联邦政府开始拦截其中一些货物。位于马萨诸塞州斯普林菲尔德的非营利性医疗保健网络中心的Baystate Health的首席医师高管Andrew W. Artenstein博士甚至声称，他必须要想得更远，例如用卡车将个人“防护设备”巧妙地标记为“食品服务”，从而让车辆逃避被联邦政府没收的可能；这个疯狂的故事几乎是《警察与卡车强盗》（1977年的一部美国动作喜剧片）电影的现实版！</p>
+<p>有关特朗普政府未能充分应对美国疫情大流行的报道，根本不是1篇文章可以写完的，简直可以出版一系列的书籍，简单总结一下他的“成就“就是：川建国总统先在淡化病毒严重性的问题上就浪费了数周；并且他还顽固而傲慢地坚持一种幻想，认为病毒会简单的“消失”；他禁止了许多来自中国的旅者，但由于未能建立适当的测试和追踪程序而浪费了他的宝贵时间；他鼓励各州在自己的政府指南出炉之前重新开放；而且他一再挑剔的统计数据让美国的局势表面看起来比实际情况似乎要好得多；最近一次在8月3日发布的有关HBO的Axios灾难性的采访中，他误解了新冠病毒导致的美国死亡率，然后再一次打脸（之前说他不会戴口罩）也带上了口罩！</p>
+<p>根据美国专家的说法，特朗普最大的失误之一是他一直拒绝在公众面前戴口罩，直到最近，才开始戴上口罩。已有很多科学证明，面部遮盖物可大大减少COVID-19病毒的传播，而且前有东亚地区以身作则，戴口罩文化是这些地区许多地方能够迅速控制疫情的主要原因。但是，在一个没有这种行为规范的国家（尤其是美国），国家的领导者（无论是政治方面还是其他方面）有不可推卸的责任为这种行为做表帅！可是，川建国总统都做了什么？</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/2.jpg" class="lazyload"></p>
+<center>2020年4月中，特朗普总统在白宫举行的每日病毒简报会上，“认真地”比较用于新冠病毒测试的棉签与普通棉签</center>
+
+
+<p>4月3日,当特朗普出现在白宫简报室中，宣布美国疾病控制与预防中心的建议（即每个美国人都应该戴口罩）时，他强调要戴口罩具，但还是没有完全遵从美国政府专家的建议，仍然认为戴不戴口罩是“自愿的”，而且他个人也不会戴口罩。长期以来，一直痴迷于自恋的特朗普从始至终拒绝接受口罩，直到7月11日去拜访沃尔特·里德美国国家军事医学中心为止，才开始戴口罩，当时已有13万美国人死于COVID-19新冠病毒。自从南卡罗来纳州参议员林赛·格雷厄姆（Lindsey Graham）和福克斯与朋友协会（Fox＆Friends）共同主持人史蒂夫·杜西（Steve Doocy）等盟友施加压力后，特朗普此后在戴口罩方面的政策才有所“认真”。</p>
+<p>特朗普总统在7月21日举行的美国新冠病毒简报会上说，“我这样看，任何可能有用的东西，以及口罩，当然可以提供潜在的帮助，都是好事。我没有问题，我随身携带口罩，你们看到了我最近经常戴口罩，我还将继续戴口罩的。”</p>
+<p>但是特朗普的早期蔑视“口罩”政策为他的共和政党和他的追随者定下了基调，无疑助长了美国人对戴口罩的政治化预见。根据美国皮尤研究中心（Pew Research Center）于6月25日（即7月初新冠病毒大规模二次爆发前的两周）发布的一项调查发现，有63％的民主党人和倾向于民主党的独立人士表示，应该一直戴口罩，而共和党和共和党独立人士只有29％的“戴口罩”倾向。另外，将近四分之一的共和党人（23％）表示，“不宜戴或很少戴口罩”。随着新冠病毒的肆虐，以及越来越多的人将其视为迫在眉睫的威胁，人们的态度也在发生转变。根据美联社和NORC公共事务中心7月23日的一项民意调查，现在有58％的共和党人表示愿意在公共场所戴口罩，但这调查结果仍远低于民主党人的89％的。同时，几乎每个星期，美国关于口罩怀疑论者和口罩佩戴者之间发生暴力冲突的故事仍继续成为各大新闻的头条（真是被新冠病毒耽误的“两极化”国家）。</p>
+<p>撇开口罩这件事，美国联邦政府最明显的失败是一直缺乏适当的病毒测试设施，这是导致疫情大流行的关键因素，因为测试可以显示疫情爆发的严重程度并揭示关键爆发时间点。在病毒测试能力加强之前，测试设备的短缺和测试延误是美国疫情爆发初期的一个主要问题，并且随着病毒在多个州之间传播，从而再次困扰着美国。有一些美国人说，他们要等待超过两周的时间才能获得病毒测试的结果，相关研究人员说，其实测试两天后，测试结果就变得毫无用处（从测试到接收结果的时间越长，临时被感染的机会就越大）。由于实验室无法获得测试病毒所需要的必需品，以及竞争对手之间缺乏合作、联邦政府指导不足等原因造成的延迟，让美国疫情已经变得如此严重，以至于整个美国对病毒测试的需求实际上已经大大减少，即使病毒继续传播，美国人感到烦躁根本无心等待测试结果，甚至一开始就不愿意接受病毒测试（而且，一些限制无症状者在某些州接受测试的新规则，也抑制了测试病毒的需求）。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/3.jpg" class="lazyload"></p>
+<center>2020年4月中旬，长长的车队在犹他州奥尔哈托-纪念碑谷的纪念碑谷健康中心外面排队，等待新冠病毒测试</center>
+
+
+<p>特朗普没有要求提高病毒测试能力，而是建议美国应该减少新冠病毒测试。而且，他一再错误地将最近美国病例的增加完全归咎于病毒测试数量的增加。根据COVID项目的追踪数据，尽管美国确实比其他任何国家都进行了更多的病毒测试，但这些测试返阳性的百分比从6月中旬的约4.5％增加至8月12日的近8％，不管是否进行测试，病毒依然在美国肆无忌惮（相比之下，德国每天的返阳性率低于3％，意大利的每日返阳性率约为2％，而新西兰的每日返阳性率低于0.5％）。</p>
+<p>对于美国总统川普来说，提高病毒测试能力一直是一个问题，因为测试的结果将会揭示美国疫情爆发的惊人程度！对于特朗普而言，美国的疫情负担与公共健康无关，它更像是高尔夫比赛成绩，分数越高，特朗普的表现越差，而他在第18洞之前只剩下不多的时间来扭转局面（即今年11月的美国大举）。但是，他没有解决掉导致美国疫情不断扩增的根本原因，而只是将自己尴尬的表现结果归咎于病毒检测！川普在6月份的福克斯新闻活动中说道，“如果不进行测试，就不会有疫情病例。当而进行测试时，就会有新的病例。”实际上，知道美国疫情爆发的真实范围可以帮助到公共卫生官员和立法者等，从而让政府做出更好、更明智的选择和决策，只要让他们知道真实状况就好！</p>
+<p>当你快速浏览Facebook更新的时候，你很可能像许多美国人一样，看到很多与婴儿和假期照片混在一起的帖子，这些帖子（错误地）声称COVID-19病毒是比尔·盖茨领导的全球阴谋，或者（错误地）声称混血人参、橙汁和食用油是治疗新冠病毒的秘方，或者（错误地）声称整个新冠病毒大流行都是骗局。Facebook和其他社交媒体公司目前正在努力有效应对疫情爆发的虚假信息，如果真有其事的话，这也是一个西西弗斯式（永无尽头而又徒劳无功）的任务。尽管社交媒体具有腐蚀社会群体的作用，但美国人总体上对科学的信任比例要比其他国家的高许多，根据美国惠康基金会（Wellcome Trust）2018年的一项研究，NORC中心的数据表明，在过去的几十年中，美国人对科学的重要地位一直保持深信不疑，大约有40％的美国人，从1973年以来，每年都对科学界抱有“极大的信心”。此外，跟据美国皮尤研究中心的说法，在疫情大流行之前的2019年，多达86％的美国人对科学家的工作持有信心！</p>
+<p>然而，进一步挖掘就会发现一种令人不安的党派趋势正在美国以潜移默化的方式在发酵。根据皮尤中心的调查，虽然43％的民主党人在2019年表示，他们对科学家拥有极大的信任，但只有27％的共和党人表示赞同。此外，民主党人（73％）比共和党人（43％）更有可能相信科学家应该在“政策辩论中”发挥积极作用，这一结果预示着美国右翼为减少公共卫生官员和其他专家，不懈地努力着。在6月发表的一项调查中，约翰·霍普金斯大学的研究人员发现，尽管89％的民主党人认为社交距离是非常重要的，但只有66％的共和党人认为如此。另外，约翰·霍普金斯大学的研究人员还发现，一个人对科学的信念倾向于预测他们是否会遵循公共卫生准则，尽管80％信任科学的民主党人表示，社交距离很重要，但只有55％怀疑科学的共和党人持同样的态度！</p>
+<p>美国人比其他许多国家的人更倾向于个人主义已不是什么秘密。根据2011年皮尤中心的一项调查发现，有58％的美国人认为，“自由追求生活目标而不受政府干预”比“无人需要”的国家保证更重要，而英国人只有38％这样认为、德国人和法国人只有36％，西班牙人有30％持同样的观点。这样来看，就很容易将这种“个人主义”特征视为导致美国COVID-19斗争失败的根本原因。毕竟，应对病毒大流行需要个人为集体利益做出暂时性牺牲，无论是戴着让美国人感到不舒服的口罩还是取消原本计划中的生日聚会，这些都需要“个人主义”做出让步的！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/4.jpg" class="lazyload"></p>
+<center>2020年8月初，一位女子坐在芝加哥河沿岸的社交距离圈中</center>
+
+
+<p>但实际上，美国人曾一次又一次地表明，他们愿意共同努力为实现一个共同的目标，尤其是在危机时期。从美国独立战争到20世纪战胜纳粹主义的祸害，再到后来登上月球，美国最伟大的成就很大程度上是集体努力的结果。哥伦比亚大学公共健康学的教授大卫·罗斯纳（David Rosner）博士说，“有了良好的领导才能真正做好很多事情。”（很明显，川建国的领导能力真的不敢恭维！）</p>
+<p>当前，美国人对新冠病毒流行病的态度还有另一种令人不安的想法在涌动，“主动接受大规模死亡将是美国日常生活中不可避免的一部分”。由于几乎每天都暴露于无法形容的恐怖之中，从肆无忌惮的枪支暴力、看似永无止境的警察残暴事件到密歇根州弗林特的没完没了的清洁水危机等，作为美国人，面对悲剧已经变得麻木不仁了！自2012年枪手在康涅狄格州一所小学开枪杀死了26人的恐怖事件发生三年之后，专栏作家丹·霍奇斯说出了令人难忘的话，“回想起来，桑迪·胡克（Sandy Hook）标志着美国枪支管制辩论的结束。”。到目前为止，国会也没有通过任何新的枪支法律。霍奇斯写道，“一旦美国决定杀死儿童是可以接受的，那美国就真的结束了！”</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/5.jpg" class="lazyload"></p>
+<center>2020年4月初，在纽约市新冠病毒爆发中死亡的尸体被埋在纽约的哈特岛上</center>
+
+
+<p>美国人的冷漠真是难以量化！除了残忍地接受成千上万的美国人将不可避免地死于COVID-19新冠病毒之外，还有什么理由能解释为什么四分之一的美国人（约8200万人）仍然不相信在公共场所应该始终戴口罩？还有什么理由能解释美国迪斯尼乐园于7月11日对游客在部分时间内重新开放，而且就在迪士尼乐园的老家佛罗里达州每天报告有超过1万5千例新增病例，创下当时美国各州的记录，并且美国人还若无其事地集体出门的第二天？还有什么理由可以解释尽管美国航空旅行人数显著下降，但每天仍有数十万美国人登上飞机，而且大多数是度假者，不管他们是否知道，但新冠病毒就很可能会因为他们的脚步在全美各地传播开来？</p>
+<p>不过，还是有理由对美国的新冠病毒大流行的前景感到乐观的。截止目前为止，美国其他州的疫情爆发还没有看到类似于纽约和新泽西州那种级别的灾难性死亡率。不过，这可能因为死亡是一个滞后的指标，但也可能因为医生在治疗新冠病毒方面做得更好了！就在加州州长7月中旬宣布重新启动加州开放计划之际，诸多令人担忧的激增新病例表明，至少还是有一些州的领导人正在重新考虑与现实相符的战略，而不是固执己见！当然了，研制疫苗的工作也在努力进行中；2020年年底可能至少会有一个新冠疫苗可用，不过目前这也只是一个乐观的预估而已！而且，随着新冠病毒的传播，将会有更多的美国人采取公共卫生措施保护自己。</p>
+<p>无论如何，新冠病毒这场流行病可能在短期内会使美国变得虚弱和飘忽不定，数十万甚至可能数百万的美国公民会不幸死亡。新冠病毒已经暴露出美国重大的基础性缺陷，从灾难性被磨损的社会安全网到威胁生命的系统性种族主义。很明显，美国人中有许多人并不认为自己是家人和朋友的守护者，这也可能永远地损害了邻里之间的社区意识；而且，这也将削弱美国在世界舞台上的地位；当“美国梦”大规模地导致死亡时，谁还愿意想要“美国梦”呢？也许，数万的美国人无法在这场Covid-19病毒流行大战中幸存下来；那些幸存下来的美国人将要为死去的人收拾“烂摊子”，以及拯救美国！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2><p>[1] Time.com<br>[2] REUTERS<br>[3] Twitter-ALEX FITZPATRICK<br>[4] The New York Times–Redux<br>[5] The Deseret News–AP</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92/">新冠病毒</a><a class="post-meta__tags" href="/tags/%E7%BE%8E%E5%9B%BD/">美国</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/08/23/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%A4%A7%E5%AD%A6%E7%94%9F%E4%B8%80%E4%B8%AA%E6%9C%88%E5%A4%9A%E5%B0%91%E9%92%B1%E6%89%8D%E5%A4%9F%E7%94%A8%EF%BC%9F/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200823/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚大学生一个月多少钱才够用？</span></div></a></div><div class="next-post pull_right"><a href="/2020/08/15/2020%E8%BD%AF%E7%A7%91%E4%B8%96%E7%95%8C%E5%A4%A7%E5%AD%A6%E6%8E%92%E5%90%8D%E5%88%9A%E5%87%BA%E7%82%89%EF%BC%8C%E9%82%A3%E8%BD%AF%E7%A7%91%E6%8E%92%E5%90%8D%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E9%9D%A0%E8%B0%B1%EF%BC%9F/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200815/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>2020软科世界大学排名刚出炉，那软科排名到底有多靠谱？</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/01/27/3年前这部剧～就已“神预言”新冠病毒肺炎/" title="3年前这部剧～就已“神预言”新冠病毒肺炎"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg"><div class="relatedPosts_title">3年前这部剧～就已“神预言”新冠病毒肺炎</div></a></div><div class="relatedPosts_item"><a href="/2020/02/10/微博上流传“一名武汉女生的日记”/" title="微博上流传“一名武汉女生的日记”"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200210/0.jpg"><div class="relatedPosts_title">微博上流传“一名武汉女生的日记”</div></a></div><div class="relatedPosts_item"><a href="/2020/08/29/新冠病毒（Covid-19）测试你需要知道的事/" title="新冠病毒（Covid-19）测试你需要知道的事"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200829/0.jpg"><div class="relatedPosts_title">新冠病毒（Covid-19）测试你需要知道的事</div></a></div><div class="relatedPosts_item"><a href="/2019/05/20/最真实的硅谷/" title="最真实的硅谷"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201905/20190520/0.jpg"><div class="relatedPosts_title">最真实的硅谷</div></a></div><div class="relatedPosts_item"><a href="/2020/06/06/美国种族主义的那些事/" title="美国种族主义的那些事"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202006/20200606/0.jpg"><div class="relatedPosts_title">美国种族主义的那些事</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By FeiFei | PG ｜ 林子 | 阿超 ｜ 金姐</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
