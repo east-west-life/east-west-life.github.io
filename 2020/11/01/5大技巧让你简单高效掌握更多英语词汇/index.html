@@ -1,79 +1,93 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>5大技巧让你简单高效掌握更多英语词汇 | SeeMuch Lab</title><meta name="description" content="5大技巧让你简单高效掌握更多英语词汇"><meta name="keywords" content="英语学习,单词"><meta name="author" content="多看看实验室"><meta name="copyright" content="多看看实验室"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="5大技巧让你简单高效掌握更多英语词汇"><meta name="twitter:description" content="5大技巧让你简单高效掌握更多英语词汇"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201101/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="5大技巧让你简单高效掌握更多英语词汇"><meta property="og:url" content="http://seemuch.org/2020/11/01/5%E5%A4%A7%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%AE%80%E5%8D%95%E9%AB%98%E6%95%88%E6%8E%8C%E6%8F%A1%E6%9B%B4%E5%A4%9A%E8%8B%B1%E8%AF%AD%E8%AF%8D%E6%B1%87/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="5大技巧让你简单高效掌握更多英语词汇"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201101/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2020/11/01/5%E5%A4%A7%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%AE%80%E5%8D%95%E9%AB%98%E6%95%88%E6%8E%8C%E6%8F%A1%E6%9B%B4%E5%A4%9A%E8%8B%B1%E8%AF%AD%E8%AF%8D%E6%B1%87/"><link rel="prev" title="马来西亚各方面的好与不好" href="/http:/seemuch.org/2020/11/02/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E6%96%B9%E9%9D%A2%E7%9A%84%E5%A5%BD%E4%B8%8E%E4%B8%8D%E5%A5%BD/"><link rel="next" title="中国大陆除了“985”、“211”还有哪些重要的大学工程或联盟？" href="/http:/seemuch.org/2020/10/25/%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E9%99%A4%E4%BA%86%E2%80%9C985%E2%80%9D%E3%80%81%E2%80%9C211%E2%80%9D%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%A7%E5%AD%A6%E5%B7%A5%E7%A8%8B%E6%88%96%E8%81%94%E7%9B%9F%EF%BC%9F/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: 多看看实验室","link":"链接: http://seemuch.org/2020/11/01/5%E5%A4%A7%E6%8A%80%E5%B7%A7%E8%AE%A9%E4%BD%A0%E7%AE%80%E5%8D%95%E9%AB%98%E6%95%88%E6%8E%8C%E6%8F%A1%E6%9B%B4%E5%A4%9A%E8%8B%B1%E8%AF%AD%E8%AF%8D%E6%B1%87/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">232</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">210</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">28</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-不拒绝新词汇"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.1 不拒绝新词汇</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-多阅读"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.2 多阅读</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-多揣测"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.3 多揣测</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-拥抱新观点"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.4 拥抱新观点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-5-设立目标"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">No.5 设立目标</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">7.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-不拒绝新词汇"><span class="toc-number">2.</span> <span class="toc-text">No.1 不拒绝新词汇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-多阅读"><span class="toc-number">3.</span> <span class="toc-text">No.2 多阅读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-多揣测"><span class="toc-number">4.</span> <span class="toc-text">No.3 多揣测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-拥抱新观点"><span class="toc-number">5.</span> <span class="toc-text">No.4 拥抱新观点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-5-设立目标"><span class="toc-number">6.</span> <span class="toc-text">No.5 设立目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201101/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">5大技巧让你简单高效掌握更多英语词汇</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-11-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-11-01</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%93%E9%A2%98/">专题</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%93%E9%A2%98/%E6%95%99%E8%82%B2%E4%B9%8B%E8%B7%AF/">教育之路</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>PG</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201101/0.jpg" class="lazyload"></p>
+<p>从小到大，从参加幼儿园毕业典礼到参加大学毕业典礼，相信你不止一次地从毕业典礼中听过演讲者提到“毕业生们，这不是你们人生的终点，你们的人生才刚刚开始！” 是的，那些毕业典礼的演讲者们说的一点也没错。每一次学习过程都不是学习的终点，因为永远有更多的知识等着你去学习，有更多的生活等着你去体验！</p>
+<p>同样的，学习英语，或者学习任何一门语言都是如此。每学习一个单词，每练习一段对话，都是开启下一段学习的开始。一旦你停止了学习，你也就放弃了成长和进度。一旦你放弃了增加你的词汇量，你也就放弃了一门语言。我想大多数人还是很乐意持续增加个人的词汇量，哪怕只是为了更好地与别人交流（也许只是为了满足自己小小的虚荣心）！</p>
+<p>为了能简单高效地掌握大量英语词汇，下面的方法你必须要学会。</p>
+<h2 id="No-1-不拒绝新词汇"><a href="#No-1-不拒绝新词汇" class="headerlink" title="No.1 不拒绝新词汇"></a><center>No.1 不拒绝新词汇</center></h2><p>如果你不想认识新单词，新单词也不会追随你。所以，对于想掌握更多词汇量的人来说，你必须要对新单词保持开放态度，无论是在阅读还是在听力中，任何你不知道的单词都不要拒绝认识。</p>
+<h2 id="No-2-多阅读"><a href="#No-2-多阅读" class="headerlink" title="No.2 多阅读"></a><center>No.2 多阅读</center></h2><p>对于一个成人来说，你认识新单词的途径基本都是从你看过的书、杂志或博客中。如果你每天的注意力只是停留在Facebook的动态、Instgram的消息，那你就需要改变一下你的习惯了。如果你的目标是掌握大量的英语词汇，那么你就要保证每周至少阅读一本书或者几本杂志。不仅仅是这一周和下一周，而是你余生的每一周。我从来没见过一个词汇量丰富的人不阅读。</p>
+<h2 id="No-3-多揣测"><a href="#No-3-多揣测" class="headerlink" title="No.3 多揣测"></a><center>No.3 多揣测</center></h2><p>每当你阅读一本书或者杂志的时候，遇到不熟悉的单词不要匆忙跳跃过去，而是停顿一下，在脑海中多拼写一下这个单词，熟悉单词的发音和拼写，然后联系上下文斟酌一下该单词可能的含义。不管你最后有没有猜中单词的意思，不是很重要，重要的是你揣测和推理的整个过程，下一次当你再遇到这个单词的时候，你就会变得超级敏感。结果是，以后你会惊奇的发现，同样的单词总是会再次见到。当然了，多次偶遇同样的单词以后，你不仅会了解这个单词的意思，还会掌握一个单词的多种用法。</p>
+<h2 id="No-4-拥抱新观点"><a href="#No-4-拥抱新观点" class="headerlink" title="No.4 拥抱新观点"></a><center>No.4 拥抱新观点</center></h2><p>每一个你认识的单词，都代表着一种事物。回想一下你所知道的各种学科，心理学、文学、科学、艺术、音乐、商业等，想要熟悉任何一门学科或专业，都避免不了要看相关的专业书籍；而书籍有入门到精通不同的层次水平，每一本书不仅可以带你深入浅出地认识和掌握专业理论知识，在阅读书籍的同时，你也意外地掌握了更多的单词。我们都知道大学生之所以能够掌握大量的词汇，是因为他们被要求不断地学习新知识新观点，不断提高自己。所以，如果你也想要掌握大量的词汇，你必须要模仿大学生的习惯。</p>
+<h2 id="No-5-设立目标"><a href="#No-5-设立目标" class="headerlink" title="No.5 设立目标"></a><center>No.5 设立目标</center></h2><p>如果你对于掌握新单词什么行动都没有，你最多可以一年学习和掌握20-50个新单词。但是，如果你刻意练习，你可以一年掌握几千个新单词。每天给自己设立一个目标，学习几个新单词。可能你会质疑，这个听上去雄心壮志的计划是否靠谱？但是，一旦你主动开始去尝试，阅读各类书籍，在阅读中发现新词汇，你就会发现新单词一直围绕着你。没错，掌握英语词汇就像滚雪球一样，每天学习一点，你的雪球就滚一下，一旦你触发了你的雪球，打开了你的动力，最后你就会停不下来，沉迷于学习单词中而无法自拔（但这种沉迷是千千万万人羡慕的一种能力）！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2><p>[1] Word Power Made Easy</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">多看看实验室</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><a class="post-meta__tags" href="/tags/%E5%8D%95%E8%AF%8D/">单词</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201101/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/11/02/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%90%84%E6%96%B9%E9%9D%A2%E7%9A%84%E5%A5%BD%E4%B8%8E%E4%B8%8D%E5%A5%BD/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202011/20201102/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚各方面的好与不好</span></div></a></div><div class="next-post pull_right"><a href="/2020/10/25/%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E9%99%A4%E4%BA%86%E2%80%9C985%E2%80%9D%E3%80%81%E2%80%9C211%E2%80%9D%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E5%A4%A7%E5%AD%A6%E5%B7%A5%E7%A8%8B%E6%88%96%E8%81%94%E7%9B%9F%EF%BC%9F/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202010/20201025/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>中国大陆除了“985”、“211”还有哪些重要的大学工程或联盟？</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By 多看看实验室</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
