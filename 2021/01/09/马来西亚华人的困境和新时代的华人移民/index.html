@@ -1,79 +1,104 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>马来西亚华人的困境和新时代的华人移民 | SeeMuch Lab</title><meta name="description" content="马来西亚华人的困境和新时代的华人移民"><meta name="keywords" content="马来西亚,华人"><meta name="author" content="多看看实验室"><meta name="copyright" content="多看看实验室"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="马来西亚华人的困境和新时代的华人移民"><meta name="twitter:description" content="马来西亚华人的困境和新时代的华人移民"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/0.png"><meta property="og:type" content="article"><meta property="og:title" content="马来西亚华人的困境和新时代的华人移民"><meta property="og:url" content="http://seemuch.org/2021/01/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%8D%8E%E4%BA%BA%E7%9A%84%E5%9B%B0%E5%A2%83%E5%92%8C%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%8E%E4%BA%BA%E7%A7%BB%E6%B0%91/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="马来西亚华人的困境和新时代的华人移民"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/0.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2021/01/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%8D%8E%E4%BA%BA%E7%9A%84%E5%9B%B0%E5%A2%83%E5%92%8C%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%8E%E4%BA%BA%E7%A7%BB%E6%B0%91/"><link rel="next" title="美国中小学教育是怎样的？" href="http://seemuch.org/2021/01/02/%E7%BE%8E%E5%9B%BD%E4%B8%AD%E5%B0%8F%E5%AD%A6%E6%95%99%E8%82%B2%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: 多看看实验室","link":"链接: http://seemuch.org/2021/01/09/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E5%8D%8E%E4%BA%BA%E7%9A%84%E5%9B%B0%E5%A2%83%E5%92%8C%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%8E%E4%BA%BA%E7%A7%BB%E6%B0%91/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">246</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">224</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">30</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-1-期待中国崛起"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">No.1 期待中国崛起</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-2-反思自身特殊"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">No.2 反思自身特殊</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-3-新时代的东南亚移民"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">No.3 新时代的东南亚移民</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#No-4-马来西亚相对安定"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">No.4 马来西亚相对安定</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-1-期待中国崛起"><span class="toc-number">2.</span> <span class="toc-text">No.1 期待中国崛起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-2-反思自身特殊"><span class="toc-number">3.</span> <span class="toc-text">No.2 反思自身特殊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-3-新时代的东南亚移民"><span class="toc-number">4.</span> <span class="toc-text">No.3 新时代的东南亚移民</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#No-4-马来西亚相对安定"><span class="toc-number">5.</span> <span class="toc-text">No.4 马来西亚相对安定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/0.png)"><div id="post-info"><div id="post-title"><div class="posttitle">马来西亚华人的困境和新时代的华人移民</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2021-01-09<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2021-01-09</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><html><head></head><body><p> </p>
+<center>PG</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/0.png" class="lazyload"></p>
+<p>在马来西亚，大马华人的困境在于：需要不断地向大马政府展现自己的忠诚和毫无威胁性，才能在马来半岛这片土地上平稳地生活；过去是这样，现在仍然是这样。从马华与巫统党派之间的关系，以及后来马来西亚希盟行动党为了降低马来社会对华族的误会，对华人的社会课题长期采取低调保守的态度，都有如此的意味。</p>
+<p>对于今天的马来西亚华人社会来说，他们目前有两种方式来面对和协调这个困境：一种是期待中国崛起，另一种是思考自身的特殊性。</p>
+<h2 id="No-1-期待中国崛起"><a href="#No-1-期待中国崛起" class="headerlink" title="No.1 期待中国崛起"></a><center>No.1 期待中国崛起</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/1.jpg" class="lazyload"></p>
+<p>希望中国崛起的华人，希望随着中国的崛起，马来西亚华人在马来西亚这片土地上，能够增加话语权，他们认为只要中国能够与美国抗衡以后，大马国内的政治氛围也会有所改变，马来西亚华人的困境也会迎刃而解。但是，这种对中国充满期待的想像，在目前看来，不仅没有解除大马华人的困境，反而让华人在马来西亚的处境弄得更加复杂和尴尬。</p>
+<p>在信息和科技日益发达的今天，不同民族之间的交流不再有障碍，普通人只要通过翻译软件就能够打破语言的边界。大马华人拥抱中国的言论，在马来西亚其他族群眼中看起来就是不爱国，甚至是卖国的表现。因此，大马华人不爱国、华人滚回中国这种让我们觉得被歧视和排挤的言论，也随之产生。这样一来，不同族群彼此间的矛盾也会加大，最后大马华人的困境不仅没有解决，反而更加恶化。</p>
+<p>如今，马来西亚华人的生活文化早已与马来西亚这片土地相结合，多年来发展出属于南洋特有的华人文化。只是近几年，在中国崛起后，华人似乎看到了某种正统，因此转而拥抱正统而忽略了大马华人本身的特殊性。这样也就导致了很多马来西亚特有的华人生活方式不断地被蚕食，最后大家也就越来越焦虑，更加拥抱中国，导致马来西亚华人的身份变得更加复杂。</p>
+<h2 id="No-2-反思自身特殊"><a href="#No-2-反思自身特殊" class="headerlink" title="No.2 反思自身特殊"></a><center>No.2 反思自身特殊</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/2.png" class="lazyload"></p>
+<p>反思马来西亚华人自身的特殊性，结合马来西亚本土的特色，寻求一条属于马来西亚华人的特殊路线，这是另一个适合协调大马华人所面对的困境的方式。通过融合马来西亚不同族群的文化，打破彼此之间的界限，从而建立一个属于所有马来西亚人的马来西亚。</p>
+<p>想要让马来西亚各族的子孙世代在这片可爱的土地上，和谐生活、快乐游戏、成为一家人，当前马来西亚人的责任就是要为子孙后代树立起共存共荣的理念；这也是前辈林连玉先生的想法。如何消磨马来西亚不同族群之间的界限，这不仅是马来西亚华人需要考虑的问题，也是所有马来族、印度族等需要思考和解决的问题。中国的崛起，固然会对东南亚乃至全世界的经济、政治、文化等社会各方面带来巨大的变化。但马来西亚华族不能只依靠中国的强大，来打破华人所面临的困境，更应该反思自身的特殊性，结合本地南洋特色，探索出一条更合适马来西亚特色的道路。</p>
+<h2 id="No-3-新时代的东南亚移民"><a href="#No-3-新时代的东南亚移民" class="headerlink" title="No.3 新时代的东南亚移民"></a><center>No.3 新时代的东南亚移民</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/3.jpg" class="lazyload"></p>
+<p>从二战结束到2010年左右，东南亚华裔约345万人移民他国，这一轮的移民主体有不少是脑力型的移民，也就是为了追求更高层次发展的移民。其中，不少人从印尼移出到荷兰，菲律宾和新马泰的移出者更多是移民去北美和澳洲。成功移民到的美国约65万人，移民至澳洲、法国和加拿大分别大约有20万人、16万和15万人。</p>
+<p>新加坡虽然移出了26万人，但也有大约39万人移入，所以人才流入是大于流失的。新加坡也是因为才立国政策，才有今天的繁荣，人均收入全球排名第9。从移民的动机来看看，政治动乱、社会不安和向往更好的生活是主要因素，例如印尼的排华、菲律宾的菲化政策、马来西亚的513事件等，都是导致华裔向外移民的直接原因。</p>
+<p>在1960年代，处于高速发展阶段的发达国家，需要更多的智力与体力劳动，因此不同程度地放宽了移民政策。进入21世纪以后，很多国家由于增长放缓，政府财政赤字节节攀升，整个国家的失业率也高居不下，工资水平停滞不前，这些都直接或间接地强化了不少国家的排外情绪和民粹主义。</p>
+<p>如今，很多发达国家对移民的态度已不再像以前那样大开门户，因此很多华人不得不留在本地，最好的选择就是想方设法建设好自己的国家，而不是一走了之。毕竟，能移民的人还是占少数，大多数还是留在本地谋生。目前，东南亚华裔向外移民的大体上是留学移民、投资移民、家庭移民和避难移民等。</p>
+<h2 id="No-4-马来西亚相对安定"><a href="#No-4-马来西亚相对安定" class="headerlink" title="No.4 马来西亚相对安定"></a><center>No.4 马来西亚相对安定</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/4.jpg" class="lazyload"></p>
+<p>从1957独立到1970年代，马来西亚的华族共移出约25万人，1980-2010年则移出了87万人左右，这样前后共113万人移出。</p>
+<p>与其他东南亚国家相比，大马是相对富裕和安定的国家，虽然在人均收入和生活品质方面不如新加坡、汶莱，但比其他东南亚国家都要好，但为什么还是有这么多人移出马来西亚呢？大马真的有那么差劲吗？那些移民去其他国家的大马华人，可能是为了更高追求，或者是为了更好的福利，享受更好的教育等。</p>
+<p>那些移出马来西亚的大马人，愿意回马来西亚的不多，这是个令人深思的问题。不知道是否与马来西亚土著优先政策有关？抑或是大马华族要求太高或追求更多？近几年，随著西方不少发达国家排外情绪升高，会否会有更多的东南亚华族选择回到自己的国家，还有待观察。</p>
+<p>物以类聚，人以群分。对于一个国家来说，人才、资金、技术、产业等，都是互相补强。当然了，其中人才最为重要，如果一个国家缺乏中高端人才，那么就无法发展中高端产业，也就不能创造中高端收入群体，长期就会形成一个恶性循环，人才、资金、技术等不断稀少和流失，最终这个国家也就尴尬了。其实，这也是马来西亚当前的尴尬状态（中等收入陷阱）。如果大马无法摆脱中等收入的困境，那么就永远成不了先进国家。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2><p>[1] 大马华人历史</p>
+</body></html></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">多看看实验室</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A/">马来西亚</a><a class="post-meta__tags" href="/tags/%E5%8D%8E%E4%BA%BA/">华人</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0109/0.png" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/2021/01/02/%E7%BE%8E%E5%9B%BD%E4%B8%AD%E5%B0%8F%E5%AD%A6%E6%95%99%E8%82%B2%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2021/main/01/0102/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>美国中小学教育是怎样的？</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/06/01/华人下南洋-聊聊马来西亚的3波华人移民/" title="华人下南洋-聊聊马来西亚的3波华人移民"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202006/20200601/0.jpg"><div class="relatedPosts_title">华人下南洋-聊聊马来西亚的3波华人移民</div></a></div><div class="relatedPosts_item"><a href="/2019/10/31/马来西亚到底有多少华人？/" title="马来西亚到底有多少华人？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191031/0.jpg"><div class="relatedPosts_title">马来西亚到底有多少华人？</div></a></div><div class="relatedPosts_item"><a href="/2020/10/17/马来西亚华人为什么比欧美华人更热爱中国对中国更认同/" title="马来西亚华人为什么比欧美华人更热爱中国对中国更认同?"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202010/20201017/0.jpg"><div class="relatedPosts_title">马来西亚华人为什么比欧美华人更热爱中国对中国更认同?</div></a></div><div class="relatedPosts_item"><a href="/2020/07/13/马来西亚的华人很厉害-但人口比例却越来越低/" title="马来西亚的华人很厉害~但人口比例却越来越低"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200713/0.jpg"><div class="relatedPosts_title">马来西亚的华人很厉害~但人口比例却越来越低</div></a></div><div class="relatedPosts_item"><a href="/2019/12/17/2019马来西亚Google热搜榜～大马人都在关注啥/" title="2019马来西亚Google热搜榜～大马人都在关注啥"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191217/0.jpg"><div class="relatedPosts_title">2019马来西亚Google热搜榜～大马人都在关注啥</div></a></div><div class="relatedPosts_item"><a href="/2020/01/12/2020中马旅游年～中国与马来西亚的“钱”景到底有多大？/" title="2020中马旅游年～中国与马来西亚的“钱”景到底有多大？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200112/0.png"><div class="relatedPosts_title">2020中马旅游年～中国与马来西亚的“钱”景到底有多大？</div></a></div><div class="relatedPosts_item"><a href="/2019/11/01/13项指标解读马来西亚公立大学VS私立大学/" title="13项指标解读马来西亚公立大学VS私立大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201911/20191101/0.jpg"><div class="relatedPosts_title">13项指标解读马来西亚公立大学VS私立大学</div></a></div><div class="relatedPosts_item"><a href="/2020/01/01/2020年马来西亚公共假期表/" title="2020年马来西亚公共假期表"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200101/0.jpg"><div class="relatedPosts_title">2020年马来西亚公共假期表</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By 多看看实验室</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>

@@ -1,79 +1,115 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>新加坡李家的坡｜香港李家的城 | SeeMuch Lab</title><meta name="description" content="新加坡李家的坡｜香港李家的城"><meta name="keywords" content="新加坡,香港"><meta name="author" content="多看看实验室"><meta name="copyright" content="多看看实验室"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="新加坡李家的坡｜香港李家的城"><meta name="twitter:description" content="新加坡李家的坡｜香港李家的城"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="新加坡李家的坡｜香港李家的城"><meta property="og:url" content="http://seemuch.org/2020/07/10/%E6%96%B0%E5%8A%A0%E5%9D%A1%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9D%A1-%E9%A6%99%E6%B8%AF%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9F%8E/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="新加坡李家的坡｜香港李家的城"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block top_img
-  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
-  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
-  div#top-container(style=bg_img)
-    #post-info
-      #post-title
-          .posttitle= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          if (theme.post_meta.date_type === 'both')
-            time.post-meta__date
-              i.fa.fa-calendar(aria-hidden="true")
-              =' '+_p('post.created')+' '+date(page.date, config.date_format)
-              span.post-meta__separator |
-              i.fa.fa-history(aria-hidden="true")
-              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
-          else
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator.mobile_hidden |
-          span.mobile_hidden
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right(aria-hidden="true")
-        .post-meta-wordcount
-          if (theme.wordcount && theme.wordcount.enable)
-            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
-            span.post-meta__separator |
-          if theme.busuanzi.page_pv
-            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
-            span= _p('post.page_pv') + ': '
-            span#busuanzi_value_page_pv
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
 
-block content
-  article#post(class="")
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-  .tag_share
-    if (theme.post_meta.tags)
-      .post-meta__tag-list
-        each item, index in page.tags.data
-          a(href=url_for(item.path)).post-meta__tags #[=item.name]
-    include includes/share/index.pug
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2020/07/10/%E6%96%B0%E5%8A%A0%E5%9D%A1%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9D%A1-%E9%A6%99%E6%B8%AF%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9F%8E/"><link rel="prev" title="马来西亚的华人很厉害~但人口比例却越来越低" href="http://seemuch.org/2020/07/13/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E5%8D%8E%E4%BA%BA%E5%BE%88%E5%8E%89%E5%AE%B3-%E4%BD%86%E4%BA%BA%E5%8F%A3%E6%AF%94%E4%BE%8B%E5%8D%B4%E8%B6%8A%E6%9D%A5%E8%B6%8A%E4%BD%8E/"><link rel="next" title="女友们包包里的小棕瓶小红瓶小黑瓶的秘密终于被我发现了" href="http://seemuch.org/2020/07/09/%E5%A5%B3%E5%8F%8B%E4%BB%AC%E5%8C%85%E5%8C%85%E9%87%8C%E7%9A%84%E5%B0%8F%E6%A3%95%E7%93%B6%E5%B0%8F%E7%BA%A2%E7%93%B6%E5%B0%8F%E9%BB%91%E7%93%B6%E7%9A%84%E7%A7%98%E5%AF%86%E7%BB%88%E4%BA%8E%E8%A2%AB%E6%88%91%E5%8F%91%E7%8E%B0%E4%BA%86/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: {"languages":{"author":"作者: 多看看实验室","link":"链接: http://seemuch.org/2020/07/10/%E6%96%B0%E5%8A%A0%E5%9D%A1%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9D%A1-%E9%A6%99%E6%B8%AF%E6%9D%8E%E5%AE%B6%E7%9A%84%E5%9F%8E/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  copy_copyright_js: true,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
 
-  if theme.reward.enable
-    include includes/reward.pug
-  include includes/pagination.pug
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">246</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">224</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">30</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#最后"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">最后</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#参考资料"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">参考资料</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-number">1.</span> <span class="toc-text">最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">新加坡李家的坡｜香港李家的城</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-07-10<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-27</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
+<center>PG、林子</center>
 
-  if theme.related_post && theme.related_post.enable
-    != related_posts(page,site.posts)
-  if page.comments !== false
-    include includes/comments/index.pug
+
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/0.jpg" class="lazyload"></p>
+<p>香港=李家的城？</p>
+<p>2013年1月，据称一位香港小学生写的作文《李家的城》引起网民们的关注和热议。在作文里，该学生历数了屈臣氏、百佳、7-11、惠康等在香港街头随处可见的李氏家族产业，并“感叹”说：“看着一间间诚哥旗下的物业，我心中有无比的感动。香港内一切的商店，不论是哪种的类型，全是诚哥带给我们的欣赐。”</p>
+<p>随后，他继续写下了被网络上认为是最精彩的华彩之章：“李嘉诚，名副其实，香港就是李家的城。他是我们的上帝，万物都是他所创造。当然，香港传说中的三位一体就是他们：李嘉诚、李泽楷、李泽钜。他们的力量远超人类，为打工仔遮风避雨，使香港免受风球、暴雨的侵袭。他们付出了那么多，只是希望我们可以准时上班，不准时下班。这都是诚哥的伟大。”</p>
+<p>李嘉诚旗下4大集团：长江实业、和记黄埔、长江基建、电能实业，控制或涉及了香港几乎所有经济与民生领域，并在中国大陆有庞大的业务。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/1.png" class="lazyload"></p>
+<p>新加坡=李家的坡？</p>
+<p>新加坡，是一个由开国元勋李光耀和其李氏家族，掌控了几乎所有权利的海外华人国家。在新加坡，李氏家族劳苦功高，尤其是李光耀本人，凭借着远见卓识和勤劳务实，不但将新加坡从一个贫苦落后的小镇建成一个美丽繁荣的花园城市国家，还开启了高效有序的新加坡式政治模式，融合了西方的民主和东方的集权。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/2.jpg" class="lazyload"></p>
+<p>不夸张的说，没有李光耀，就没有今天的新加坡。没有李嘉诚，也没有如今的香港。</p>
+<p>香港和新加坡，虽然一个是城市，一个是国家，但两地的人口规模和土地面积差不了多少。香港人口748万左右，新加坡人口570万；香港土地面积1106平方公里，新加坡土地面积724平方公里；香港人均GDP为4.9万美元（2018年数据），新加坡人均GDP为6.4万美元（2018年数据）。</p>
+<p>从一些方面来说，香港和新加坡还是很像的，两地都是华人为主的文化，都曾受过英国的殖民，20世纪60年代都是亚洲四小龙之一，都是资本主义制度，都是人口密集土地资源紧缺的港口城市，金融和贸易都在经济比重中占有很大一部分。但两地的产业转型升级的结果却有所差异！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/3.jpg" class="lazyload"></p>
+<p>从港口贸易来说，新加坡地理位置优越，殖民时期就是马来半岛乃至整个东南亚地区的货物集散中心，当时新加坡的经济几乎只有港口贸易。由于没有现代工业基础，1959年新加坡开始实行内部自治，接连颁布各种法规，扶植工业，想把新加坡从“贸易城市”转变为“工业城市”，但对于已经习惯了投资赚快钱的南洋商人来说，根本无心扎入工业。无奈之下，以李光耀为首的新加坡政府不惜开放新加坡的经济，面向世界吸引外资，为外商创造各种有利环境，除公用事业和电信业之外，几乎开放了所有行业，对制造业的投资，更是格外欢迎！苦心人天不负，在独立后的十几年里，新加坡终于实现了经济的繁荣。从1965年新加坡建国至今，新加坡紧跟时代的脚步，不停地转型经济；到目前为止，新加坡至少实现了产业转型升级3、4次，已经从曾经的劳动密集型、技术密集型产业，华丽升级为如今以知识型经济、资本运作为主的产业群！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/4.jpg" class="lazyload"></p>
+<p>再回过头看看香港。香港的港口贸易经济也大不如前，这是中国大陆改革开放几十年的结果。想当年20世纪80-90年代的时候，香港的经济如日中天，但这并不是英国殖民政府治港有方，而是当时的香港是中国大陆与西方国家贸易往来的枢纽站，当时中国大陆在邓小平的带领下，快速发展经济，大陆巨额的港口贸易经济让香港成为亚洲乃至全世界屈指可数的港口和贸易中心、金融中心。</p>
+<p>可好景不长，改革开放30年以后，中国大陆的经济已经强势崛起，已经实现了与西方畅通无阻的贸易往来。根据2019年全球港口贸易数据，全球集装箱港口排名前10分别为上海港（第1）、新加坡港（第2）、宁波舟山港（第3）、深圳港（第4）、广州港（第5）、釜山港（第6）、香港港（第7）、青岛港（第8）、天津港（第9）、迪拜港（第10）。中国大陆的上海、舟山、深圳、广州各大港口城市已经渐渐超越了香港曾经作为中西贸易中转站的龙头地位，因此香港也同样面临着当初新加坡一样的挑战，经济需要转型，产业需要升级。</p>
+<p>但是香港就没有新加坡那么幸运了，即便香港政府想做一点事来实现产业升级，只可惜这座城市里的富豪掌握了太多的社会资源，他们只为自身牟利，根本不关心香港的未来。而且，香港政府也不是当年的李光耀政府，她们死抱着地产和金融的老本，没留住投资芯片建设的商人。香港富豪们硬是把“数码港”做成了房地产项目，填海造陆也只是为了增加住宅，并且鼓动中产阶级和底层民众上街反对政府建造福利房，反对房价下跌。如此一来，富人更富，穷人更穷了，房子永远买不起了！</p>
+<p>更可怕的是，香港的人才也都是向“钱”看。根据网络上的一则消息，“2017年，香港6个区的高考状元，其中5个的未来职业愿望，居然都是‘当医生’，剩下一个，是当牙医”。因为，香港没有制造业，没有工业基础，没有互联网经济，没有AI高新企业，只有医生、律师和金融才能维持“体面”的生活。说到“体面的生活”，对于普通香港人来说，最“体面”的生活莫过于——拥有一套属于自己的房子了。要知道，即使是香港有头有脸有名有姓的明星艺人，差不多奋斗10年左右，才能入手一套一室一厅的小房子，而且通常还要背负一身房贷。更别提普通的香港中产，动辄十几二十万一平米的房市，对他们来说想都不刚想，望了也是“望楼兴叹”！</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/5.jpg" class="lazyload"></p>
+<p>再来看看新加坡的住房制度就亲民很多，1960年，新加坡开始推行组屋制度，由于当时的新加坡刚刚脱离英殖民统治，政府没钱，国力落后，民众的住房条件也很差，有不少人住在平民窟；新加坡政府知难而进，在1964年推出来“居者有其屋”的计划，如今新加坡82%的人，生活在政府的组屋，其中90%的业主拥有自主产权。</p>
+<p>新加坡组屋的价格，新加坡当地中低收入家庭5年左右的收入，或者20-30年的住房公积金；这样一来，90%以上的新加坡家庭都可以住进组屋里面，这也是新加坡社会维持稳定的基础。可是，回头再看香港，这里的房价依旧是全世界最贵的地方。</p>
+<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/6.jpg" class="lazyload"></p>
+<p>最后，无论是生活在李家的坡还是李家的城，作为普通的我们，并不能左右社会的大环境，面对大灾大难的突然袭击我们也几乎束手无策。如果不能很好地融入当地的生活，如果想寻找更合适自己的文化圈，不妨多出门走走，多看看世界！你总会在世界的某个角落发现属于你的天地！这里送上中国古代南北朝（公元420年—589年 ）《南齐书.王敬则传》里面一句一直不落伍的话：“三十六计，走为上计”！</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><center>最后</center></h2><p>[1] 香港小学生作文《李家的城》</p>
+<p>[2] 网易新闻</p>
+<p>[3] 腾讯新闻</p>
+<p>[4] 腾讯网-弘扬文史</p>
+<p>[5] 维基百科-李嘉诚</p>
+<p>[6] 维基百科-李光耀</p>
+<p>[7] 维基百科-新加坡</p>
+<p>[8] 维基百科-香港</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><center>参考资料</center></h2></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">多看看实验室</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/">新加坡</a><a class="post-meta__tags" href="/tags/%E9%A6%99%E6%B8%AF/">香港</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200710/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/07/13/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E7%9A%84%E5%8D%8E%E4%BA%BA%E5%BE%88%E5%8E%89%E5%AE%B3-%E4%BD%86%E4%BA%BA%E5%8F%A3%E6%AF%94%E4%BE%8B%E5%8D%B4%E8%B6%8A%E6%9D%A5%E8%B6%8A%E4%BD%8E/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200713/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚的华人很厉害~但人口比例却越来越低</span></div></a></div><div class="next-post pull_right"><a href="/2020/07/09/%E5%A5%B3%E5%8F%8B%E4%BB%AC%E5%8C%85%E5%8C%85%E9%87%8C%E7%9A%84%E5%B0%8F%E6%A3%95%E7%93%B6%E5%B0%8F%E7%BA%A2%E7%93%B6%E5%B0%8F%E9%BB%91%E7%93%B6%E7%9A%84%E7%A7%98%E5%AF%86%E7%BB%88%E4%BA%8E%E8%A2%AB%E6%88%91%E5%8F%91%E7%8E%B0%E4%BA%86/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202007/20200709/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>女友们包包里的小棕瓶小红瓶小黑瓶的秘密终于被我发现了</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/02/2月2日病毒疫情-确诊总数突破1-4万～新加坡再增2例/" title="2月2日病毒疫情-确诊总数突破1.4万～新加坡再增2例"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200202/0.png"><div class="relatedPosts_title">2月2日病毒疫情-确诊总数突破1.4万～新加坡再增2例</div></a></div><div class="relatedPosts_item"><a href="/2019/08/08/世界30大街边美食城～新加坡、马来西亚榜上有名/" title="世界30大街边美食城～新加坡、马来西亚榜上有名"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190808/0.jpg"><div class="relatedPosts_title">世界30大街边美食城～新加坡、马来西亚榜上有名</div></a></div><div class="relatedPosts_item"><a href="/2019/07/28/假如最后一天在新加坡/" title="假如最后一天在新加坡"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201907/20190728/0.png"><div class="relatedPosts_title">假如最后一天在新加坡</div></a></div><div class="relatedPosts_item"><a href="/2020/06/29/南洋大学-曾经唯一的海外中文大学/" title="南洋大学｜曾经唯一的海外中文大学"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202006/20200629/0.jpg"><div class="relatedPosts_title">南洋大学｜曾经唯一的海外中文大学</div></a></div><div class="relatedPosts_item"><a href="/2019/04/29/在新加坡一定要做的50件事/" title="在新加坡一定要做的50件事"><img class="relatedPosts_cover lazyload"data-src="/img/default_bg.jpg"><div class="relatedPosts_title">在新加坡一定要做的50件事</div></a></div><div class="relatedPosts_item"><a href="/2019/05/24/地球上最美的机场～新加坡樟宜机场/" title="地球上最美的机场～新加坡樟宜机场"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201905/20190524/0.jpg"><div class="relatedPosts_title">地球上最美的机场～新加坡樟宜机场</div></a></div><div class="relatedPosts_item"><a href="/2019/12/19/如何从马来西亚驾车入境新加坡/" title="如何从马来西亚驾车入境新加坡"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201912/20191219/0.jpg"><div class="relatedPosts_title">如何从马来西亚驾车入境新加坡</div></a></div><div class="relatedPosts_item"><a href="/2020/08/09/新加坡10大华人姓氏/" title="新加坡10大华人姓氏"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200809/0.jpg"><div class="relatedPosts_title">新加坡10大华人姓氏</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By 多看看实验室</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
