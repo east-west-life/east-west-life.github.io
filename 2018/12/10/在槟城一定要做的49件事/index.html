@@ -1,232 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>在槟城一定要做的49件事 | SeeMuch Lab</title><meta name="description" content="在槟城一定要做的49件事"><meta name="keywords" content="槟城"><meta name="author" content="多看看实验室"><meta name="copyright" content="多看看实验室"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="在槟城一定要做的49件事"><meta name="twitter:description" content="在槟城一定要做的49件事"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181210/0.png"><meta property="og:type" content="article"><meta property="og:title" content="在槟城一定要做的49件事"><meta property="og:url" content="http://seemuch.org/2018/12/10/%E5%9C%A8%E6%A7%9F%E5%9F%8E%E4%B8%80%E5%AE%9A%E8%A6%81%E5%81%9A%E7%9A%8449%E4%BB%B6%E4%BA%8B/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="在槟城一定要做的49件事"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181210/0.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
 
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2018/12/10/%E5%9C%A8%E6%A7%9F%E5%9F%8E%E4%B8%80%E5%AE%9A%E8%A6%81%E5%81%9A%E7%9A%8449%E4%BB%B6%E4%BA%8B/"><link rel="prev" title="马来西亚那些有特色的地方" href="http://seemuch.org/2018/12/11/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E9%82%A3%E4%BA%9B%E6%9C%89%E7%89%B9%E8%89%B2%E7%9A%84%E5%9C%B0%E6%96%B9/"><link rel="next" title="马来西亚最佳的岛屿和海滩" href="http://seemuch.org/2018/12/08/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%9C%80%E4%BD%B3%E7%9A%84%E5%B2%9B%E5%B1%BF%E5%92%8C%E6%B5%B7%E6%BB%A9/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: 多看看实验室","link":"链接: http://seemuch.org/2018/12/10/%E5%9C%A8%E6%A7%9F%E5%9F%8E%E4%B8%80%E5%AE%9A%E8%A6%81%E5%81%9A%E7%9A%8449%E4%BB%B6%E4%BA%8B/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
-
-}</script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">245</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">224</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">30</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#序"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">序</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#序"><span class="toc-number">1.</span> <span class="toc-text">序</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181210/0.png)"><div id="post-info"><div id="post-title"><div class="posttitle">在槟城一定要做的49件事</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2018-12-10<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-08-08</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/">东南亚</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%9C%E5%8D%97%E4%BA%9A/%E7%A4%BE%E4%BC%9A%E4%BA%BA%E6%96%87/">社会人文</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>FeiFei</center>
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-<h2 id="序"><a href="#序" class="headerlink" title="序"></a><center>序</center></h2><p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181210/0.png" class="lazyload"></p>
-<p>以下是在槟城一定要做的49件事，你做了多少样呢？</p>
-<ol>
-<li>吃一碗开胃的Asam Laksa。</li>
-</ol>
-<ol start="2">
-<li>吃一盘全民最爱的炒粿条。</li>
-</ol>
-<ol start="3">
-<li>在热热的天气下，享用美味的ABC。</li>
-</ol>
-<ol start="4">
-<li>了解娘惹文化、吃一顿娘惹餐。</li>
-</ol>
-<ol start="5">
-<li>参与最长的Nasi Kandar队伍。</li>
-</ol>
-<ol start="6">
-<li>和其他脚车骑士一起吃Roti Jala &amp; Curry。</li>
-</ol>
-<ol start="7">
-<li>天气好热，那就来一杯Ais Tingkap。</li>
-</ol>
-<ol start="8">
-<li>享用Sri Weld饮食中心的炸豆干。</li>
-</ol>
-<ol start="9">
-<li>将传统咖啡抛诸脑后，来一杯棉花软糖咖啡！</li>
-</ol>
-<ol start="10">
-<li>尝尝香喷喷、热辣辣的肉桂卷。</li>
-</ol>
-<ol start="11">
-<li>登上升旗山的缆车。</li>
-</ol>
-<ol start="12">
-<li>在Batu Ferringhi海滩看日落。</li>
-</ol>
-<ol start="13">
-<li>乘搭最具代表性的渡轮。</li>
-</ol>
-<ol start="14">
-<li>赴一趟烹饪班，探索槟城传统美食精髓。</li>
-</ol>
-<ol start="15">
-<li>到ESCAPE体验一趟户外探险之旅。</li>
-</ol>
-<ol start="16">
-<li>体验当地公共交通，避开车龙！</li>
-</ol>
-<ol start="17">
-<li>到菜市场用福建话发挥讨价还价潜能。</li>
-</ol>
-<ol start="18">
-<li>从 Batu Ferringhi 骑脚车到 Teluk Bahang。</li>
-</ol>
-<ol start="19">
-<li>挑战国家公园的崎岖山路。</li>
-</ol>
-<ol start="20">
-<li>去飞禽公园观赏各类美丽奇特的鸟只。</li>
-</ol>
-<ol start="21">
-<li>到Harmony Street诚心祷告。</li>
-</ol>
-<ol start="22">
-<li>游走古迹区。</li>
-</ol>
-<ol start="23">
-<li>入住古迹酒店。</li>
-</ol>
-<ol start="24">
-<li>坐上三轮车穿梭大街小巷。</li>
-</ol>
-<ol start="25">
-<li>一定要走桥！说的是姓氏桥。</li>
-</ol>
-<ol start="26">
-<li>与Bangkok Lane的建筑物做近距离接触。</li>
-</ol>
-<ol start="27">
-<li>了解制藤过程。</li>
-</ol>
-<ol start="28">
-<li>在天公誕时玩一玩丢炮！</li>
-</ol>
-<ol start="29">
-<li>参观各姓氏宗祠。</li>
-</ol>
-<ol start="30">
-<li>到吉灵万山购买豆蔻。</li>
-</ol>
-<ol start="31">
-<li>喝夜酒、跳夜舞！</li>
-</ol>
-<ol start="32">
-<li>参与每年11月-12月举行的Jazz Festival。</li>
-</ol>
-<ol start="33">
-<li>尝一尝椰花酒。</li>
-</ol>
-<ol start="34">
-<li>参与年度国际音乐盛事，Penang World Music Festival。</li>
-</ol>
-<ol start="35">
-<li>沉浸在现场乐队的音乐中。(The Canteen, China House)</li>
-</ol>
-<ol start="36">
-<li>边欣赏日落，便品尝冰凉啤酒。</li>
-</ol>
-<ol start="37">
-<li>陶醉在威士忌之中。(The Den, Macalister Mansion)</li>
-</ol>
-<ol start="38">
-<li>天气好热？来点冰凉啤酒吧。(Bed, Auto-City / Soho Free House, Georgetown)</li>
-</ol>
-<ol start="39">
-<li>懒洋洋地享受鸡尾酒。(Sigi’s Bar and Grill on the Beach, Shangri-La Golden Sands Resort)</li>
-</ol>
-<ol start="40">
-<li>在古迹区享受一杯浓浓咖啡。</li>
-</ol>
-<ol start="41">
-<li>跟槟城壁画万捉迷藏。</li>
-</ol>
-<ol start="42">
-<li>观赏免费电影和表演。(Penangpac, Straits Quay)</li>
-</ol>
-<ol start="43">
-<li>勇爬Waterfall Hilltop Temple 500层阶梯。</li>
-</ol>
-<ol start="44">
-<li>到槟州艺术画廊观览，化身艺术之人。</li>
-</ol>
-<ol start="45">
-<li>探索槟州娘惹历史。</li>
-</ol>
-<ol start="46">
-<li>参观亚洲最大的卧佛像之一。</li>
-</ol>
-<ol start="47">
-<li>参观娘惹首饰。</li>
-</ol>
-<ol start="48">
-<li>到Little Penang Street Market跳蚤市场寻觅惊喜！</li>
-</ol>
-<ol start="49">
-<li>若是新年期间，一定要参加拜天公！</li>
-</ol>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">多看看实验室</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A7%9F%E5%9F%8E/">槟城</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181210/0.png" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2018/12/11/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E9%82%A3%E4%BA%9B%E6%9C%89%E7%89%B9%E8%89%B2%E7%9A%84%E5%9C%B0%E6%96%B9/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2018/201812/20181211/1.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚那些有特色的地方</span></div></a></div><div class="next-post pull_right"><a href="/2018/12/08/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%9C%80%E4%BD%B3%E7%9A%84%E5%B2%9B%E5%B1%BF%E5%92%8C%E6%B5%B7%E6%BB%A9/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/images2018/master/201812/20181208/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>马来西亚最佳的岛屿和海滩</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/09/01/25道槟城必吃美食～112家槟城必去餐厅/" title="25道槟城必吃美食～112家槟城必去餐厅"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201909/20190901/0.png"><div class="relatedPosts_title">25道槟城必吃美食～112家槟城必去餐厅</div></a></div><div class="relatedPosts_item"><a href="/2019/06/16/不得不说的槟城乔治市街头艺术/" title="不得不说的槟城乔治市街头艺术|街头壁画"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201906/20190616/0.png"><div class="relatedPosts_title">不得不说的槟城乔治市街头艺术|街头壁画</div></a></div><div class="relatedPosts_item"><a href="/2019/10/11/槟城乔治市的必吃经典美食/" title="槟城乔治市的必吃经典美食"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201910/20191011/1.png"><div class="relatedPosts_title">槟城乔治市的必吃经典美食</div></a></div><div class="relatedPosts_item"><a href="/2019/01/25/槟城旅游景点之终极指南/" title="槟城旅游景点之终极指南"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201901/20190125/0.png"><div class="relatedPosts_title">槟城旅游景点之终极指南</div></a></div><div class="relatedPosts_item"><a href="/2019/08/03/槟城最值得去的12大热门购物商场/" title="槟城最值得去的12大热门购物商场"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190803/0.jpg"><div class="relatedPosts_title">槟城最值得去的12大热门购物商场</div></a></div><div class="relatedPosts_item"><a href="/2019/07/31/槟城的交通出行攻略/" title="槟城的交通出行攻略"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201907/20190731/0.jpg"><div class="relatedPosts_title">槟城的交通出行攻略</div></a></div><div class="relatedPosts_item"><a href="/2019/08/01/槟城景点大汇总～热门景点vs小众景点/" title="槟城景点大汇总～热门景点vs小众景点"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2019/201908/20190801/0.jpg"><div class="relatedPosts_title">槟城景点大汇总～热门景点vs小众景点</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By 多看看实验室</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
+
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
+
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug

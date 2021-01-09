@@ -1,104 +1,79 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>3年前这部剧～就已“神预言”新冠病毒肺炎 | SeeMuch Lab</title><meta name="description" content="3年前这部剧～就已“神预言”新冠病毒肺炎"><meta name="keywords" content="疫情,新冠病毒"><meta name="author" content="多看看实验室"><meta name="copyright" content="多看看实验室"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/seemuch.lab.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="3年前这部剧～就已“神预言”新冠病毒肺炎"><meta name="twitter:description" content="3年前这部剧～就已“神预言”新冠病毒肺炎"><meta name="twitter:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg"><meta property="og:type" content="article"><meta property="og:title" content="3年前这部剧～就已“神预言”新冠病毒肺炎"><meta property="og:url" content="http://seemuch.org/2020/01/27/3%E5%B9%B4%E5%89%8D%E8%BF%99%E9%83%A8%E5%89%A7%EF%BD%9E%E5%B0%B1%E5%B7%B2%E2%80%9C%E7%A5%9E%E9%A2%84%E8%A8%80%E2%80%9D%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E8%82%BA%E7%82%8E/"><meta property="og:site_name" content="SeeMuch Lab"><meta property="og:description" content="3年前这部剧～就已“神预言”新冠病毒肺炎"><meta property="og:image" content="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'true'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+extends includes/layout.pug
 
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
+block top_img
+  - var top_img =  page.top_img || page.cover || theme.post_meta.top_img || theme.default_top_img
+  - var bg_img = top_img !== true ? `background-image: url(${top_img})` : ''
+  div#top-container(style=bg_img)
+    #post-info
+      #post-title
+          .posttitle= page.title || _p('no_title')
+      #post-meta
+        if (theme.post_meta.date_type)
+          if (theme.post_meta.date_type === 'both')
+            time.post-meta__date
+              i.fa.fa-calendar(aria-hidden="true")
+              =' '+_p('post.created')+' '+date(page.date, config.date_format)
+              span.post-meta__separator |
+              i.fa.fa-history(aria-hidden="true")
+              =' '+_p('post.updated')+' '+date(page.updated, config.date_format)
+          else
+            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
+            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
 
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://seemuch.org/2020/01/27/3%E5%B9%B4%E5%89%8D%E8%BF%99%E9%83%A8%E5%89%A7%EF%BD%9E%E5%B0%B1%E5%B7%B2%E2%80%9C%E7%A5%9E%E9%A2%84%E8%A8%80%E2%80%9D%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E8%82%BA%E7%82%8E/"><link rel="prev" title="马来西亚暂停中国武汉和湖北游客的入境" href="http://seemuch.org/2020/01/28/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%9A%82%E5%81%9C%E4%B8%AD%E5%9B%BD%E6%AD%A6%E6%B1%89%E5%92%8C%E6%B9%96%E5%8C%97%E6%B8%B8%E5%AE%A2%E7%9A%84%E5%85%A5%E5%A2%83/"><link rel="next" title="即使新冠肺炎，我还是决定留下来过个好年" href="http://seemuch.org/2020/01/24/%E5%8D%B3%E4%BD%BF%E2%80%9C%E6%AD%A6%E6%B1%89%E8%82%BA%E7%82%8E%E2%80%9D%EF%BC%8C%E6%88%91%E8%BF%98%E6%98%AF%E5%86%B3%E5%AE%9A%E7%95%99%E4%B8%8B%E6%9D%A5%E8%BF%87%E4%B8%AA%E5%A5%BD%E5%B9%B4/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
-  highlight_copy: 'true',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: {"languages":{"author":"作者: 多看看实验室","link":"链接: http://seemuch.org/2020/01/27/3%E5%B9%B4%E5%89%8D%E8%BF%99%E9%83%A8%E5%89%A7%EF%BD%9E%E5%B0%B1%E5%B7%B2%E2%80%9C%E7%A5%9E%E9%A2%84%E8%A8%80%E2%80%9D%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92%E8%82%BA%E7%82%8E/","source":"来源: SeeMuch Lab","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
-  copy_copyright_js: true,
-  ClickShowText: undefined,
-  medium_zoom: 'true',
-  Snackbar: undefined
-
-}</script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">SeeMuch Lab</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.jpg'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">245</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">224</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">30</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东南亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-se-asia/"><i class="fa-fw fa fa-culture-se-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-se-asia/"><i class="fa-fw fa fa-education-se-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-se-asia/"><i class="fa-fw fa fa-guide-se-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-se-asia/"><i class="fa-fw fa fa-food-se-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-se-asia/"><i class="fa-fw fa fa-scene-se-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 东亚</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-east-asia/"><i class="fa-fw fa fa-culture-east-asia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-east-asia/"><i class="fa-fw fa fa-education-esat-asia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-east-asia/"><i class="fa-fw fa fa-guide-east-asia"></i><span> 攻略指南</span></a></li><li><a class="site-page" href="/food-east-asia/"><i class="fa-fw fa fa-food-east-asia"></i><span> 美食小吃</span></a></li><li><a class="site-page" href="/scene-east-asia/"><i class="fa-fw fa fa-scene-east-asia"></i><span> 旅游景点</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 北美</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-north-america/"><i class="fa-fw fa fa-culture-north-america"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-north-ame/"><i class="fa-fw fa fa-education-north-ame"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-north-america/"><i class="fa-fw fa fa-guide-north-america"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 西欧</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-west-eu/"><i class="fa-fw fa fa-culture-west-eu"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-west-europe/"><i class="fa-fw fa fa-education-west-europe"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-west-europe/"><i class="fa-fw fa fa-guide-west-europe"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 澳洲</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/culture-australia/"><i class="fa-fw fa fa-culture-australia"></i><span> 社会人文</span></a></li><li><a class="site-page" href="/education-australia/"><i class="fa-fw fa fa-education-australia"></i><span> 留学移民</span></a></li><li><a class="site-page" href="/guide-australia/"><i class="fa-fw fa fa-guide-australia"></i><span> 攻略指南</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 专题</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/north-of-culture/"><i class="fa-fw fa fa-north-of-culture"></i><span> 生活之南</span></a></li><li><a class="site-page" href="/road-to-education/"><i class="fa-fw fa fa-road-to-education"></i><span> 教育之路</span></a></li><li><a class="site-page" href="/love-lab/"><i class="fa-fw fa fa-love-lab"></i><span> 爱情之道</span></a></li><li><a class="site-page" href="/tech-n-art/"><i class="fa-fw fa fa-tech-n-art"></i><span> 科技人文</span></a></li></ul></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> 更多</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/film/"><i class="fa-fw fa fa-film"></i><span> 视频</span></a></li><li><a class="site-page" href="/image/"><i class="fa-fw fa fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我们</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">3年前这部剧～就已“神预言”新冠病毒肺炎</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-01-27<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-10-25</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%93%E9%A2%98/">专题</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%B8%93%E9%A2%98/%E7%94%9F%E6%B4%BB%E4%B9%8B%E5%8D%97/">生活之南</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true"></i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>&nbsp;</p>
-<center>林子</center>
+        if (theme.post_meta.categories && page.categories.data.length > 0)
+          if (theme.post_meta.date_type)
+            span.post-meta__separator.mobile_hidden |
+          span.mobile_hidden
+            each item, index in page.categories.data
+              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
+              a(href=url_for(item.path)).post-meta__categories #[=item.name]
+              if (index < page.categories.data.length - 1)
+                i.fa.fa-angle-right(aria-hidden="true")
+        .post-meta-wordcount
+          if (theme.wordcount && theme.wordcount.enable)
+            i.fa.fa-file-word-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.wordcount') + ': '
+            span.word-count= wordcount(page.content)
+            span.post-meta__separator |
+            i.fa.fa-clock-o.post-meta__icon(aria-hidden="true")
+            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
+          if (theme.wordcount && theme.wordcount.enable && theme.busuanzi.page_pv)
+            span.post-meta__separator |
+          if theme.busuanzi.page_pv
+            i.fa.fa-eye.post-meta__icon(aria-hidden="true")
+            span= _p('post.page_pv') + ': '
+            span#busuanzi_value_page_pv
 
 
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg" class="lazyload"></p>
-<p>最近，有一部2017年播出的43集大陆电视剧《急诊科医生》，令人惊悚的是，第26集中的片段就“神预言”了新型冠状病毒的出现，犹如本次新冠病毒肺炎的翻版！</p>
-<p><a href="https://www.facebook.com/Malaysia.Day.Night/videos/726550597752379/}" target="_blank" rel="noopener" title="3年前这部剧～就已“神预言”新冠病毒肺炎"><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/10.jpg" class="lazyload"></a></p>
-<p>在本剧中，由张嘉译、王珞丹等扮演的急诊科医生准确并及时地应对和处理了新冠病毒，病人也出现了咳嗽、呼吸困难、持续发烧等症状，就连“封城”也如出一辙呀。这部剧的内容，对于当下有一定的借鉴和科普的意义！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/1.gif" class="lazyload"></p>
-<p>第26集的剧情一开始，就有一位男子突感身体不适，于是朋友带他去医院检查，结果被诊断出胸痛、咳嗽等症状。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/2.gif" class="lazyload"></p>
-<p>在电视剧中，由王珞丹饰演的医生江晓琪，初期诊断病人后发现异常，于是指示护士对病人展开隔离并进行下一步的观察。可不料病患发烧指数越来越高，就连他的朋友也出现了病症。</p>
-<p>机灵的江晓琪感觉出会有大事不妙，询问了病患的朋友才知晓，两人刚从非洲乌干达回国后就感到身体不舒服。于是，江晓琪医生通报医院高层，准备商讨下一步的治疗方案，以防万一。</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/3.gif" class="lazyload"></p>
-<p>接下来，江晓琪就去找急诊科主任医师何建一（由张嘉译演），经两人商讨和会诊以后证实，这位病人确实感染了“新型冠状病毒”，而且这一种病毒同SARS病毒非常相似，包括咳嗽﹑呼吸困难﹑发烧等症状也是类似的，而且接触的人都可能被感染，简直就同现实中从武汉爆发的“新型冠状病毒肺炎”很相像！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/4.gif" class="lazyload"></p>
-<p>剧中的为了减少病毒的传染和疫情的严重性，医院开始封锁，并关闭急症室，停止了一切的人员流动，弄的人人心惶惶！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/5.gif" class="lazyload"></p>
-<p>不过，这跟目前肺炎疫情的影响雷同，自官方开始“封城令”以后，引发不少人大逃亡！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/6.jpg" class="lazyload"></p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/7.jpg" class="lazyload"></p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/8.jpg" class="lazyload"></p>
-<p>看完这集，相信你也会感叹“这剧集尤如神预言，就连里面的细节都一样”，看得人连鸡皮疙瘩都有了，这不知道这部电视剧是怎样编出来的！</p>
-<p><img alt data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/9.jpg" class="lazyload"></p>
-<p>据《急诊科医生》的导演郑晓龙透露，为了客观展示剧中的医疗效果，剧组请了北京协和医院的急诊科专家帮助审改剧本。此外，还请北京协和医院专业派出了专业的医生、护士团队全程跟随，为《急诊科医生》剧组提供了不少的技术指导和专业支持，甚至连剧中的很多角色也是真正的医生护士！</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">多看看实验室</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://seemuch.org">SeeMuch Lab</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%96%AB%E6%83%85/">疫情</a><a class="post-meta__tags" href="/tags/%E6%96%B0%E5%86%A0%E7%97%85%E6%AF%92/">新冠病毒</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200127/0.jpg" data-sites="facebook,twitter,wechat,weibo,qq,instagram,"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/qrcode.jpg"><div class="post-qr-code__desc">微信公众号</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/info/wechat.jpg"><div class="post-qr-code__desc">客服微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/01/28/%E9%A9%AC%E6%9D%A5%E8%A5%BF%E4%BA%9A%E6%9A%82%E5%81%9C%E4%B8%AD%E5%9B%BD%E6%AD%A6%E6%B1%89%E5%92%8C%E6%B9%96%E5%8C%97%E6%B8%B8%E5%AE%A2%E7%9A%84%E5%85%A5%E5%A2%83/"><img class="prev_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200128/0.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>马来西亚暂停中国武汉和湖北游客的入境</span></div></a></div><div class="next-post pull_right"><a href="/2020/01/24/%E5%8D%B3%E4%BD%BF%E2%80%9C%E6%AD%A6%E6%B1%89%E8%82%BA%E7%82%8E%E2%80%9D%EF%BC%8C%E6%88%91%E8%BF%98%E6%98%AF%E5%86%B3%E5%AE%9A%E7%95%99%E4%B8%8B%E6%9D%A5%E8%BF%87%E4%B8%AA%E5%A5%BD%E5%B9%B4/"><img class="next_cover lazyload" data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202001/20200124/0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>即使新冠肺炎，我还是决定留下来过个好年</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/01/全球旅游业受重创～因病毒疫情中国游客骤减/" title="全球旅游业受重创～因病毒疫情中国游客骤减"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200201/0.jpg"><div class="relatedPosts_title">全球旅游业受重创～因病毒疫情中国游客骤减</div></a></div><div class="relatedPosts_item"><a href="/2020/05/08/疫情结束后，你想做什么？/" title="疫情结束后，你想做什么？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202005/20200508/0.png"><div class="relatedPosts_title">疫情结束后，你想做什么？</div></a></div><div class="relatedPosts_item"><a href="/2020/12/05/疫情笼罩的2020-2021年非常适合“改造”人生？/" title="疫情笼罩的2020~2021年非常适合“改造”人生？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202012/20201205/0.jpg"><div class="relatedPosts_title">疫情笼罩的2020~2021年非常适合“改造”人生？</div></a></div><div class="relatedPosts_item"><a href="/2020/02/10/微博上流传“一名武汉女生的日记”/" title="微博上流传“一名武汉女生的日记”"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/site/master/resource/images/2020/202002/20200210/0.jpg"><div class="relatedPosts_title">微博上流传“一名武汉女生的日记”</div></a></div><div class="relatedPosts_item"><a href="/2020/08/29/新冠病毒（Covid-19）测试你需要知道的事/" title="新冠病毒（Covid-19）测试你需要知道的事"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200829/0.jpg"><div class="relatedPosts_title">新冠病毒（Covid-19）测试你需要知道的事</div></a></div><div class="relatedPosts_item"><a href="/2020/08/18/美国为什么会彻底输掉新冠病毒之战？/" title="美国为什么会彻底输掉新冠病毒之战？"><img class="relatedPosts_cover lazyload"data-src="https://raw.githubusercontent.com/seemuch-lab/images2020/master/202008/20200818/0.jpg"><div class="relatedPosts_title">美国为什么会彻底输掉新冠病毒之战？</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc0Ny8yNDI0NA=="><script>(function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script></div></div></div></div><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By 多看看实验室</div><div class="framework-info"></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span></span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
-</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+block content
+  article#post(class="")
+    #post-content.article-container!= page.content
+  if (theme.post_copyright && theme.post_copyright.enable && page.copyright != false)
+    .post-copyright
+      .post-copyright__author
+        span.post-copyright-meta= _p('post.copyright.author') + ": "
+        span.post-copyright-info
+          a(href=`mailto:${config.email}`) #[=config.author]
+      .post-copyright__type
+        span.post-copyright-meta= _p('post.copyright.link') + ": "
+        span.post-copyright-info
+          a(href=url_for(page.permalink)) #[=page.permalink]
+      .post-copyright__notice
+        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
+        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
+
+  .tag_share
+    if (theme.post_meta.tags)
+      .post-meta__tag-list
+        each item, index in page.tags.data
+          a(href=url_for(item.path)).post-meta__tags #[=item.name]
+    include includes/share/index.pug
+
+  if theme.reward.enable
+    include includes/reward.pug
+  include includes/pagination.pug
+
+  if theme.related_post && theme.related_post.enable
+    != related_posts(page,site.posts)
+  if page.comments !== false
+    include includes/comments/index.pug
