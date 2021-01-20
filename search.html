@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <title>搜索</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/about/logo-icon.png" type="image/png" sizes="18x18">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/my_jquery.js"></script>
+    <script src="components/header.js" type="text/javascript" defer></script>
+    <script src="components/footer.js" type="text/javascript" defer></script>
+    <!-- index customized -->
+    <style>
+    </style>
+  </head>
+
+  <body data-spy="scroll" data-target=".navbar" data-offset="0">
+    <!--header-->
+    <header>
+      <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="0">
+        <header-component></header-component>
+      </nav>
+    </header>
+    <!--main-->
+    <div id="seven" class="container-fluid text-center">
+      <div class="w3-container w3-content w3-padding-64" style="max-width:800px;">
+        <div class="w3-opacity-min">
+          <h1>搜索</h1>
+          <p>输入关键字，搜索相关信息</p>
+        </div>
+        <br>
+        <img src="img/home/culture.jpg" alt="Search" style="width:100%;">
+        <br><br>
+        <input class="form-control" id="myInput" type="text" placeholder="输入..">
+        <br><br>
+        <div id="LastMonth" style="color:#fff;">
+          <a href="https://studymax.org/skill_list/ranking/qs-asia-cn.html"><p>2021年QS亚洲大学排名榜有你的母校吗？</p></a>
+
+          <hr>
+
+          <a href="https://studymax.org/skill_list/learning/long-time-focus.html"><p>为何学霸们长时间学习都可以非常专注？</p></a>
+          <hr>
+          <a href="https://studymax.org/language/study-method/write-email.html"><p>Email不会写？学生党上班族必收藏</p></a>
+          <a href="https://studymax.org/"><p></p></a>
+        </div>
+        <br><br>
+        <p style="color:#fff;font-size:80%;">* 扫描下方图片，追踪更多内容</p>
+        <div class="text-center">
+          <img src="img/about/wechat.jpg" alt="微信公众号" style="width:100px">
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#LastMonth *").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+    </script>
+
+
+    <!-- Go to Top -->
+    <a href="index.html" id="go-to-top" style="display: none;"><span>顶部</span></a>
+    <!-- footer-->
+    <footer-component></footer-component>
+  </body>
+</html>

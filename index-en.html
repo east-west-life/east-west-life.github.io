@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <title>多看看实验室｜SeeMuch Lab</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/about/logo-icon.png" type="image/png" sizes="18x18">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/my_jquery.js"></script>
+    <script src="components/header.js" type="text/javascript" defer></script>
+    <script src="components/footer.js" type="text/javascript" defer></script>
+    <!-- index customized -->
+    <style>
+    </style>
+  </head>
+
+  <body data-spy="scroll" data-target=".navbar" data-offset="0">
+    <video autoplay muted loop id="myVideo">
+      <source src="img/video/video.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <!--header-->
+    <header>
+      <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="0">
+        <header-component></header-component>
+      </nav>
+    </header>
+    <!-- main -->
+    <!-- Bootstrap Carousel Plugin -->
+    <div class="w3-container w3-content w3-padding-64" style="max-width:900px">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+          <div class="item active">
+            <img src="img/home/culture.jpg" alt="社会人文" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>社会人文</h3>
+            </div>
+          </div>
+          <div class="item">
+            <img src="img/home/guide.jpg" alt="攻略指南" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>攻略指南</h3>
+            </div>
+          </div>
+          <div class="item">
+            <img src="img/home/edu.jpg" alt="留学移民" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>留学移民</h3>
+            </div>
+          </div>
+          <div class="item">
+            <img src="img/home/scene.jpg" alt="旅游景点" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>旅游景点</h3>
+            </div>
+          </div>
+          <div class="item">
+            <img src="img/home/food.jpg" alt="美食小吃" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>美食小吃</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">向前</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">向后</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- southeast asia -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="es-asia.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>东南亚</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="se_asia_list/culture/um-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来亚大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">公立大学</div>
+            </div>
+          </div>
+        </a>
+        <a href="se_asia_list/culture/usm-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚理科大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">公立大学</div>
+            </div>
+          </div>
+        </a>
+        <a href="se_asia_list/culture/utm-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">马来西亚理工大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">公立大学</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="se_asia_list/culture/upm-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来西亚博特拉大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">公立大学</div>
+            </div>
+          </div>
+        </a>
+        <a href="se_asia_list/guide/ucsi-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">思特雅大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">私立大学</div>
+            </div>
+          </div>
+        </a>
+        <a href="se_asia_list/guide/taylor-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">泰莱大学指导手册</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">私立大学</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="es-asia.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多东南亚
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- east asia -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="east-asia.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>东亚</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="east-asia-list/culture/malaysia-univ-ranking-com.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚留学综合4大排名榜最靠谱的大学排名</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="east-asia-list/culture/qs-asia-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">2021年QS亚洲大学排名榜有你的母校吗？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="east-asia-list/culture/phd-on-vacation.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">关于马来西亚留学"寒暑假博士"你必须要知道的事</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">技巧攻略</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="east-asia-list/culture/top500-in-all-ranking-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来西亚唯一一所在4大排名榜都进入500强的大学</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="east-asia-list/culture/my-star-schools-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚高教评估8所大学获得6星评价</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="east-asia-list/culture/malaya-or-211.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">商科专业马来亚大学和211大学相比～哪个更好？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="east-asia.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多东亚
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+
+    <!-- west europe -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="west-eu.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>西欧</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="west-eu-list/culture/malaysia-univ-ranking-com.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚留学综合4大排名榜最靠谱的大学排名</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="west-eu-list/culture/qs-asia-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">2021年QS亚洲大学排名榜有你的母校吗？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="west-eu-list/culture/phd-on-vacation.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">关于马来西亚留学"寒暑假博士"你必须要知道的事</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">技巧攻略</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="west-eu-list/culture/top500-in-all-ranking-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来西亚唯一一所在4大排名榜都进入500强的大学</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="west-eu-list/culture/my-star-schools-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚高教评估8所大学获得6星评价</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="west-eu-list/culture/malaya-or-211.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">商科专业马来亚大学和211大学相比～哪个更好？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="west-eu.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多西欧
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- north america -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="north-ame.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>北美</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="north-ame-list/culture/malaysia-univ-ranking-com.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚留学综合4大排名榜最靠谱的大学排名</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="north-ame-list/culture/qs-asia-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">2021年QS亚洲大学排名榜有你的母校吗？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="north-ame-list/culture/phd-on-vacation.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">关于马来西亚留学"寒暑假博士"你必须要知道的事</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">技巧攻略</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="north-ame-list/culture/top500-in-all-ranking-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来西亚唯一一所在4大排名榜都进入500强的大学</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="north-ame-list/culture/my-star-schools-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚高教评估8所大学获得6星评价</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="north-ame-list/culture/malaya-or-211.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">商科专业马来亚大学和211大学相比～哪个更好？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="north-ame.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多北美
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- oceania -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="oceania.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>大洋洲</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="oceania-list/culture/malaysia-univ-ranking-com.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚留学综合4大排名榜最靠谱的大学排名</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="oceania-list/culture/qs-asia-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">2021年QS亚洲大学排名榜有你的母校吗？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="oceania-list/culture/phd-on-vacation.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">关于马来西亚留学"寒暑假博士"你必须要知道的事</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">技巧攻略</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="oceania-list/culture/top500-in-all-ranking-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-primary">
+              <div class="panel-heading">马来西亚唯一一所在4大排名榜都进入500强的大学</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="oceania-list/culture/my-star-schools-cn.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-danger">
+              <div class="panel-heading">马来西亚高教评估8所大学获得6星评价</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+        <a href="oceania-list/culture/malaya-or-211.html" class="card my-3 block-hover">
+          <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">商科专业马来亚大学和211大学相比～哪个更好？</div>
+              <div class="panel-body"><img src="img/se-asia/kl.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+              <div class="panel-footer">学校排名</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="oceania.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多大洋洲
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- Topic -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="topic.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>专题</h2>
+          </button>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="topic-list/life/write-email.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>Email不会写？学生党上班族必收藏</strong></p>
+            </div>
+          </div>
+        </a>
+        <a href="topic-list/life/abbre-words.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>英语聊天常用语缩写词的含义你都知道吗？</strong></p>
+            </div>
+          </div>
+        </a>
+        <a href="topic-list/life/engish-tips.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>英语听说读写Tips～一个人也可以学好英文</strong></p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="row">
+        <a href="topic-list/life/5-skills-of-words.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>5大技巧让你简单高效掌握更多英语词汇</strong></p>
+            </div>
+          </div>
+        </a>
+        <a href="topic-list/life/write-email.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>Email不会写？学生党上班族必收藏</strong></p>
+            </div>
+          </div>
+        </a>
+        <a href="topic-list/life/write-email.html">
+          <div class="col-sm-4">
+            <div class="thumbnail">
+              <img src="img/se-asia/kl.jpg" alt="Image" style="width:100%">
+              <p><strong>Email不会写？学生党上班族必收藏</strong></p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="topic.html">
+          <span class="glyphicon glyphicon-search"></span>
+          了解更多专题
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- About us -->
+    <div id="home" class="container-fluid text-center w3-container" style="max-width:900px">
+      <div class="w3-opacity-min">
+        <a href="about-us.html">
+          <button type="button" class="btn btn-x btn-block">
+            <h2>联系我们</h2>
+          </button>
+        </a>
+      </div>
+      <br><br>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-off logo-small"></span>
+          <h4>动力</h4>
+          <p>我们给你前进的十足马力</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-heart logo-small"></span>
+          <h4>热忱</h4>
+          <p>我们让你找回学习的热情</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-lock logo-small"></span>
+          <h4>安心</h4>
+          <p>我们带你找回读书的宁静</p>
+        </div>
+      </div>
+      <br><br>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-leaf logo-small"></span>
+          <h4>持续</h4>
+          <p>我们引导你学会可持续式学习</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-wrench logo-small"></span>
+          <h4>专业</h4>
+          <p>我们指导你高效掌握专业性的技能</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-certificate logo-small"></span>
+          <h4>收获</h4>
+          <p>我们手把手带你体验收获的喜悦</p>
+        </div>
+      </div>
+      <br>
+
+      <div class="w3-opacity-min text-center">
+        <a class="btn btn-danger open" href="about-us.html">
+          <span class="glyphicon glyphicon-search"></span>
+          更多关于我们
+        </a>
+      </div>
+      <br><br>
+    </div>
+
+    <!-- Go to Top -->
+    <a href="index.html" id="go-to-top" style="display: none;"><span>顶部</span></a>
+    <!-- footer-->
+    <footer-component></footer-component>
+  </body>
+</html>
