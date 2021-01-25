@@ -76,7 +76,7 @@ footerTemplate.innerHTML = `
           <a href="../about-us.html">关于我们</a>
         </div>
         <div class="row">
-          <p>&copy; 2018-2021 SeeMuch Lab.&nbsp;All rights reserved.</p>
+          <p style="font-size:12px;">&copy; 2018-2021 SeeMuch Lab.&nbsp;All rights reserved.</p>
         </div>
       </div>
       <div class="col-sm-4 text-center">
