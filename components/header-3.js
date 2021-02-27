@@ -159,10 +159,10 @@ headerTemplate.innerHTML = `
           </button>
           <div class="dropdown-content">
             <a href="../../topic-list/life.html">生活之南</a>
-            <a href="../../topic-list/edu.html">教育之路</a>
+            <a href="../../topic-list/history.html">历史之光</a>
             <a href="../../topic-list/pretty.html">世界之美</a>
+            <a href="../../topic-list/edu.html">教育之路</a>
             <a href="../../topic-list/love.html">爱情之道</a>
-            <a href="../../topic-list/tech-art.html">科技人文</a>
           </div>
         </li>
         <li class="dropdown">
