@@ -72,14 +72,14 @@ footerTemplate.innerHTML = `
           <a href="about-us.html">关于我们</a>
         </div>
         <div class="row">
-          <p style="font-size:12px;">&copy; 2018-2021 SeeMuch Lab.&nbsp;All rights reserved.</p>
+          <p style="font-size:12px;">&copy; 2018-2023 East-West-Life.&nbsp;All rights reserved.</p>
         </div>
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="https://www.youtube.com/channel/UCTymgNLoKQd0alvPXUz-g5g" class="fa fa-youtube"></a>
-          <a href="https://www.facebook.com/seemuch.lab" class="fa fa-facebook"></a>
-          <a href="https://www.linkedin.com/company/seemuch/" class="fa fa-linkedin"></a>
+          <a href="https://www.youtube.com/@east-west-life" class="fa fa-youtube"></a>
+          <a href="https://www.facebook.com/east2west2life" class="fa fa-facebook"></a>
+          <a href="https://www.linkedin.com/company/east-west-life/" class="fa fa-linkedin"></a>
         </div>
       </div>
     </div>
