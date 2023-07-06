@@ -20,7 +20,7 @@
 
 .navbar {
   font-size: 16px !important;
-  background-color: #e7717d;
+  background-color: #D80621;
   z-index: 9999;
   text-align: center;
   border: 0;
@@ -33,7 +33,7 @@
 }
 
 .navbar-nav li a:hover, .navbar-nav li.active a {
-  color: #e7717d !important;
+  color: #D80621 !important;
   background-color: #fff !important;
 }
 
@@ -62,13 +62,13 @@
 
 .dropdown:hover .dropbtn{
   background-color: #fff;
-  color: #e7717d !important;;
+  color: #D80621 !important;;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #e7717d;
+  background-color: #D80621;
   min-width: 150px;
 }
 
@@ -99,7 +99,7 @@ ul,li {
 
 .btn-x {
   color: #fff;
-  background-color: #e7717d;
+  background-color: #D80621;
 }
 
 /* modern clearfix */
@@ -217,7 +217,7 @@ iframe {
 
 
 .panel {
-  border: 1px solid #e7717d;
+  border: 1px solid #D80621;
   border-radius:0;
   transition: box-shadow 0.5s;
 }
@@ -228,7 +228,7 @@ iframe {
 
 .panel-heading {
   color: #fff !important;
-  background-color: #e7717d !important;
+  background-color: #D80621 !important;
   padding: 25px;
   border-bottom: 1px solid transparent;
   border-top-left-radius: 0px;
@@ -244,7 +244,7 @@ iframe {
 
 .panel-footer {
   background-color: #fff !important;
-  color: #e7717d;
+  color: #D80621;
 }
 
 .panel-footer h3 {
@@ -259,14 +259,14 @@ iframe {
 
 .panel-footer .btn {
   margin: 15px 0;
-  background-color: #e7717d;
+  background-color: #D80621;
   color: #fff;
 }
 
 .panel-footer .btn:hover {
-  border: 1px solid #e7717d;
+  border: 1px solid #D80621;
   background-color: #fff !important;
-  color: #e7717d;
+  color: #D80621;
 }
 
 .thumbnail {
@@ -280,7 +280,7 @@ iframe {
   margin-bottom: 10px;
 }
 .thumbnail p {
-  color: #e7717d;
+  color: #D80621;
 }
 
 body {
