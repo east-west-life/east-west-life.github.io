@@ -29,7 +29,7 @@ footerTemplate.innerHTML = `
           <div class="col-sm-6">
           </div>
           <div class="col-sm-6 text-center">
-            <img src="../../img/about/wechat-bm.jpg" style="width:60px">
+            <img src="../../img/about/wechat.jpg" style="width:60px">
           </div>
         </div>
       </div>
