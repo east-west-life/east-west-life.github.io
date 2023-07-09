@@ -13,69 +13,28 @@ headerTemplate.innerHTML = `
       <ul class="nav navbar-nav">
         <li><a href="../../index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
         <li class="dropdown">
-          <button class="dropbtn">东南亚
-            <span class="caret"></span>
-          </button>
-           <ul class="dropdown-content">
-              <li><a href="../../se-asia-list/culture.html">社会人文</a></li>
-              <li><a href="../../se-asia-list/guide.html">攻略指南</a></li>
-              <li><a href="../../se-asia-list/edu.html">留学移民</a></li>
-              <li><a href="../../se-asia-list/scene.html">旅游景点</a></li>
-              <li><a href="../../se-asia-list/food.html">美食小吃</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">东亚
+          <button class="dropbtn">生活
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="../../east-asia-list/culture.html">社会人文</a></li>
-            <li><a href="../../east-asia-list/guide.html">攻略指南</a></li>
-            <li><a href="../../east-asia-list/edu.html">留学移民</a></li>
-            <li><a href="../../east-asia-list/scene.html">旅游景点</a></li>
-            <li><a href="../../east-asia-list/food.html">美食小吃</a></li>
+              <li><a href="../../life/australia.html">澳大利亚</a></li>
+              <li><a href="../../life/canada.html">加拿大</a></li>
+              <li><a href="../../life/japan.html">日本</a></li>
+              <li><a href="../../life/malaysia.html">马来西亚</a></li>
+              <li><a href="../../life/newzealand.html">新西兰</a></li>
+              <li><a href="../../life/singapore.html">新加坡</a></li>
+              <li><a href="../../life/thailand.html">泰国</a></li>
+              <li><a href="../../life/usa.html">美国</a></li>
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">西欧
+          <button class="dropbtn">故事
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="../../west-eu-list/culture.html">社会人文</a></li>
-            <li><a href="../../west-eu-list/guide.html">攻略指南</a></li>
-            <li><a href="../../west-eu-list/edu.html">留学移民</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">北美
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-            <li><a href="../../north-ame-list/culture.html">社会人文</a></li>
-            <li><a href="../../north-ame-list/guide.html">攻略指南</a></li>
-            <li><a href="../../north-ame-list/edu.html">留学移民</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">大洋洲
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-            <li><a href="../../oceania-list/culture.html">社会人文</a></li>
-            <li><a href="../../oceania-list/guide.html">攻略指南</a></li>
-            <li><a href="../../oceania-list/edu.html">留学移民</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">专题
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-            <li><a href="../../topic-list/life.html">生活之南</a></li>
-            <li><a href="../../topic-list/history.html">历史之光</a></li>
-            <li><a href="../../topic-list/pretty.html">世界之美</a></li>
-            <li><a href="../../topic-list/edu.html">教育之路</a></li>
-            <li><a href="../../topic-list/love.html">爱情之道</a></li>
+              <li><a href="../../story/canada.html">加拿大</a></li>
+              <li><a href="../../story/malaysia.html">马来西亚</a></li>
+              <li><a href="../../story/singapore.html">新加坡</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -88,11 +47,11 @@ headerTemplate.innerHTML = `
           </ul>
         </li>
       </ul>
-      <!-- <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-        <li><a href="../../index-en.html"><span class="glyphicon"></span> English</a></li>
-      </ul> -->
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> -->
+        <li><a href="../../index.html"><span class="glyphicon"></span> English</a></li>
+      </ul> 
     </div>
   </div>
 `;

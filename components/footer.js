@@ -33,7 +33,9 @@ footerTemplate.innerHTML = `
 
       <div class="col-sm-6 text-center">
         <div class="row">
-          <img src="img/about/logo.png" style="width:100px">
+          <a href="index.html">
+            <img src="img/about/logo.png" style="width:80px">
+          </a>
         </div>
       </div>
 
@@ -54,22 +56,23 @@ footerTemplate.innerHTML = `
         </div>
       </div>
     </div>
-    <br>
+    <hr>
 
     <div class="row">
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="index.html">
-            <img src="img/about/logo.png" style="width:60px">
-          </a>
+          <a href="https://www.youtube.com/@east-west-life" target="_blank" class="fa fa-youtube"></a>
+          <a href="https://www.instagram.com/east.west.life/" target="_blank" class="fa fa-instagram"></a>
+          <a href="https://www.facebook.com/east2west2life" target="_blank" class="fa fa-facebook"></a>
+          <a href="https://www.linkedin.com/company/east-west-life/" target="_blank" class="fa fa-linkedin"></a>
         </div>
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="faq.html">常见问题</a>&nbsp;&nbsp;
-          <a href="">合作推广</a>&nbsp;&nbsp;
-          <a href="">意见反馈</a>&nbsp;&nbsp;
-          <a href="about-us.html">关于我们</a>
+          <a href="about-us.html">About</a>&nbsp;&nbsp;
+          <a href="about-us.html">Contact</a>&nbsp;&nbsp;
+          <a href="faq.html">FAQ</a>&nbsp;&nbsp;
+          <a href="index-cn.html">中文</a>
         </div>
         <div class="row">
           <p style="font-size:12px;">&copy; 2018-2023 East-West-Life.&nbsp;All rights reserved.</p>
@@ -77,9 +80,10 @@ footerTemplate.innerHTML = `
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="https://www.youtube.com/@east-west-life" class="fa fa-youtube"></a>
-          <a href="https://www.facebook.com/east2west2life" class="fa fa-facebook"></a>
-          <a href="https://www.linkedin.com/company/east-west-life/" class="fa fa-linkedin"></a>
+          <a href="https://twitter.com/east2west2life" target="_blank" class="fa fa-twitter"></a>
+          <a href="https://space.bilibili.com/456297680" target="_blank" class="fa fa-play-circle"></a>
+          <a href="https://www.weibo.com/seemuch" target="_blank" class="fa fa-weibo"></a>
+          <a href="https://www.xiaohongshu.com/user/profile/5d1dc4da000000001201a282?xhsshare=CopyLink&appuid=5d1dc4da000000001201a282&apptime=1576370943" target="_blank" class="fa fa-book"></a>
         </div>
       </div>
     </div>
