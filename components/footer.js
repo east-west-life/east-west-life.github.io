@@ -19,7 +19,7 @@ footerTemplate.innerHTML = `
           <div class="col-sm-5">
           </div>
           <div class="col-sm-7 text-center">
-            <p style="font-size:60%;">微信公众号</p>
+            <p style="font-size:60%;">WeChat</p>
           </div>
         </div>
         <div class="row">
@@ -42,7 +42,7 @@ footerTemplate.innerHTML = `
       <div class="col-sm-3">
         <div class="row">
           <div class="col-sm-7 text-center">
-            <p style="font-size:60%;">微信公众号</p>
+            <p style="font-size:60%;">WeChat</p>
           </div>
           <div class="col-sm-5">
           </div>
