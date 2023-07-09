@@ -42,8 +42,9 @@ headerTemplate.innerHTML = `
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="about-us.html">About us</a></li>
-            <li><a href="search.html"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+            <li><a href="https://studymax.org/" target="_blank">Study Abroad</a></li>
+            <li><a href="about-us.html" target="_blank">About us</a></li>
+            <li><a href="search.html" target="_blank"><span class="glyphicon glyphicon-search"></span> Search</a></li>
           </ul>
         </li>
       </ul>
