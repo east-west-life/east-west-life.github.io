@@ -43,7 +43,6 @@ headerTemplate.innerHTML = `
           </button>
           <ul class="dropdown-content">
             <li><a href="about-us.html" target="_blank">关于我们</a></li>
-            <li><a href="search.html" target="_blank">搜索 <span class="glyphicon glyphicon-search"></span></a></li>
             <li><a href="https://studymax.org/" target="_blank">出国留学</a></li>
             <li><a href="web.html" target="_blank">实用网站</a></li>
           </ul>

@@ -70,8 +70,8 @@ footerTemplate.innerHTML = `
       <div class="col-sm-4 text-center">
         <div class="row">
           <a href="about-us.html">关于我们</a>&nbsp;&nbsp;
-          <a href="about-us.html">联系方式</a>&nbsp;&nbsp;
           <a href="faq.html">常见问题</a>&nbsp;&nbsp;
+          <a href="search.html" target="_blank">搜索 <span class="glyphicon glyphicon-search"></span></a>&nbsp;&nbsp;
           <a href="index.html">English</a>
         </div>
         <div class="row">

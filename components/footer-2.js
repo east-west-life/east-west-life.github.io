@@ -73,10 +73,10 @@ footerTemplate.innerHTML = `
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
+          <a href="../about-us.html">关于我们</a>&nbsp;&nbsp;
           <a href="../faq.html">常见问题</a>&nbsp;&nbsp;
-          <a href="">合作推广</a>&nbsp;&nbsp;
-          <a href="">意见反馈</a>&nbsp;&nbsp;
-          <a href="../about-us.html">关于我们</a>
+          <a href="../search.html" target="_blank">搜索 <span class="glyphicon glyphicon-search"></span></a>&nbsp;&nbsp;
+          <a href="../index.html">English</a>
         </div>
         <div class="row">
           <p style="font-size:12px;">&copy; 2018-2023 East-West-Life.&nbsp;All rights reserved.</p>
