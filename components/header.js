@@ -49,8 +49,8 @@ headerTemplate.innerHTML = `
         </li>
       </ul>
      <ul class="nav navbar-nav navbar-right">
-        <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> -->
+        <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
         <li><a href="index-cn.html"><span class="glyphicon"></span> 中文</a></li>
       </ul>
     </div>

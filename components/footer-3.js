@@ -22,7 +22,7 @@ footerTemplate.innerHTML = `
           <div class="col-sm-6">
           </div>
           <div class="col-sm-6 text-center">
-            <p style="font-size:60%;">微信公众号</p>
+            <p style="font-size:60%;">WeChat</p>
           </div>
         </div>
         <div class="row">
@@ -45,7 +45,7 @@ footerTemplate.innerHTML = `
       <div class="col-sm-3">
         <div class="row">
           <div class="col-sm-6 text-center">
-            <p style="font-size:60%;">微信公众号</p>
+            <p style="font-size:60%;">WeChat</p>
           </div>
           <div class="col-sm-6">
           </div>
@@ -72,10 +72,10 @@ footerTemplate.innerHTML = `
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="../../about-us.html">关于我们</a>&nbsp;&nbsp;
-          <a href="../../faq.html">常见问题</a>&nbsp;&nbsp;
-          <a href="../../search.html" target="_blank">搜索 <span class="glyphicon glyphicon-search"></span></a>&nbsp;&nbsp;
-          <a href="../../index.html">English</a>
+          <a href="../../about-us.html">About</a>&nbsp;&nbsp;
+          <a href="../../faq.html">FAQ</a>&nbsp;&nbsp;
+          <a href="../../search.html" target="_blank">Search <span class="glyphicon glyphicon-search"></span></a>&nbsp;&nbsp;
+          <a href="../../index-cn.html">中文</a>
         </div>
         <div class="row">
           <p style="font-size:12px;">&copy; 2018-2023 East-West-Life.&nbsp;All rights reserved.</p>

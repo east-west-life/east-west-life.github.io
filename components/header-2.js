@@ -11,47 +11,47 @@ headerTemplate.innerHTML = `
   <div class="container-fluid">
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-        <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
+        <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> East-West-Life</a></li>
         <li class="dropdown">
-          <button class="dropbtn">生活
+          <button class="dropbtn">Life
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-              <li><a href="../life/australia.html">澳大利亚</a></li>
-              <li><a href="../life/canada.html">加拿大</a></li>
-              <li><a href="../life/japan.html">日本</a></li>
-              <li><a href="../life/malaysia.html">马来西亚</a></li>
-              <li><a href="../life/newzealand.html">新西兰</a></li>
-              <li><a href="../life/singapore.html">新加坡</a></li>
-              <li><a href="../life/thailand.html">泰国</a></li>
-              <li><a href="../life/usa.html">美国</a></li>
+              <li><a href="../life/australia.html">Australia</a></li>
+              <li><a href="../life/canada.html">Canada</a></li>
+              <li><a href="../life/japan.html">Japan</a></li>
+              <li><a href="../life/malaysia.html">Malaysia</a></li>
+              <li><a href="../life/newzealand.html">New Zealand</a></li>
+              <li><a href="../life/singapore.html">Singapore</a></li>
+              <li><a href="../life/thailand.html">Thailand</a></li>
+              <li><a href="../life/usa.html">USA</a></li>
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">故事
+          <button class="dropbtn">Story
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-              <li><a href="../story/canada.html">加拿大</a></li>
-              <li><a href="../story/malaysia.html">马来西亚</a></li>
-              <li><a href="../story/singapore.html">新加坡</a></li>
+              <li><a href="../story/canada.html">Canada</a></li>
+              <li><a href="../story/malaysia.html">Malaysia</a></li>
+              <li><a href="../story/singapore.html">Singapore</a></li>
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">更多
+          <button class="dropbtn">More
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="../about-us.html" target="_blank">关于我们</a></li>
-            <li><a href="https://studymax.org/" target="_blank">出国留学</a></li>
-            <li><a href="../web.html" target="_blank">实用网站</a></li>
+            <li><a href="../about-us.html" target="_blank">About us</a></li>
+            <li><a href="https://studymax.org/" target="_blank">Study Abroad</a></li>
+            <li><a href="../web.html" target="_blank">Websites</a></li>
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> -->
-        <li><a href="../index.html"><span class="glyphicon"></span> English</a></li>
+        <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
+        <li><a href="../index-cn.html"><span class="glyphicon"></span> 中文</a></li>
       </ul> 
     </div>
   </div>
