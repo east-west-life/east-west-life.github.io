@@ -28,23 +28,13 @@ headerTemplate.innerHTML = `
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">Story
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-              <li><a href="story/canada.html">Canada</a></li>
-              <li><a href="story/malaysia.html">Malaysia</a></li>
-              <li><a href="story/singapore.html">Singapore</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
           <button class="dropbtn">More
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="about-us.html" target="_blank">About us</a></li>
-            <li><a href="https://studymax.org/" target="_blank">Study Abroad</a></li>
             <li><a href="web.html" target="_blank">Websites</a></li>
+            <li><a href="https://studymax.org/" target="_blank">Study Abroad</a></li>
+            <li><a href="about-us.html" target="_blank">About us</a></li>
           </ul>
         </li>
       </ul>
