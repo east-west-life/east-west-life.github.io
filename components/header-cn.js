@@ -25,6 +25,8 @@ headerTemplate.innerHTML = `
               <li><a href="life/singapore.html">新加坡</a></li>
               <li><a href="life/thailand.html">泰国</a></li>
               <li><a href="life/usa.html">美国</a></li>
+              <li><a href="life/southeast-asia.html">东南亚</a></li>
+              <li><a href="life/world.html">世界</a></li>
           </ul>
         </li>
         <li class="dropdown">
