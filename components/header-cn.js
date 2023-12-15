@@ -13,7 +13,7 @@ headerTemplate.innerHTML = `
       <ul class="nav navbar-nav">
         <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
         <li class="dropdown">
-          <button class="dropbtn">生活
+          <button class="dropbtn">探索
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">

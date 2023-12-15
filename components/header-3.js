@@ -13,7 +13,7 @@ headerTemplate.innerHTML = `
       <ul class="nav navbar-nav">
         <li><a href="../../index.html"><span class="glyphicon glyphicon-home"></span> East-West-Life</a></li>
         <li class="dropdown">
-          <button class="dropbtn">Life
+          <button class="dropbtn">Explore
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
