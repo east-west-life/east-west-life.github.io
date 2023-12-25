@@ -34,8 +34,8 @@ headerTemplate.innerHTML = `
             <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="../web.html" target="_blank">Websites</a></li>
             <li><a href="https://studymax.org/" target="_blank">Study Abroad</a></li>
+            <li><a href="../web.html" target="_blank">Websites</a></li>
             <li><a href="../about-us.html" target="_blank">About us</a></li>
           </ul>
         </li>
