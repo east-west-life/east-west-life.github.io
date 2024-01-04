@@ -75,7 +75,7 @@ footerTemplate.innerHTML = `
           <a href="index.html">English</a>
         </div>
         <div class="row">
-          <p style="font-size:12px;">&copy; 2018-2023 East-West-Life.&nbsp;All rights reserved.</p>
+          <p style="font-size:12px;">&copy; 2019-2024 East-West-Life.&nbsp;All rights reserved.</p>
         </div>
       </div>
       <div class="col-sm-4 text-center">
