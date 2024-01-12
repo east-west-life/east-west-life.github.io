@@ -7,12 +7,15 @@ footerTemplate.innerHTML = `
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <style>
+    .bg-footer {
+      background-color: #f2f2f2;
+    }
     footer {
+      background-color: #f2f2f2;
       padding: 20px;
     }
   </style>
-  <footer class="container-fluid" style="max-width:900px">
-    <hr>
+  <footer class="container-fluid bg-footer" style="color:#000; background:#fff; max-width:max">
     <div class="row">
       <div class="col-sm-3">
         <div class="row">

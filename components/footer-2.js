@@ -15,7 +15,7 @@ footerTemplate.innerHTML = `
       padding: 20px;
     }
   </style>
-  <footer class="container-fluid bg-footer" style="color:#000;background:#fff;max-width:1000px">
+  <footer class="container-fluid bg-footer" style="color:#000; background:#fff; max-width:1000px">
     <div class="row">
       <div class="col-sm-3">
         <div class="row">
