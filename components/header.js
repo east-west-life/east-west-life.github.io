@@ -27,6 +27,7 @@ headerTemplate.innerHTML = `
               <li><a href="life/uk.html">UK</a></li>
               <li><a href="life/usa.html">USA</a></li>
               <li><a href="life/southeast-asia.html">SEA</a></li>
+              <li><a href="life/asia.html">Asia</a></li>
               <li><a href="life/world.html">World</a></li>
           </ul>
         </li>
