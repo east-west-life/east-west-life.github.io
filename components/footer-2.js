@@ -66,8 +66,8 @@ footerTemplate.innerHTML = `
       <div class="col-sm-4 text-center">
         <div class="row">
           <a href="https://www.youtube.com/@east-west-life" target="_blank" class="fa fa-youtube"></a>
-          <a href="https://www.instagram.com/east.west.life/" target="_blank" class="fa fa-instagram"></a>
           <a href="https://www.facebook.com/east2west2life" target="_blank" class="fa fa-facebook"></a>
+          <a href="https://www.instagram.com/east.west.life/" target="_blank" class="fa fa-instagram"></a>
           <a href="https://www.linkedin.com/company/east-west-life/" target="_blank" class="fa fa-linkedin"></a>
         </div>
       </div>
