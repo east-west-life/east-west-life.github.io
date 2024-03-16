@@ -43,7 +43,7 @@ headerTemplate.innerHTML = `
             <li><a href="about-us.html" target="_blank">About us</a></li>
           </ul>
         </li>
-        <li><a href="index-cn.html"><span class="glyphicon"></span> 中文</a></li>
+        <li><a href="index-cn.html">中文</a></li>
       </ul>
      <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Register</a></li>

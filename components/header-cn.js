@@ -43,7 +43,7 @@ headerTemplate.innerHTML = `
             <li><a href="about-us.html" target="_blank">关于我们</a></li>
           </ul>
         </li>
-        <li><a href="index.html"><span class="glyphicon"></span> English</a></li>
+        <li><a href="index.html">English</a></li>
       </ul>
      <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
