@@ -12,10 +12,13 @@ headerTemplate.innerHTML = `
     <div class="container-fluid">
       <!-- <div class="navbar-header"></div> -->
       <ul class="nav navbar-nav">
-        <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> EWL</a></li>
         <li class="dropdown">
-          <button class="dropbtn">Explore
-            <span class="caret"></span>
+          <button class="dropbtn">
+            <a href="../index.html"><span class="glyphicon glyphicon-home"></span> EWL</a>
+          </button>
+        </li>
+        <li class="dropdown">
+          <button class="dropbtn">Explore <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
               <li><a href="../life/australia.html">Australia</a></li>
@@ -34,8 +37,7 @@ headerTemplate.innerHTML = `
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">More
-            <span class="caret"></span>
+          <button class="dropbtn">More <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
             <li><a href="../web.html" target="_blank">Websites</a></li>
@@ -44,7 +46,11 @@ headerTemplate.innerHTML = `
             <li><a href="../about-us.html" target="_blank">About us</a></li>
           </ul>
         </li>
-        <li><a href="../index-cn.html">中文</a></li>
+        <li class="dropdown">
+          <button class="dropbtn">
+            <a href="../index-cn.html">中文</a>
+          </button>
+        </li>
       </ul>
       <!-- <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-user"></span> Register</a></li>

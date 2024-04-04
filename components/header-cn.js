@@ -12,10 +12,13 @@ headerTemplate.innerHTML = `
     <div class="container-fluid">
       <!-- <div class="navbar-header"></div> -->
       <ul class="nav navbar-nav">
-        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
         <li class="dropdown">
-          <button class="dropbtn">探索
-            <span class="caret"></span>
+          <button class="dropbtn">
+            <a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a>
+          </button>
+        </li>
+        <li class="dropdown">
+          <button class="dropbtn">探索 <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
               <li><a href="life/australia.html">澳大利亚</a></li>
@@ -34,8 +37,7 @@ headerTemplate.innerHTML = `
           </ul>
         </li>
         <li class="dropdown">
-          <button class="dropbtn">更多
-            <span class="caret"></span>
+          <button class="dropbtn">更多 <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
             <li><a href="web.html" target="_blank">网站</a></li>
@@ -44,7 +46,11 @@ headerTemplate.innerHTML = `
             <li><a href="about-us.html" target="_blank">关于我们</a></li>
           </ul>
         </li>
-        <li><a href="index.html">English</a></li>
+        <li class="dropdown">
+          <button class="dropbtn">
+            <a href="index.html">English</a>
+          </button>
+        </li>
       </ul>
       <!-- <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
