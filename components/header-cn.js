@@ -8,49 +8,51 @@ headerTemplate.innerHTML = `
   <script src="js/bootstrap.min.js"></script>
   <style>
   </style>
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <ul class="nav navbar-nav">
-        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
-        <li class="dropdown">
-          <button class="dropbtn">探索
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-              <li><a href="life/australia.html">澳大利亚</a></li>
-              <li><a href="life/canada.html">加拿大</a></li>
-              <li><a href="life/japan.html">日本</a></li>
-              <li><a href="life/malaysia.html">马来西亚</a></li>
-              <li><a href="life/newzealand.html">新西兰</a></li>
-              <li><a href="life/singapore.html">新加坡</a></li>
-              <li><a href="life/thailand.html">泰国</a></li>
-              <li><a href="life/uk.html">英国</a></li>
-              <li><a href="life/usa.html">美国</a></li>
-              <li><a href="life/southeast-asia.html">东南亚</a></li>
-              <li><a href="life/asia.html">亚洲</a></li>
-              <li><a href="life/world.html">世界</a></li>
-              <li><a href="life/they.html">他们</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <button class="dropbtn">更多
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-content">
-            <li><a href="web.html" target="_blank">实用网站</a></li>
-            <li><a href="project.html" target="_blank">项目</a></li>
-            <li><a href="https://studymax.org/" target="_blank">教育</a></li>
-            <li><a href="about-us.html" target="_blank">关于我们</a></li>
-          </ul>
-        </li>
-        <li><a href="index.html">English</a></li>
-      </ul>
-     <ul class="nav navbar-nav navbar-right">
-        <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> -->
-      </ul>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <ul class="nav navbar-nav">
+          <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a></li>
+          <li class="dropdown">
+            <button class="dropbtn">探索
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-content">
+                <li><a href="life/australia.html">澳大利亚</a></li>
+                <li><a href="life/canada.html">加拿大</a></li>
+                <li><a href="life/japan.html">日本</a></li>
+                <li><a href="life/malaysia.html">马来西亚</a></li>
+                <li><a href="life/newzealand.html">新西兰</a></li>
+                <li><a href="life/singapore.html">新加坡</a></li>
+                <li><a href="life/thailand.html">泰国</a></li>
+                <li><a href="life/uk.html">英国</a></li>
+                <li><a href="life/usa.html">美国</a></li>
+                <li><a href="life/southeast-asia.html">东南亚</a></li>
+                <li><a href="life/asia.html">亚洲</a></li>
+                <li><a href="life/world.html">世界</a></li>
+                <li><a href="life/they.html">他们</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <button class="dropbtn">更多
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-content">
+              <li><a href="web.html" target="_blank">实用网站</a></li>
+              <li><a href="project.html" target="_blank">项目</a></li>
+              <li><a href="https://studymax.org/" target="_blank">教育</a></li>
+              <li><a href="about-us.html" target="_blank">关于我们</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html">English</a></li>
+        </ul>
+      <ul class="nav navbar-nav navbar-right">
+          <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> -->
+        </ul>
+      </div>
     </div>
-  </div>
+  </nav>
 `;
 
 class Header extends HTMLElement {
