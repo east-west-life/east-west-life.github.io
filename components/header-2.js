@@ -11,7 +11,7 @@ headerTemplate.innerHTML = `
   <div class="container-fluid">
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-        <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> East-West-Life</a></li>
+        <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> EWL</a></li>
         <li class="dropdown">
           <button class="dropbtn">Explore
             <span class="caret"></span>
