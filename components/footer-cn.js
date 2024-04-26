@@ -83,7 +83,7 @@ footerTemplate.innerHTML = `
       </div>
       <div class="col-sm-4 text-center">
         <div class="row">
-          <a href="https://twitter.com/east4west4life" target="_blank" class="fa fa-twitter"></a>
+          <a href="https://twitter.com/east2west2life" target="_blank" class="fa fa-twitter"></a>
           <a href="https://space.bilibili.com/456297680" target="_blank" class="fa fa-play-circle"></a>
           <a href="https://www.weibo.com/seemuch" target="_blank" class="fa fa-weibo"></a>
           <a href="https://www.xiaohongshu.com/user/profile/5d1dc4da000000001201a282?xhsshare=CopyLink&appuid=5d1dc4da000000001201a282&apptime=1576370943" target="_blank" class="fa fa-book"></a>
