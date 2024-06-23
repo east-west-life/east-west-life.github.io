@@ -32,6 +32,7 @@ headerTemplate.innerHTML = `
               <li><a href="life/usa.html">美国</a></li>
               <li><a href="life/southeast-asia.html">东南亚</a></li>
               <li><a href="life/asia.html">亚洲</a></li>
+              <li><a href="life/europe.html">欧洲</a></li>
               <li><a href="life/world.html">世界</a></li>
               <li><a href="life/they.html">他们</a></li>
           </ul>
