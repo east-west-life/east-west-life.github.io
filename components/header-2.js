@@ -41,8 +41,8 @@ headerTemplate.innerHTML = `
           <button class="dropbtn">More <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-            <li><a href="../web.html" target="_blank">Websites</a></li>
             <li><a href="../project.html" target="_blank">Project</a></li>
+            <li><a href="../web.html" target="_blank">Websites</a></li>
             <li><a href="https://studymax.org/" target="_blank">Education</a></li>
             <li><a href="../about-us.html" target="_blank">About us</a></li>
           </ul>
