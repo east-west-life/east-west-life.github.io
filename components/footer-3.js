@@ -37,7 +37,7 @@ footerTemplate.innerHTML = `
       <div class="col-sm-6 text-center">
         <div class="row">
           <a href="../../index.html">
-            <img src="../../img/about/logo.png" style="width:80px">
+            <img src="../../img/about/logo.jpg" style="width:80px">
           </a>
         </div>
       </div>
