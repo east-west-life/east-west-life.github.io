@@ -21,20 +21,11 @@ headerTemplate.innerHTML = `
           <button class="dropbtn">探索 <span class="caret"></span>
           </button>
           <ul class="dropdown-content">
-              <li><a href="life/australia.html">澳大利亚</a></li>
-              <li><a href="life/canada.html">加拿大</a></li>
-              <li><a href="life/japan.html">日本</a></li>
-              <li><a href="life/malaysia.html">马来西亚</a></li>
-              <li><a href="life/newzealand.html">新西兰</a></li>
-              <li><a href="life/singapore.html">新加坡</a></li>
-              <li><a href="life/thailand.html">泰国</a></li>
-              <li><a href="life/uk.html">英国</a></li>
-              <li><a href="life/usa.html">美国</a></li>
-              <li><a href="life/asia.html">亚洲</a></li>
-              <li><a href="life/europe.html">欧洲</a></li>
-              <li><a href="life/na.html">北美</a></li>
-              <li><a href="life/southeast-asia.html">东南亚</a></li>
-              <li><a href="life/world.html">世界</a></li>
+            <li><a href="explore/business.html" target="_blank">商业</a></li>
+            <li><a href="explore/culture.html" target="_blank">文化</a></li>
+            <li><a href="explore/education.html" target="_blank">教育</a></li>
+            <li><a href="explore/experience.html" target="_blank">经历</a></li>
+            <li><a href="explore/lifestyle.html" target="_blank">生活</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -43,7 +34,7 @@ headerTemplate.innerHTML = `
           <ul class="dropdown-content">
             <li><a href="rankings.html" target="_blank">排名</a></li>
             <li><a href="web.html" target="_blank">网站</a></li>
-            <li><a href="https://studymax.org/" target="_blank">教育</a></li>
+            <li><a href="https://studymax.org/" target="_blank">留学</a></li>
             <li><a href="project.html" target="_blank">项目</a></li>
             <li><a href="about-us.html" target="_blank">关于我们</a></li>
           </ul>
