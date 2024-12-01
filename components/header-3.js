@@ -24,8 +24,8 @@ headerTemplate.innerHTML = `
             <li><a href="../../explore/business.html" target="_blank">Business</a></li>
             <li><a href="../../explore/culture.html" target="_blank">Culture</a></li>
             <li><a href="../../explore/education.html" target="_blank">Education</a></li>
-            <li><a href="../../explore/experience.html" target="_blank">Experience</a></li>
             <li><a href="../../explore/lifestyle.html" target="_blank">Lifestyle</a></li>
+            <li><a href="../../explore/people.html" target="_blank">People</a></li>
           </ul>
         </li>
         <li class="dropdown">
