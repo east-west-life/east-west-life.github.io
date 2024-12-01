@@ -28,6 +28,17 @@
   border-radius: 0;
 }
 
+.navbar-default .navbar-toggle {
+  border-color: transparent;
+  color: #fff !important;
+}
+
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
 .navbar-nav li a, .navbar .navbar-brand {
   color: #fff !important;
 }
@@ -36,13 +47,6 @@
   color: #D80621 !important;
   background-color: #fff !important;
 }
-
-
-.navbar-default .navbar-toggle {
-  border-color: transparent;
-  color: #fff !important;
-}
-
 
 .dropdown {
   float: left;

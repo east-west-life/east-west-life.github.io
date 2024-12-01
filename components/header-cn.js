@@ -11,7 +11,7 @@ headerTemplate.innerHTML = `
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <!-- <div class="navbar-header"></div> -->
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-center">
         <li class="dropdown">
           <button class="dropbtn">
             <a href="index.html"><span class="glyphicon glyphicon-home"></span> 东西生活圈</a>
