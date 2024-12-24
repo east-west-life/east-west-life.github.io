@@ -79,7 +79,7 @@ footerTemplate.innerHTML = `
           <a href="../index-cn.html">中文</a>
         </div>
         <div class="row">
-          <p style="font-size:12px;">&copy; 2024 East-West-Life.&nbsp;All rights reserved.</p>
+          <p style="font-size:12px;">&copy; 2025 East-West-Life.&nbsp;All rights reserved.</p>
         </div>
       </div>
       <div class="col-sm-4 text-center">
