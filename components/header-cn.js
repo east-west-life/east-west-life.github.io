@@ -23,7 +23,6 @@ headerTemplate.innerHTML = `
           <ul class="dropdown-content">
             <li><a href="explore/business.html" target="_blank">商业</a></li>
             <li><a href="explore/culture.html" target="_blank">文化</a></li>
-            <li><a href="explore/education.html" target="_blank">教育</a></li>
             <li><a href="explore/lifestyle.html" target="_blank">生活</a></li>
             <li><a href="explore/people.html" target="_blank">人物</a></li>
           </ul>
