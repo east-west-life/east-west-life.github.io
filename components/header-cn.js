@@ -22,8 +22,8 @@ headerTemplate.innerHTML = `
           </button>
           <ul class="dropdown-content">
             <li><a href="explore/business.html" target="_blank">商业</a></li>
-            <li><a href="explore/culture.html" target="_blank">文化</a></li>
             <li><a href="explore/people.html" target="_blank">人物</a></li>
+            <li><a href="explore/tech.html" target="_blank">科技</a></li>
           </ul>
         </li>
         <li class="dropdown">
